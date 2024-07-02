@@ -1,0 +1,468 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://addons/ezcha_network/dock/components/label_header.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/ezcha_network/dock/resources/empty_panel.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/ezcha_network/dock/resources/game_banner.tres" type="Texture" id=3]
+[ext_resource path="res://addons/ezcha_network/dock/resources/trophy_icon.tres" type="Texture" id=4]
+[ext_resource path="res://addons/ezcha_network/dock/components/label_category.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/ezcha_network/dock/menu_leaderboards.gd" type="Script" id=6]
+[ext_resource path="res://addons/ezcha_network/dock/menu_information.gd" type="Script" id=7]
+[ext_resource path="res://addons/ezcha_network/dock/menu_main.gd" type="Script" id=8]
+[ext_resource path="res://addons/ezcha_network/dock/dock.gd" type="Script" id=9]
+[ext_resource path="res://addons/ezcha_network/dock/menu_trophies.gd" type="Script" id=10]
+[ext_resource path="res://addons/ezcha_network/dock/menu_configuration.gd" type="Script" id=11]
+
+[node name="Ezcha" type="Control"]
+anchor_right = 0.379
+anchor_bottom = 0.76
+margin_right = -0.0960083
+margin_bottom = -3.05176e-05
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 9 )
+
+[node name="Main" type="ScrollContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 8 )
+
+[node name="Contents" type="VBoxContainer" parent="Main"]
+margin_right = 388.0
+margin_bottom = 456.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Game" type="PanelContainer" parent="Main/Contents"]
+margin_right = 388.0
+margin_bottom = 110.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="List" type="VBoxContainer" parent="Main/Contents/Game"]
+margin_right = 388.0
+margin_bottom = 110.0
+
+[node name="LabelHeader" parent="Main/Contents/Game/List" instance=ExtResource( 1 )]
+margin_right = 388.0
+text = "Game"
+
+[node name="Info" type="Button" parent="Main/Contents/Game/List"]
+margin_top = 18.0
+margin_right = 388.0
+margin_bottom = 38.0
+text = "Information"
+
+[node name="Trophies" type="Button" parent="Main/Contents/Game/List"]
+margin_top = 42.0
+margin_right = 388.0
+margin_bottom = 62.0
+text = "Trophies"
+
+[node name="Leaderboards" type="Button" parent="Main/Contents/Game/List"]
+margin_top = 66.0
+margin_right = 388.0
+margin_bottom = 86.0
+text = "Leaderboards"
+
+[node name="DevPanel" type="Button" parent="Main/Contents/Game/List"]
+margin_top = 90.0
+margin_right = 388.0
+margin_bottom = 110.0
+text = "Developer Panel"
+
+[node name="Plugin" type="PanelContainer" parent="Main/Contents"]
+margin_top = 114.0
+margin_right = 388.0
+margin_bottom = 200.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="List" type="VBoxContainer" parent="Main/Contents/Plugin"]
+margin_right = 388.0
+margin_bottom = 86.0
+
+[node name="LabelHeader" parent="Main/Contents/Plugin/List" instance=ExtResource( 1 )]
+margin_right = 388.0
+text = "Plugin"
+
+[node name="Configuration" type="Button" parent="Main/Contents/Plugin/List"]
+margin_top = 18.0
+margin_right = 388.0
+margin_bottom = 38.0
+text = "Configuration"
+
+[node name="Docs" type="Button" parent="Main/Contents/Plugin/List"]
+margin_top = 42.0
+margin_right = 388.0
+margin_bottom = 62.0
+text = "Documentation"
+
+[node name="Repo" type="Button" parent="Main/Contents/Plugin/List"]
+margin_top = 66.0
+margin_right = 388.0
+margin_bottom = 86.0
+text = "Repository"
+
+[node name="Help" type="PanelContainer" parent="Main/Contents"]
+margin_top = 204.0
+margin_right = 388.0
+margin_bottom = 242.0
+custom_styles/panel = ExtResource( 2 )
+
+[node name="List" type="VBoxContainer" parent="Main/Contents/Help"]
+margin_right = 388.0
+margin_bottom = 38.0
+
+[node name="LabelHeader" parent="Main/Contents/Help/List" instance=ExtResource( 1 )]
+margin_right = 388.0
+text = "Help"
+
+[node name="Forums" type="Button" parent="Main/Contents/Help/List"]
+margin_top = 18.0
+margin_right = 388.0
+margin_bottom = 38.0
+text = "Developer Forums"
+
+[node name="Information" type="ScrollContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 7 )
+
+[node name="Contents" type="VBoxContainer" parent="Information"]
+margin_right = 388.0
+margin_bottom = 456.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Banner" type="TextureRect" parent="Information/Contents"]
+margin_top = 18.0
+margin_right = 388.0
+margin_bottom = 98.0
+rect_min_size = Vector2( 0, 80 )
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 7
+
+[node name="InfoGrid" type="GridContainer" parent="Information/Contents"]
+margin_top = 102.0
+margin_right = 388.0
+margin_bottom = 152.0
+columns = 2
+
+[node name="IdLabel" type="Label" parent="Information/Contents/InfoGrid"]
+margin_right = 192.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "ID"
+
+[node name="IdValue" type="Label" parent="Information/Contents/InfoGrid"]
+margin_left = 196.0
+margin_right = 388.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="NameLabel" type="Label" parent="Information/Contents/InfoGrid"]
+margin_top = 18.0
+margin_right = 192.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="NameValue" type="Label" parent="Information/Contents/InfoGrid"]
+margin_left = 196.0
+margin_top = 18.0
+margin_right = 388.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="VersionLabel" type="Label" parent="Information/Contents/InfoGrid"]
+margin_top = 36.0
+margin_right = 192.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+text = "Version"
+
+[node name="VersionValue" type="Label" parent="Information/Contents/InfoGrid"]
+margin_left = 196.0
+margin_top = 36.0
+margin_right = 388.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+
+[node name="Back" type="Button" parent="Information/Contents"]
+margin_top = 156.0
+margin_right = 388.0
+margin_bottom = 176.0
+text = "Back"
+
+[node name="Trophies" type="ScrollContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 10 )
+
+[node name="Contents" type="VBoxContainer" parent="Trophies"]
+margin_right = 388.0
+margin_bottom = 456.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LabelHeader" parent="Trophies/Contents" instance=ExtResource( 1 )]
+margin_right = 388.0
+text = "Trophies"
+
+[node name="List" type="ItemList" parent="Trophies/Contents"]
+margin_top = 18.0
+margin_right = 388.0
+margin_bottom = 379.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InfoSplit" type="HBoxContainer" parent="Trophies/Contents"]
+margin_top = 383.0
+margin_right = 388.0
+margin_bottom = 431.0
+
+[node name="Icon" type="TextureRect" parent="Trophies/Contents/InfoSplit"]
+margin_right = 48.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 48, 48 )
+texture = ExtResource( 4 )
+expand = true
+
+[node name="Description" type="Label" parent="Trophies/Contents/InfoSplit"]
+margin_left = 52.0
+margin_right = 388.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Description"
+valign = 1
+autowrap = true
+max_lines_visible = 2
+
+[node name="Actions" type="HBoxContainer" parent="Trophies/Contents"]
+margin_top = 435.0
+margin_right = 388.0
+margin_bottom = 455.0
+
+[node name="Copy" type="Button" parent="Trophies/Contents/Actions"]
+margin_right = 126.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Copy"
+
+[node name="Refresh" type="Button" parent="Trophies/Contents/Actions"]
+margin_left = 130.0
+margin_right = 257.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Refresh"
+
+[node name="Back" type="Button" parent="Trophies/Contents/Actions"]
+margin_left = 261.0
+margin_right = 388.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Back"
+
+[node name="Leaderboards" type="ScrollContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 6 )
+
+[node name="Contents" type="VBoxContainer" parent="Leaderboards"]
+margin_right = 388.0
+margin_bottom = 456.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LabelHeader" parent="Leaderboards/Contents" instance=ExtResource( 1 )]
+margin_right = 388.0
+text = "Leaderboards"
+
+[node name="List" type="ItemList" parent="Leaderboards/Contents"]
+margin_top = 18.0
+margin_right = 388.0
+margin_bottom = 431.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Actions" type="HBoxContainer" parent="Leaderboards/Contents"]
+margin_top = 435.0
+margin_right = 388.0
+margin_bottom = 455.0
+
+[node name="Copy" type="Button" parent="Leaderboards/Contents/Actions"]
+margin_right = 126.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Copy"
+
+[node name="Refresh" type="Button" parent="Leaderboards/Contents/Actions"]
+margin_left = 130.0
+margin_right = 257.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Refresh"
+
+[node name="Back" type="Button" parent="Leaderboards/Contents/Actions"]
+margin_left = 261.0
+margin_right = 388.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Back"
+
+[node name="Configuration" type="ScrollContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 11 )
+
+[node name="Contents" type="VBoxContainer" parent="Configuration"]
+margin_right = 388.0
+margin_bottom = 456.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LabelHeader" parent="Configuration/Contents" instance=ExtResource( 1 )]
+margin_right = 388.0
+text = "Configuration"
+
+[node name="GlobalLabel" parent="Configuration/Contents" instance=ExtResource( 5 )]
+margin_top = 18.0
+margin_bottom = 40.0
+text = "Global"
+
+[node name="Global" type="GridContainer" parent="Configuration/Contents"]
+margin_top = 44.0
+margin_right = 388.0
+margin_bottom = 68.0
+columns = 2
+
+[node name="GameIdLabel" type="Label" parent="Configuration/Contents/Global"]
+margin_top = 5.0
+margin_right = 192.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Game ID*"
+
+[node name="GameIdEdit" type="LineEdit" parent="Configuration/Contents/Global"]
+margin_left = 196.0
+margin_right = 388.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="ClientLabel" parent="Configuration/Contents" instance=ExtResource( 5 )]
+margin_top = 72.0
+margin_bottom = 94.0
+text = "Client"
+
+[node name="Client" type="GridContainer" parent="Configuration/Contents"]
+margin_top = 98.0
+margin_right = 388.0
+margin_bottom = 122.0
+columns = 2
+
+[node name="SigningKeyLabel" type="Label" parent="Configuration/Contents/Client"]
+margin_top = 5.0
+margin_right = 192.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Signing Key"
+
+[node name="SigningKeyEdit" type="LineEdit" parent="Configuration/Contents/Client"]
+margin_left = 196.0
+margin_right = 388.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="ServerLabel" parent="Configuration/Contents" instance=ExtResource( 5 )]
+margin_top = 126.0
+margin_bottom = 148.0
+text = "Server"
+
+[node name="Server" type="GridContainer" parent="Configuration/Contents"]
+margin_top = 152.0
+margin_right = 388.0
+margin_bottom = 176.0
+columns = 2
+
+[node name="ApiKeyLabel" type="Label" parent="Configuration/Contents/Server"]
+margin_top = 5.0
+margin_right = 192.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "API Key"
+
+[node name="ApiKeyEdit" type="LineEdit" parent="Configuration/Contents/Server"]
+margin_left = 196.0
+margin_right = 388.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="DebugLabel" parent="Configuration/Contents" instance=ExtResource( 5 )]
+margin_top = 180.0
+margin_bottom = 202.0
+text = "Debug"
+
+[node name="Debug" type="GridContainer" parent="Configuration/Contents"]
+margin_top = 206.0
+margin_right = 388.0
+margin_bottom = 230.0
+columns = 2
+
+[node name="SessionOverrideLabel" type="Label" parent="Configuration/Contents/Debug"]
+margin_top = 5.0
+margin_right = 192.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Session Override"
+
+[node name="SessionOverrideEdit" type="LineEdit" parent="Configuration/Contents/Debug"]
+margin_left = 196.0
+margin_right = 388.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Done" type="Button" parent="Configuration/Contents"]
+margin_top = 234.0
+margin_right = 388.0
+margin_bottom = 254.0
+text = "Done"
+
+[node name="ErrorLabel" type="Label" parent="Configuration/Contents"]
+visible = false
+margin_top = 146.0
+margin_right = 388.0
+margin_bottom = 160.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+align = 1
+autowrap = true
+
+[connection signal="pressed" from="Main/Contents/Game/List/Info" to="Main" method="_on_info_pressed"]
+[connection signal="pressed" from="Main/Contents/Game/List/Trophies" to="Main" method="_on_trophies_pressed"]
+[connection signal="pressed" from="Main/Contents/Game/List/Leaderboards" to="Main" method="_on_leaderboards_pressed"]
+[connection signal="pressed" from="Main/Contents/Game/List/DevPanel" to="Main" method="_on_dev_panel_pressed"]
+[connection signal="pressed" from="Main/Contents/Plugin/List/Configuration" to="Main" method="_on_configuration_pressed"]
+[connection signal="pressed" from="Main/Contents/Plugin/List/Docs" to="Main" method="_on_docs_pressed"]
+[connection signal="pressed" from="Main/Contents/Plugin/List/Repo" to="Main" method="_on_repo_pressed"]
+[connection signal="pressed" from="Main/Contents/Help/List/Forums" to="Main" method="_on_forums_pressed"]
+[connection signal="pressed" from="Information/Contents/Back" to="Information" method="_on_back_pressed"]
+[connection signal="item_selected" from="Trophies/Contents/List" to="Trophies" method="_on_list_item_selected"]
+[connection signal="pressed" from="Trophies/Contents/Actions/Copy" to="Trophies" method="_on_copy_pressed"]
+[connection signal="pressed" from="Trophies/Contents/Actions/Refresh" to="Trophies" method="_on_refresh_pressed"]
+[connection signal="pressed" from="Trophies/Contents/Actions/Back" to="Trophies" method="_on_back_pressed"]
+[connection signal="item_selected" from="Leaderboards/Contents/List" to="Leaderboards" method="_on_list_item_selected"]
+[connection signal="pressed" from="Leaderboards/Contents/Actions/Copy" to="Leaderboards" method="_on_copy_pressed"]
+[connection signal="pressed" from="Leaderboards/Contents/Actions/Refresh" to="Leaderboards" method="_on_refresh_pressed"]
+[connection signal="pressed" from="Leaderboards/Contents/Actions/Back" to="Leaderboards" method="_on_back_pressed"]
+[connection signal="text_changed" from="Configuration/Contents/Global/GameIdEdit" to="Configuration" method="_on_game_id_edit_text_changed"]
+[connection signal="text_changed" from="Configuration/Contents/Client/SigningKeyEdit" to="Configuration" method="_on_signing_key_edit_text_changed"]
+[connection signal="text_changed" from="Configuration/Contents/Server/ApiKeyEdit" to="Configuration" method="_on_api_key_edit_text_changed"]
+[connection signal="text_changed" from="Configuration/Contents/Debug/SessionOverrideEdit" to="Configuration" method="_on_session_override_edit_text_changed"]
+[connection signal="pressed" from="Configuration/Contents/Done" to="Configuration" method="_on_done_pressed"]

@@ -1,0 +1,248 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node",
+"class": "EzchaAPI",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/class/api.gd"
+}, {
+"base": "Object",
+"class": "EzchaClient",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/client.gd"
+}, {
+"base": "Reference",
+"class": "EzchaDto",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/class/dto.gd"
+}, {
+"base": "EzchaDto",
+"class": "EzchaGame",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/dto/game.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaGameListResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/game_list.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaGameResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/game.gd"
+}, {
+"base": "EzchaAPI",
+"class": "EzchaGamesAPI",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/api/games.gd"
+}, {
+"base": "EzchaDto",
+"class": "EzchaLeaderboard",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/dto/leaderboard.gd"
+}, {
+"base": "EzchaDto",
+"class": "EzchaLeaderboardEntry",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/dto/leaderboard_entry.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaLeaderboardListResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/leaderboard_list.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaLeaderboardQueuedResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/leaderboard_queued.gd"
+}, {
+"base": "EzchaAPI",
+"class": "EzchaLeaderboardsAPI",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/api/leaderboards.gd"
+}, {
+"base": "EzchaAPI",
+"class": "EzchaNewsAPI",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/api/news.gd"
+}, {
+"base": "EzchaDto",
+"class": "EzchaNewsPost",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/dto/news_post.gd"
+}, {
+"base": "EzchaPaginatedResponse",
+"class": "EzchaPaginatedLeaderboardEntryListResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/paginated_leaderboard_entry_list.gd"
+}, {
+"base": "EzchaPaginatedResponse",
+"class": "EzchaPaginatedNewsListResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/paginated_news_list.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaPaginatedResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/paginated.gd"
+}, {
+"base": "EzchaPaginatedResponse",
+"class": "EzchaPaginatedUserListResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/paginated_user_list.gd"
+}, {
+"base": "EditorPlugin",
+"class": "EzchaPlugin",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/plugin.gd"
+}, {
+"base": "Reference",
+"class": "EzchaRequestBuilder",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/class/request_builder.gd"
+}, {
+"base": "Reference",
+"class": "EzchaResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/class/response.gd"
+}, {
+"base": "Reference",
+"class": "EzchaServerPlayer",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/class/server_player.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaSessionValidationResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/session_validation.gd"
+}, {
+"base": "EzchaAPI",
+"class": "EzchaSessionsAPI",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/api/sessions.gd"
+}, {
+"base": "Node",
+"class": "EzchaSingleton",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/singleton.gd"
+}, {
+"base": "EzchaAPI",
+"class": "EzchaTrophiesAPI",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/api/trophies.gd"
+}, {
+"base": "EzchaDto",
+"class": "EzchaTrophyMeta",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/dto/trophy_meta.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaTrophyMetaListResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/trophy_meta_list.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaTrophyQueuedResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/trophy_queued.gd"
+}, {
+"base": "EzchaDto",
+"class": "EzchaUser",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/dto/user.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaUserListResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/user_list.gd"
+}, {
+"base": "EzchaResponse",
+"class": "EzchaUserResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/user.gd"
+}, {
+"base": "EzchaAPI",
+"class": "EzchaUsersAPI",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/api/users.gd"
+}, {
+"base": "Object",
+"class": "EzchaWebBridge",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/web_bridge.gd"
+}, {
+"base": "ImageTexture",
+"class": "EzchaWebTexture",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/class/web_texture.gd"
+} ]
+_global_script_class_icons={
+"EzchaAPI": "",
+"EzchaClient": "",
+"EzchaDto": "",
+"EzchaGame": "",
+"EzchaGameListResponse": "",
+"EzchaGameResponse": "",
+"EzchaGamesAPI": "",
+"EzchaLeaderboard": "",
+"EzchaLeaderboardEntry": "",
+"EzchaLeaderboardListResponse": "",
+"EzchaLeaderboardQueuedResponse": "",
+"EzchaLeaderboardsAPI": "",
+"EzchaNewsAPI": "",
+"EzchaNewsPost": "",
+"EzchaPaginatedLeaderboardEntryListResponse": "",
+"EzchaPaginatedNewsListResponse": "",
+"EzchaPaginatedResponse": "",
+"EzchaPaginatedUserListResponse": "",
+"EzchaPlugin": "",
+"EzchaRequestBuilder": "",
+"EzchaResponse": "",
+"EzchaServerPlayer": "",
+"EzchaSessionValidationResponse": "",
+"EzchaSessionsAPI": "",
+"EzchaSingleton": "",
+"EzchaTrophiesAPI": "",
+"EzchaTrophyMeta": "",
+"EzchaTrophyMetaListResponse": "",
+"EzchaTrophyQueuedResponse": "",
+"EzchaUser": "",
+"EzchaUserListResponse": "",
+"EzchaUserResponse": "",
+"EzchaUsersAPI": "",
+"EzchaWebBridge": "",
+"EzchaWebTexture": ""
+}
+
+[application]
+
+config/name="Ezcha Network"
+config/icon="res://icon.png"
+
+[autoload]
+
+Ezcha="*res://addons/ezcha_network/lib/singleton.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/ezcha_network/plugin.cfg" )
+
+[ezcha_network]
+
+config/global/game_id="3pzrqgzqjj55_MF6iPqc1"
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[physics]
+
+common/enable_pause_aware_picking=true
