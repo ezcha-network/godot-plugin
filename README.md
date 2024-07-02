@@ -6,7 +6,7 @@ This repository contains the official Ezcha Network plugin for Godot. It allows 
 integrate the [Ezcha Network](https://ezcha.net/) platform and its features into your games.
 This includes authentication, trophies, leaderboards and more.
 
-![Browsing through the "Ezcha" menu that the plugin adds](https://gist.github.com/assets/15235673/cb3ed423-be70-4b8a-aee0-0f8aa30808c7)
+![Browsing through the "Ezcha" menu that the plugin adds](https://github.com/ezcha-network/godot-plugin/assets/15235673/ce7b24e4-d997-4089-a0c8-1c081145a517)
 
 ## Documentation
 
