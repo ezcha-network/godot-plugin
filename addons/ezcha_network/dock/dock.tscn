@@ -1,0 +1,420 @@
+[gd_scene load_steps=13 format=3 uid="uid://dsfst33r8mkng"]
+
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/dock.gd" id="1_65coq"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_main.gd" id="2_at8ru"]
+[ext_resource type="PackedScene" uid="uid://c5u0v62yxkne3" path="res://addons/ezcha_network/dock/components/label_header.tscn" id="3_xtq8e"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_configuration.gd" id="4_xyh74"]
+[ext_resource type="PackedScene" uid="uid://cll3c37a0bybq" path="res://addons/ezcha_network/dock/components/label_category.tscn" id="5_4v23n"]
+[ext_resource type="Texture2D" uid="uid://71ggon0dbiyo" path="res://addons/ezcha_network/dock/resources/game_banner.tres" id="5_s2yw4"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_trophies.gd" id="5_uasne"]
+[ext_resource type="Texture2D" uid="uid://bogl81i0au0qw" path="res://addons/ezcha_network/dock/resources/trophy_icon.tres" id="6_2x11b"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_information.gd" id="6_iyfnx"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_leaderboards.gd" id="7_vw4mk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mo3fn"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jn6d4"]
+content_margin_left = 0.0
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
+[node name="Ezcha" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -812.0
+offset_bottom = -310.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_65coq")
+
+[node name="Main" type="ScrollContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+script = ExtResource("2_at8ru")
+
+[node name="Contents" type="VBoxContainer" parent="Main"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Game" type="PanelContainer" parent="Main/Contents"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mo3fn")
+
+[node name="List" type="VBoxContainer" parent="Main/Contents/Game"]
+layout_mode = 2
+
+[node name="LabelHeader" parent="Main/Contents/Game/List" instance=ExtResource("3_xtq8e")]
+layout_mode = 2
+text = "Game"
+
+[node name="Info" type="Button" parent="Main/Contents/Game/List"]
+layout_mode = 2
+text = "Information"
+text_overrun_behavior = 3
+
+[node name="Trophies" type="Button" parent="Main/Contents/Game/List"]
+layout_mode = 2
+text = "Trophies"
+text_overrun_behavior = 3
+
+[node name="Leaderboards" type="Button" parent="Main/Contents/Game/List"]
+layout_mode = 2
+text = "Leaderboards"
+text_overrun_behavior = 3
+
+[node name="DevPanel" type="Button" parent="Main/Contents/Game/List"]
+layout_mode = 2
+text = "Developer Panel"
+text_overrun_behavior = 3
+
+[node name="Plugin" type="PanelContainer" parent="Main/Contents"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jn6d4")
+
+[node name="List" type="VBoxContainer" parent="Main/Contents/Plugin"]
+layout_mode = 2
+
+[node name="LabelHeader" parent="Main/Contents/Plugin/List" instance=ExtResource("3_xtq8e")]
+layout_mode = 2
+text = "Plugin"
+
+[node name="Configuration" type="Button" parent="Main/Contents/Plugin/List"]
+layout_mode = 2
+text = "Configuration"
+text_overrun_behavior = 3
+
+[node name="Docs" type="Button" parent="Main/Contents/Plugin/List"]
+layout_mode = 2
+text = "Documentation"
+text_overrun_behavior = 3
+
+[node name="Repo" type="Button" parent="Main/Contents/Plugin/List"]
+layout_mode = 2
+text = "Repository"
+text_overrun_behavior = 3
+
+[node name="Help" type="PanelContainer" parent="Main/Contents"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jn6d4")
+
+[node name="List" type="VBoxContainer" parent="Main/Contents/Help"]
+layout_mode = 2
+
+[node name="LabelHeader" parent="Main/Contents/Help/List" instance=ExtResource("3_xtq8e")]
+layout_mode = 2
+text = "Help"
+
+[node name="Forums" type="Button" parent="Main/Contents/Help/List"]
+layout_mode = 2
+text = "Developer Forums"
+text_overrun_behavior = 3
+
+[node name="Information" type="ScrollContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+script = ExtResource("6_iyfnx")
+
+[node name="Contents" type="VBoxContainer" parent="Information"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Banner" type="TextureRect" parent="Information/Contents"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+texture = ExtResource("5_s2yw4")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="InfoGrid" type="GridContainer" parent="Information/Contents"]
+layout_mode = 2
+columns = 2
+
+[node name="IdLabel" type="Label" parent="Information/Contents/InfoGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ID"
+text_overrun_behavior = 3
+
+[node name="IdValue" type="Label" parent="Information/Contents/InfoGrid"]
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
+
+[node name="NameLabel" type="Label" parent="Information/Contents/InfoGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+text_overrun_behavior = 3
+
+[node name="NameValue" type="Label" parent="Information/Contents/InfoGrid"]
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
+
+[node name="VersionLabel" type="Label" parent="Information/Contents/InfoGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Version"
+text_overrun_behavior = 3
+
+[node name="VersionValue" type="Label" parent="Information/Contents/InfoGrid"]
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
+
+[node name="Back" type="Button" parent="Information/Contents"]
+layout_mode = 2
+text = "Back"
+
+[node name="Trophies" type="ScrollContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+script = ExtResource("5_uasne")
+
+[node name="Contents" type="VBoxContainer" parent="Trophies"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LabelHeader" parent="Trophies/Contents" instance=ExtResource("3_xtq8e")]
+layout_mode = 2
+text = "Trophies"
+
+[node name="List" type="ItemList" parent="Trophies/Contents"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InfoSplit" type="HBoxContainer" parent="Trophies/Contents"]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="Trophies/Contents/InfoSplit"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("6_2x11b")
+expand_mode = 1
+
+[node name="Description" type="Label" parent="Trophies/Contents/InfoSplit"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Description"
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 3
+
+[node name="Actions" type="HBoxContainer" parent="Trophies/Contents"]
+layout_mode = 2
+
+[node name="Copy" type="Button" parent="Trophies/Contents/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Copy ID"
+
+[node name="Refresh" type="Button" parent="Trophies/Contents/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Refresh"
+
+[node name="Back" type="Button" parent="Trophies/Contents/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Back"
+
+[node name="Leaderboards" type="ScrollContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+script = ExtResource("7_vw4mk")
+
+[node name="Contents" type="VBoxContainer" parent="Leaderboards"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LabelHeader" parent="Leaderboards/Contents" instance=ExtResource("3_xtq8e")]
+layout_mode = 2
+text = "Leaderboards"
+
+[node name="List" type="ItemList" parent="Leaderboards/Contents"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Actions" type="HBoxContainer" parent="Leaderboards/Contents"]
+layout_mode = 2
+
+[node name="Copy" type="Button" parent="Leaderboards/Contents/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Copy ID"
+
+[node name="Refresh" type="Button" parent="Leaderboards/Contents/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Refresh"
+
+[node name="Back" type="Button" parent="Leaderboards/Contents/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Back"
+
+[node name="Configuration" type="ScrollContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+script = ExtResource("4_xyh74")
+
+[node name="Contents" type="VBoxContainer" parent="Configuration"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelHeader" parent="Configuration/Contents" instance=ExtResource("3_xtq8e")]
+layout_mode = 2
+text = "Configuration"
+
+[node name="GlobalLabel" parent="Configuration/Contents" instance=ExtResource("5_4v23n")]
+layout_mode = 2
+text = "Global"
+
+[node name="Global" type="GridContainer" parent="Configuration/Contents"]
+layout_mode = 2
+columns = 2
+
+[node name="GameIdLabel" type="Label" parent="Configuration/Contents/Global"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Game ID*"
+text_overrun_behavior = 3
+
+[node name="GameIdEdit" type="LineEdit" parent="Configuration/Contents/Global"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ClientLabel" parent="Configuration/Contents" instance=ExtResource("5_4v23n")]
+layout_mode = 2
+text = "Client"
+
+[node name="Client" type="GridContainer" parent="Configuration/Contents"]
+layout_mode = 2
+columns = 2
+
+[node name="SigningKeyLabel" type="Label" parent="Configuration/Contents/Client"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Signing Key"
+text_overrun_behavior = 3
+
+[node name="SigningKeyEdit" type="LineEdit" parent="Configuration/Contents/Client"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ServerLabel" parent="Configuration/Contents" instance=ExtResource("5_4v23n")]
+layout_mode = 2
+text = "Server"
+
+[node name="Server" type="GridContainer" parent="Configuration/Contents"]
+layout_mode = 2
+columns = 2
+
+[node name="ApiKeyLabel" type="Label" parent="Configuration/Contents/Server"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "API Key"
+text_overrun_behavior = 3
+
+[node name="ApiKeyEdit" type="LineEdit" parent="Configuration/Contents/Server"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DebugLabel" parent="Configuration/Contents" instance=ExtResource("5_4v23n")]
+layout_mode = 2
+text = "Debug"
+
+[node name="Debug" type="GridContainer" parent="Configuration/Contents"]
+layout_mode = 2
+columns = 2
+
+[node name="SessionOverrideLabel" type="Label" parent="Configuration/Contents/Debug"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Session Override"
+text_overrun_behavior = 3
+
+[node name="SessionOverrideEdit" type="LineEdit" parent="Configuration/Contents/Debug"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Done" type="Button" parent="Configuration/Contents"]
+layout_mode = 2
+text = "Done"
+
+[node name="ErrorLabel" type="Label" parent="Configuration/Contents"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Main/Contents/Game/List/Info" to="Main" method="_on_info_pressed"]
+[connection signal="pressed" from="Main/Contents/Game/List/Trophies" to="Main" method="_on_trophies_pressed"]
+[connection signal="pressed" from="Main/Contents/Game/List/Leaderboards" to="Main" method="_on_leaderboards_pressed"]
+[connection signal="pressed" from="Main/Contents/Game/List/DevPanel" to="Main" method="_on_dev_panel_pressed"]
+[connection signal="pressed" from="Main/Contents/Plugin/List/Configuration" to="Main" method="_on_configuration_pressed"]
+[connection signal="pressed" from="Main/Contents/Plugin/List/Docs" to="Main" method="_on_docs_pressed"]
+[connection signal="pressed" from="Main/Contents/Plugin/List/Repo" to="Main" method="_on_repo_pressed"]
+[connection signal="pressed" from="Main/Contents/Help/List/Forums" to="Main" method="_on_forums_pressed"]
+[connection signal="pressed" from="Information/Contents/Back" to="Information" method="_on_back_pressed"]
+[connection signal="item_selected" from="Trophies/Contents/List" to="Trophies" method="_on_list_item_selected"]
+[connection signal="pressed" from="Trophies/Contents/Actions/Copy" to="Trophies" method="_on_copy_pressed"]
+[connection signal="pressed" from="Trophies/Contents/Actions/Refresh" to="Trophies" method="_on_refresh_pressed"]
+[connection signal="pressed" from="Trophies/Contents/Actions/Back" to="Trophies" method="_on_back_pressed"]
+[connection signal="item_selected" from="Leaderboards/Contents/List" to="Leaderboards" method="_on_list_item_selected"]
+[connection signal="pressed" from="Leaderboards/Contents/Actions/Copy" to="Leaderboards" method="_on_copy_pressed"]
+[connection signal="pressed" from="Leaderboards/Contents/Actions/Refresh" to="Leaderboards" method="_on_refresh_pressed"]
+[connection signal="pressed" from="Leaderboards/Contents/Actions/Back" to="Leaderboards" method="_on_back_pressed"]
+[connection signal="text_changed" from="Configuration/Contents/Global/GameIdEdit" to="Configuration" method="_on_game_id_edit_text_changed"]
+[connection signal="text_changed" from="Configuration/Contents/Client/SigningKeyEdit" to="Configuration" method="_on_signing_key_edit_text_changed"]
+[connection signal="text_changed" from="Configuration/Contents/Server/ApiKeyEdit" to="Configuration" method="_on_api_key_edit_text_changed"]
+[connection signal="text_changed" from="Configuration/Contents/Debug/SessionOverrideEdit" to="Configuration" method="_on_session_override_edit_text_changed"]
+[connection signal="pressed" from="Configuration/Contents/Done" to="Configuration" method="_on_done_pressed"]

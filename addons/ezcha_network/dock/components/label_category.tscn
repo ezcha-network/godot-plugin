@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cll3c37a0bybq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y234j"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.6, 0.6, 0.6, 0.25098)
+
+[node name="GlobalLabel" type="Label"]
+theme_override_colors/font_color = Color(1, 1, 1, 0.501961)
+theme_override_styles/normal = SubResource("StyleBoxFlat_y234j")
+text_overrun_behavior = 3
