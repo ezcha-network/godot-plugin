@@ -11,7 +11,7 @@ func _on_leaderboards_pressed():
 	dock.show_menu(dock.menu_leaderboards)
 
 func _on_dev_panel_pressed() -> void:
-	OS.shell_open("https://ezcha.net/developer/%s" % [dock.plugin.game.id])
+	OS.shell_open("https://ezcha.net/developer/games/%s" % [dock.plugin.game.id])
 
 func _on_configuration_pressed() -> void:
 	dock.show_menu(dock.menu_configuration)

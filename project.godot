@@ -237,7 +237,7 @@ enabled=PoolStringArray( "res://addons/ezcha_network/plugin.cfg" )
 
 [ezcha_network]
 
-config/global/game_id="3pzrqgzqjj55_MF6iPqc1"
+config/global/game_id=""
 
 [gui]
 
