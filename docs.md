@@ -4,6 +4,7 @@
 * [EzchaClient](#EzchaClient)
 * [EzchaSingleton](#EzchaSingleton)
 * [EzchaWebBridge](#EzchaWebBridge)
+* [EzchaDatastoresAPI](#EzchaDatastoresAPI)
 * [EzchaGamesAPI](#EzchaGamesAPI)
 * [EzchaLeaderboardsAPI](#EzchaLeaderboardsAPI)
 * [EzchaNewsAPI](#EzchaNewsAPI)
@@ -22,6 +23,7 @@
 * [EzchaNewsPost](#EzchaNewsPost)
 * [EzchaTrophyMeta](#EzchaTrophyMeta)
 * [EzchaUser](#EzchaUser)
+* [EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)
 * [EzchaGameResponse](#EzchaGameResponse)
 * [EzchaGameListResponse](#EzchaGameListResponse)
 * [EzchaLeaderboardListResponse](#EzchaLeaderboardListResponse)
@@ -87,6 +89,8 @@ This should be accessed through the "Ezcha" singleton.
 |[bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html)|[has_score](#EzchaClient-method-has_score) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id )
 |[float](https://docs.godotengine.org/en/4.2/classes/class_float.html)|[get_score](#EzchaClient-method-get_score) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.2/classes/class_float.html) defaults_to=0.0 )
 |[bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html)|[update_score](#EzchaClient-method-update_score) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.2/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=EzchaLeaderboardsAPI.UpdateMode.SET )
+|[String](https://docs.godotengine.org/en/4.2/classes/class_string.html)|[get_datastore](#EzchaClient-method-get_datastore) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key )
+|[bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html)|[set_datastore](#EzchaClient-method-set_datastore) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value )
 
 ### Signals
 
@@ -101,6 +105,14 @@ trophy_data will be null if the grant could not be queued. Emitted when a trophy
 **leaderboard_update_completed** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id, [bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) successful )
 
 Emitted when a leaderboard update is queued from the update_score function.
+
+**datastore_value_recieved** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value )
+
+Emitted after a datastore value is requested and recieved
+
+**datastore_value_posted** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) successful )
+
+Emitted after a datastore value update is posted.
 
 ### Property Descriptions
 
@@ -129,7 +141,7 @@ If true the user should have access to any moderation tools.
 <a name="EzchaClient-method-authenticate"></a>
 [bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) **authenticate** ( )
 
-The authentication_completed signal is emitted on completion. (Async) Returns true if authentication was successful. Authenticates and loads the information of the current player if available.
+(Async) Returns true if authentication was successful. The authentication_completed signal is emitted on completion. Authenticates and loads the information of the current player if available.
 
 <a name="EzchaClient-method-is_authenticated"></a>
 [bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) **is_authenticated** ( )
@@ -166,6 +178,16 @@ Returns the currently authenticated player's score on a specific leaderboard.
 
 (Async) Returns true if the score update was queued. The leaderboard_update_completed signal is emitted on completion. The leaderboard must have the "allow clients" option enabled. Updates a leaderboard entry belonging to the currently authenticated player.
 
+<a name="EzchaClient-method-get_datastore"></a>
+[String](https://docs.godotengine.org/en/4.2/classes/class_string.html) **get_datastore** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key )
+
+(Async) Returns a string value. The value will be empty if deleted or not yet set. The datastore_value_recieved signal is emitted when the value is recieved. Get a datastore value belonging to the currently authenticated player.
+
+<a name="EzchaClient-method-set_datastore"></a>
+[bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) **set_datastore** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value )
+
+(Async) Returns true if the value was successfully updated. The datastore_value_posted signal is emitted on completion. Set the value to an empty string to delete the key. Limit of 5 keys per user, limit of 16384 characters per value. Update a datastore value belonging to the currently authenticated player.
+
 <a name="EzchaSingleton"></a>
 ## EzchaSingleton
 
@@ -178,6 +200,7 @@ The class representing the "Ezcha" singleton.
 |Type|Name|Default|
 |-|-|-|
 |[EzchaClient](#EzchaClient)|[client](#EzchaSingleton-property-client)|EzchaClient.new()|
+|[EzchaDatastoresAPI](#EzchaDatastoresAPI)|[datastores](#EzchaSingleton-property-datastores)|EzchaDatastoresAPI.new()|
 |[EzchaGamesAPI](#EzchaGamesAPI)|[games](#EzchaSingleton-property-games)|EzchaGamesAPI.new()|
 |[EzchaLeaderboardsAPI](#EzchaLeaderboardsAPI)|[leaderboards](#EzchaSingleton-property-leaderboards)|EzchaLeaderboardsAPI.new()|
 |[EzchaNewsAPI](#EzchaNewsAPI)|[news](#EzchaSingleton-property-news)|EzchaNewsAPI.new()|
@@ -200,6 +223,11 @@ The class representing the "Ezcha" singleton.
 [EzchaClient](#EzchaClient) **client** = EzchaClient.new()
 
 A helper class to simplify Ezcha Network API integration within game clients.
+
+<a name="EzchaSingleton-property-datastores"></a>
+[EzchaDatastoresAPI](#EzchaDatastoresAPI) **datastores** = EzchaDatastoresAPI.new()
+
+A wrapper for the datastores section of the API.
 
 <a name="EzchaSingleton-property-games"></a>
 [EzchaGamesAPI](#EzchaGamesAPI) **games** = EzchaGamesAPI.new()
@@ -263,6 +291,48 @@ A class for internal use to help manage communication with the Ezcha website.
 ### Description
 
 You should never need to use this directly.
+
+<a name="EzchaDatastoresAPI"></a>
+## EzchaDatastoresAPI
+
+**Inherits:** [EzchaAPI](#EzchaAPI)
+
+A wrapper for the datastores section of the API.
+
+### Description
+
+This should be accessed through the "Ezcha" singleton.
+
+### Methods
+
+|Returns|Name|
+|-|-|
+|[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)|[get_client](#EzchaDatastoresAPI-method-get_client) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) session_token )
+|[EzchaResponse](#EzchaResponse)|[post_client](#EzchaDatastoresAPI-method-post_client) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) session_token )
+|[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)|[get_server](#EzchaDatastoresAPI-method-get_server) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key )
+|[EzchaResponse](#EzchaResponse)|[post_server](#EzchaDatastoresAPI-method-post_server) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value )
+
+### Method Descriptions
+
+<a name="EzchaDatastoresAPI-method-get_client"></a>
+[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse) **get_client** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) session_token )
+
+Requests the value of a client-side datastore from its key.
+
+<a name="EzchaDatastoresAPI-method-post_client"></a>
+[EzchaResponse](#EzchaResponse) **post_client** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) session_token )
+
+Updates the value of a client-side datastore by its key.
+
+<a name="EzchaDatastoresAPI-method-get_server"></a>
+[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse) **get_server** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key )
+
+Requests the value of a server-side datastore for a player from its key.
+
+<a name="EzchaDatastoresAPI-method-post_server"></a>
+[EzchaResponse](#EzchaResponse) **post_server** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value )
+
+Updates the value of a server-side datastore for a player by its key.
 
 <a name="EzchaGamesAPI"></a>
 ## EzchaGamesAPI
@@ -639,6 +709,8 @@ You shouldn't use this client-side or when making a singleplayer game. In those 
 |[bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html)|[has_score](#EzchaServerPlayer-method-has_score) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id )
 |[float](https://docs.godotengine.org/en/4.2/classes/class_float.html)|[get_score](#EzchaServerPlayer-method-get_score) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.2/classes/class_float.html) defaults_to=0.0 )
 |[bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html)|[update_score](#EzchaServerPlayer-method-update_score) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.2/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=EzchaLeaderboardsAPI.UpdateMode.SET )
+|[String](https://docs.godotengine.org/en/4.2/classes/class_string.html)|[get_datastore](#EzchaServerPlayer-method-get_datastore) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key )
+|[bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html)|[set_datastore](#EzchaServerPlayer-method-set_datastore) ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value )
 
 ### Signals
 
@@ -653,6 +725,14 @@ trophy_data will be null if the grant could not be queued. Emitted when a trophy
 **leaderboard_update_completed** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id, [bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) successful )
 
 Emitted when a leaderboard update is queued from the update_score function.
+
+**datastore_value_recieved** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value )
+
+Emitted after a datastore value is requested and recieved
+
+**datastore_value_posted** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) successful )
+
+Emitted after a datastore value update is posted.
 
 ### Property Descriptions
 
@@ -712,6 +792,16 @@ Returns the players's score on a specific leaderboard.
 [bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) **update_score** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.2/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=EzchaLeaderboardsAPI.UpdateMode.SET )
 
 (Async) Returns true if the score update was queued. Updates a leaderboard entry belonging to the player.
+
+<a name="EzchaServerPlayer-method-get_datastore"></a>
+[String](https://docs.godotengine.org/en/4.2/classes/class_string.html) **get_datastore** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key )
+
+(Async) Returns a string value. The value will be empty if deleted or not yet set. The datastore_value_recieved signal is emitted when the value is recieved. Get a datastore value belonging to the currently authenticated player.
+
+<a name="EzchaServerPlayer-method-set_datastore"></a>
+[bool](https://docs.godotengine.org/en/4.2/classes/class_bool.html) **set_datastore** ( [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) value )
+
+(Async) Returns true if the value was successfully updated. The datastore_value_posted signal is emitted on completion. Set the value to an empty string to delete the key. Limit of 5 keys per user, limit of 16384 characters per value. Update a datastore value belonging to the currently authenticated player.
 
 <a name="EzchaWebTexture"></a>
 ## EzchaWebTexture
@@ -1121,6 +1211,26 @@ The URL to view the user's profile.
 [String](https://docs.godotengine.org/en/4.2/classes/class_string.html) **avatar_url** = ""
 
 This will be a png file. The URL for the user's avatar/profile picture.
+
+<a name="EzchaDatastoreValueResponse"></a>
+## EzchaDatastoreValueResponse
+
+**Inherits:** [EzchaResponse](#EzchaResponse)
+
+A paginated response from the API.
+
+### Properties
+
+|Type|Name|Default|
+|-|-|-|
+|[String](https://docs.godotengine.org/en/4.2/classes/class_string.html)|[value](#EzchaDatastoreValueResponse-property-value)|""|
+
+### Property Descriptions
+
+<a name="EzchaDatastoreValueResponse-property-value"></a>
+[String](https://docs.godotengine.org/en/4.2/classes/class_string.html) **value** = ""
+
+The value of the requested key. Returns an empty string if deleted or not set.
 
 <a name="EzchaGameResponse"></a>
 ## EzchaGameResponse

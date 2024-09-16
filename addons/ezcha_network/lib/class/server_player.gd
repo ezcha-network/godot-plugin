@@ -15,6 +15,12 @@ signal trophy_grant_completed(trophy_id: String, successful: bool, trophy_data: 
 ## Emitted when a leaderboard update is queued from the update_score function.
 signal leaderboard_update_completed(leaderboard_id: String, successful: bool)
 
+## Emitted after a datastore value is requested and recieved
+signal datastore_value_recieved(key: String, value: String)
+
+## Emitted after a datastore value update is posted.
+signal datastore_value_posted(key: String, successful: bool)
+
 ## The user data of the player.
 ## Only available after authenticating.
 var user: EzchaUser = null
@@ -106,4 +112,32 @@ func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsA
 		leaderboard_update_completed.emit(leaderboard_id, false)
 		return false
 	leaderboard_update_completed.emit(leaderboard_id, true)
+	return true
+
+## Get a datastore value belonging to the currently authenticated player.
+## The datastore_value_recieved signal is emitted when the value is recieved.
+## (Async) Returns a string value. The value will be empty if deleted or not yet set.
+func get_datastore(key: String) -> String:
+	if (!_authenticated): return ""
+	var response: EzchaDatastoreValueResponse = _ezcha.datastores.get_server(user.id, key)
+	await response.recieved
+	if (!response.is_successful()):
+		datastore_value_recieved.emit(key, "")
+		return ""
+	datastore_value_recieved.emit(key, response.value)
+	return response.value
+
+## Update a datastore value belonging to the currently authenticated player.
+## Limit of 5 keys per user, limit of 16384 characters per value.
+## Set the value to an empty string to delete the key.
+## The datastore_value_posted signal is emitted on completion.
+## (Async) Returns true if the value was successfully updated.
+func set_datastore(key: String, value: String) -> bool:
+	if (!_authenticated): false
+	var response: EzchaResponse = _ezcha.datastores.post_server(user.id, key, value)
+	await response.recieved
+	if (!response.is_successful()):
+		datastore_value_posted.emit(key, false)
+		return false
+	datastore_value_posted.emit(key, true)
 	return true

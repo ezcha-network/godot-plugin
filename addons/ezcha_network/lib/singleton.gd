@@ -9,6 +9,9 @@ const _HOSTNAME_API: String = "https://api.ezcha.net"
 ## A helper class to simplify Ezcha Network API integration within game clients.
 var client: EzchaClient = EzchaClient.new()
 
+## A wrapper for the datastores section of the API.
+var datastores: EzchaDatastoresAPI = EzchaDatastoresAPI.new()
+
 ## A wrapper for the games section of the API.
 var games: EzchaGamesAPI = EzchaGamesAPI.new()
 
@@ -29,6 +32,7 @@ var users: EzchaUsersAPI = EzchaUsersAPI.new()
 
 func _init():
 	client._ezcha = self
+	datastores._ezcha = self
 	games._ezcha = self
 	leaderboards._ezcha = self
 	news._ezcha = self
