@@ -19,6 +19,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/ezcha_network/lib/client.gd"
 }, {
+"base": "EzchaResponse",
+"class": "EzchaDatastoreValueResponse",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/responses/datastore_value.gd"
+}, {
+"base": "EzchaAPI",
+"class": "EzchaDatastoresAPI",
+"language": "GDScript",
+"path": "res://addons/ezcha_network/lib/api/datastores.gd"
+}, {
 "base": "Reference",
 "class": "EzchaDto",
 "language": "GDScript",
@@ -187,6 +197,8 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "EzchaAPI": "",
 "EzchaClient": "",
+"EzchaDatastoreValueResponse": "",
+"EzchaDatastoresAPI": "",
 "EzchaDto": "",
 "EzchaGame": "",
 "EzchaGameListResponse": "",
@@ -234,10 +246,6 @@ Ezcha="*res://addons/ezcha_network/lib/singleton.gd"
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/ezcha_network/plugin.cfg" )
-
-[ezcha_network]
-
-config/global/game_id=""
 
 [gui]
 

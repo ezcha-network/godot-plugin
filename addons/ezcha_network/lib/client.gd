@@ -17,6 +17,14 @@ signal trophy_grant_completed
 ## (leaderboard_id: String, successful: bool)
 signal leaderboard_update_completed
 
+## Emitted after a datastore value is requested and recieved
+## (key: String, value: String)
+signal datastore_value_recieved
+
+## Emitted after a datastore value update is posted.
+## (key: String, successful: bool)
+signal datastore_value_posted
+
 ## The user who is currently playing the game.
 ## Only available after authenticating.
 var user: EzchaUser = null
@@ -39,6 +47,13 @@ var _web_bridge: EzchaWebBridge = EzchaWebBridge.new()
 var _authenticated: bool = false
 var _session_token: String = ""
 
+func _validate_session(token):
+	if (token == null):
+		emit_signal("authentication_completed", false)
+		return false
+	var response: EzchaSessionValidationResponse = _ezcha.sessions.post_validation(token, _ezcha.get_game_id())
+	response.connect("recieved", self, "_on_validation_response", [token], CONNECT_ONESHOT)
+
 func _on_validation_response(response: EzchaSessionValidationResponse, token: String) -> void:
 	if (!response.is_successful()):
 		emit_signal("authentication_completed", false)
@@ -52,13 +67,6 @@ func _on_validation_response(response: EzchaSessionValidationResponse, token: St
 	leaderboard_entries = response.leaderboard_entries
 	moderation_tools = response.moderation_tools
 	emit_signal("authentication_completed", true)
-
-func _validate_session(token):
-	if (token == null):
-		emit_signal("authentication_completed", false)
-		return false
-	var response: EzchaSessionValidationResponse = _ezcha.sessions.post_validation(token, _ezcha.get_game_id())
-	response.connect("recieved", self, "_on_validation_response", [token], CONNECT_ONESHOT)
 
 ## Authenticates and loads the information of the current player if available.
 ## The authentication_completed signal is emitted on completion.
@@ -89,16 +97,6 @@ func has_trophy(trophy_id: String, include_pending: bool = true) -> bool:
 	if (include_pending && _pending_trophy_ids.has(trophy_id)): return true
 	return _obtained_trophy_ids.has(trophy_id)
 
-func _on_trophy_queued_response(response: EzchaTrophyQueuedResponse, trophy_id: String) -> void:
-	var idx: int = _pending_trophy_ids.find(trophy_id)
-	if (idx > -1): _pending_trophy_ids.remove(idx)
-	if (!response.is_successful() || !response.queued):
-		emit_signal("trophy_grant_completed", trophy_id, false, null)
-		return
-	trophies_obtained.append(response.trophy)
-	_obtained_trophy_ids.append(response.trophy.id)
-	emit_signal("trophy_grant_completed", trophy_id, true, response.trophy)
-
 ## Grants a trophy to the currently authenticated player.
 ## The trophy must have the "allow clients" option enabled.
 ## The trophy_grant_completed signal is emitted on completion.
@@ -112,6 +110,16 @@ func grant_trophy(trophy_id: String) -> EzchaTrophyQueuedResponse:
 	response.connect("recieved", self, "_on_trophy_queued_response", [trophy_id], CONNECT_ONESHOT)
 	return response
 
+func _on_trophy_queued_response(response: EzchaTrophyQueuedResponse, trophy_id: String) -> void:
+	var idx: int = _pending_trophy_ids.find(trophy_id)
+	if (idx > -1): _pending_trophy_ids.remove(idx)
+	if (!response.is_successful() || !response.queued):
+		emit_signal("trophy_grant_completed", trophy_id, false, null)
+		return
+	trophies_obtained.append(response.trophy)
+	_obtained_trophy_ids.append(response.trophy.id)
+	emit_signal("trophy_grant_completed", trophy_id, true, response.trophy)
+
 ## Checks if the currently authenticated player has a score on a leaderboard.
 func has_score(leaderboard_id: String) -> bool:
 	for entry in leaderboard_entries:
@@ -124,12 +132,6 @@ func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
 		if (entry.leaderboard.id == leaderboard_id): return entry.score
 	return defaults_to
 
-func _on_leaderboard_queued_response(response: EzchaLeaderboardQueuedResponse, leaderboard_id: String) -> void:
-	if (!response.is_successful() || !response.queued):
-		emit_signal("leaderboard_update_completed", leaderboard_id, false)
-		return
-	emit_signal("leaderboard_update_completed", leaderboard_id, true)
-
 ## Updates a leaderboard entry belonging to the currently authenticated player.
 ## The leaderboard must have the "allow clients" option enabled.
 ## The leaderboard_update_completed signal is emitted on completion.
@@ -141,4 +143,40 @@ func update_score(leaderboard_id: String, score: float, mode: int = EzchaLeaderb
 	var response: EzchaLeaderboardQueuedResponse = _ezcha.leaderboards.post_entry_client(leaderboard_id, _session_token, score, mode)
 	response.connect("recieved", self, "_on_leaderboard_queued_response", [leaderboard_id], CONNECT_ONESHOT)
 	return response
-	
+
+func _on_leaderboard_queued_response(response: EzchaLeaderboardQueuedResponse, leaderboard_id: String) -> void:
+	if (!response.is_successful() || !response.queued):
+		emit_signal("leaderboard_update_completed", leaderboard_id, false)
+		return
+	emit_signal("leaderboard_update_completed", leaderboard_id, true)
+
+## Get a datastore value belonging to the currently authenticated player.
+## The datastore_value_recieved signal is emitted when the value is recieved.
+## Returns null if the player is not yet authenticated.
+## Returns EzchaDatastoreValueResponse otherwise.
+func get_datastore(key: String) -> EzchaDatastoreValueResponse:
+	if (!_authenticated): return null
+	var response: EzchaDatastoreValueResponse = _ezcha.datastores.get_client(key, _session_token)
+	response.connect("recieved", self, "_on_datastore_get_response", [key], CONNECT_ONESHOT)
+	return response
+
+func _on_datastore_get_response(response: EzchaDatastoreValueResponse, key: String) -> void:
+	if (!response.is_successful()):
+		emit_signal("datastore_value_recieved", key, "")
+		return
+	emit_signal("datastore_value_recieved", key, response.value)
+
+## Update a datastore value belonging to the currently authenticated player.
+## Limit of 5 keys per user, limit of 16384 characters per value.
+## Set the value to an empty string to delete the key.
+## The datastore_value_posted signal is emitted on completion.
+## Returns null if the player is not yet authenticated.
+## Returns EzchaResponse otherwise.
+func set_datastore(key: String, value: String) -> EzchaResponse:
+	if (!_authenticated): null
+	var response: EzchaResponse = _ezcha.datastores.post_client(key, value, _session_token)
+	response.connect("recieved", self, "_on_datastore_set_response", [key], CONNECT_ONESHOT)
+	return response
+
+func _on_datastore_set_response(response: EzchaResponse, key: String) -> void:
+	emit_signal("datastore_value_posted", key, response.is_successful())
