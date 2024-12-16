@@ -28,7 +28,7 @@ func render_list() -> void:
 
 func refresh_trophies() -> void:
 	reset()
-	var resp: EzchaTrophyMetaListResponse = _ezcha.games.get_trophies(dock.plugin.game.id)
+	var resp: EzchaTrophyMetaListResponse = _ezcha.games.get_trophies(dock.plugin.game.id, _ezcha.get_session_override())
 	await resp.recieved
 	if (!resp.is_successful()): return
 	dock.plugin.trophies = resp.trophies

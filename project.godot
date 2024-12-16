@@ -11,16 +11,8 @@ config_version=5
 [application]
 
 config/name="Ezcha Network"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.png"
-
-[autoload]
-
-Ezcha="*res://addons/ezcha_network/lib/singleton.gd"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/ezcha_network/plugin.cfg")
 
 [rendering]
 

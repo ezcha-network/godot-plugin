@@ -23,14 +23,14 @@ func render_list() -> void:
 
 func refresh_leaderboards() -> void:
 	reset()
-	var resp: EzchaLeaderboardListResponse = _ezcha.games.get_leaderboards(dock.plugin.game.id)
+	var resp: EzchaLeaderboardListResponse = _ezcha.games.get_leaderboards(dock.plugin.game.id, _ezcha.get_session_override())
 	await resp.recieved
 	if (!resp.is_successful()): return
 	dock.plugin.leaderboards = resp.leaderboards
 	render_list()
 
 func _on_list_item_selected(index: int) -> void:
-	var trophy: EzchaTrophyMeta = dock.plugin.trophies[index]
+	var trophy: EzchaLeaderboard = dock.plugin.leaderboards[index]
 	copy_btn.disabled = false
 
 func _on_copy_pressed() -> void:

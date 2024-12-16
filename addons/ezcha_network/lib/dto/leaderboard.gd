@@ -7,6 +7,9 @@ var id: String = ""
 ## The display name of the leaderboard.
 var name: String = ""
 
+## Indicates if the leaderboard is hidden from public view.
+var unlisted: bool = false
+
 ## The sort mode of the leaderboard. ("asc" or "desc")
 var sorting: String = ""
 

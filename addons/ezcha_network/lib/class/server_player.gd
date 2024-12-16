@@ -37,14 +37,15 @@ var moderation_tools: bool = false
 var _ezcha: Node = null
 var _obtained_trophy_ids: PackedStringArray = PackedStringArray()
 var _pending_trophy_ids: PackedStringArray = PackedStringArray()
-var _web_bridge: EzchaWebBridge = EzchaWebBridge.new()
 var _authenticated: bool = false
 
-func _init():
+func _init() -> void:
 	_ezcha = Engine.get_main_loop().root.get_node("Ezcha")
 
 ## Authenticates a session token and loads player information.
+##
 ## (Async) Returns true if authentication was successful.
+##
 ## The authentication_completed signal is emitted on completion.
 func authenticate(session_token: String) -> bool:
 	if (_authenticated): return true
@@ -73,6 +74,7 @@ func has_trophy(trophy_id: String, include_pending: bool = true) -> bool:
 	return _obtained_trophy_ids.has(trophy_id)
 
 ## Grants a trophy to the currently authenticated user.
+##
 ## (Async) Returns true if the trophy grant was queued.
 func grant_trophy(trophy_id: String) -> bool:
 	if (!_authenticated): return false
@@ -103,6 +105,7 @@ func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
 	return defaults_to
 
 ## Updates a leaderboard entry belonging to the player.
+##
 ## (Async) Returns true if the score update was queued.
 func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsAPI.UpdateMode = EzchaLeaderboardsAPI.UpdateMode.SET) -> bool:
 	if (!_authenticated): return false
@@ -116,6 +119,7 @@ func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsA
 
 ## Get a datastore value belonging to the currently authenticated player.
 ## The datastore_value_recieved signal is emitted when the value is recieved.
+##
 ## (Async) Returns a string value. The value will be empty if deleted or not yet set.
 func get_datastore(key: String) -> String:
 	if (!_authenticated): return ""
@@ -131,6 +135,7 @@ func get_datastore(key: String) -> String:
 ## Limit of 5 keys per user, limit of 16384 characters per value.
 ## Set the value to an empty string to delete the key.
 ## The datastore_value_posted signal is emitted on completion.
+##
 ## (Async) Returns true if the value was successfully updated.
 func set_datastore(key: String, value: String) -> bool:
 	if (!_authenticated): false

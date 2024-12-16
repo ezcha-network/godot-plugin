@@ -1,15 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://dsfst33r8mkng"]
+[gd_scene load_steps=13 format=3 uid="uid://cwhvgs0v53tx4"]
 
-[ext_resource type="Script" path="res://addons/ezcha_network/dock/dock.gd" id="1_65coq"]
-[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_main.gd" id="2_at8ru"]
-[ext_resource type="PackedScene" uid="uid://c5u0v62yxkne3" path="res://addons/ezcha_network/dock/components/label_header.tscn" id="3_xtq8e"]
-[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_configuration.gd" id="4_xyh74"]
-[ext_resource type="PackedScene" uid="uid://cll3c37a0bybq" path="res://addons/ezcha_network/dock/components/label_category.tscn" id="5_4v23n"]
-[ext_resource type="Texture2D" uid="uid://71ggon0dbiyo" path="res://addons/ezcha_network/dock/resources/game_banner.tres" id="5_s2yw4"]
-[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_trophies.gd" id="5_uasne"]
-[ext_resource type="Texture2D" uid="uid://bogl81i0au0qw" path="res://addons/ezcha_network/dock/resources/trophy_icon.tres" id="6_2x11b"]
-[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_information.gd" id="6_iyfnx"]
-[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_leaderboards.gd" id="7_vw4mk"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/dock.gd" id="1_v242n"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_main.gd" id="2_kc2sx"]
+[ext_resource type="PackedScene" uid="uid://c5u0v62yxkne3" path="res://addons/ezcha_network/dock/components/label_header.tscn" id="3_xmfk7"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_information.gd" id="4_k5lf1"]
+[ext_resource type="Texture2D" uid="uid://71ggon0dbiyo" path="res://addons/ezcha_network/dock/resources/game_banner.tres" id="5_edus7"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_trophies.gd" id="6_dsg6q"]
+[ext_resource type="Texture2D" uid="uid://bogl81i0au0qw" path="res://addons/ezcha_network/dock/resources/trophy_icon.tres" id="7_adxmr"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_leaderboards.gd" id="8_3h55y"]
+[ext_resource type="Script" path="res://addons/ezcha_network/dock/menu_configuration.gd" id="9_frqre"]
+[ext_resource type="PackedScene" uid="uid://cll3c37a0bybq" path="res://addons/ezcha_network/dock/components/label_category.tscn" id="10_a8s4i"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mo3fn"]
 content_margin_left = 0.0
@@ -34,7 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource("1_65coq")
+script = ExtResource("1_v242n")
 
 [node name="Main" type="ScrollContainer" parent="."]
 visible = false
@@ -45,7 +45,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("2_at8ru")
+script = ExtResource("2_kc2sx")
 
 [node name="Contents" type="VBoxContainer" parent="Main"]
 layout_mode = 2
@@ -58,7 +58,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_mo3fn")
 [node name="List" type="VBoxContainer" parent="Main/Contents/Game"]
 layout_mode = 2
 
-[node name="LabelHeader" parent="Main/Contents/Game/List" instance=ExtResource("3_xtq8e")]
+[node name="LabelHeader" parent="Main/Contents/Game/List" instance=ExtResource("3_xmfk7")]
 layout_mode = 2
 text = "Game"
 
@@ -89,7 +89,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_jn6d4")
 [node name="List" type="VBoxContainer" parent="Main/Contents/Plugin"]
 layout_mode = 2
 
-[node name="LabelHeader" parent="Main/Contents/Plugin/List" instance=ExtResource("3_xtq8e")]
+[node name="LabelHeader" parent="Main/Contents/Plugin/List" instance=ExtResource("3_xmfk7")]
 layout_mode = 2
 text = "Plugin"
 
@@ -115,7 +115,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_jn6d4")
 [node name="List" type="VBoxContainer" parent="Main/Contents/Help"]
 layout_mode = 2
 
-[node name="LabelHeader" parent="Main/Contents/Help/List" instance=ExtResource("3_xtq8e")]
+[node name="LabelHeader" parent="Main/Contents/Help/List" instance=ExtResource("3_xmfk7")]
 layout_mode = 2
 text = "Help"
 
@@ -133,7 +133,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("6_iyfnx")
+script = ExtResource("4_k5lf1")
 
 [node name="Contents" type="VBoxContainer" parent="Information"]
 layout_mode = 2
@@ -142,7 +142,7 @@ size_flags_horizontal = 3
 [node name="Banner" type="TextureRect" parent="Information/Contents"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-texture = ExtResource("5_s2yw4")
+texture = ExtResource("5_edus7")
 expand_mode = 1
 stretch_mode = 6
 
@@ -199,14 +199,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("5_uasne")
+script = ExtResource("6_dsg6q")
 
 [node name="Contents" type="VBoxContainer" parent="Trophies"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="LabelHeader" parent="Trophies/Contents" instance=ExtResource("3_xtq8e")]
+[node name="LabelHeader" parent="Trophies/Contents" instance=ExtResource("3_xmfk7")]
 layout_mode = 2
 text = "Trophies"
 
@@ -220,7 +220,7 @@ layout_mode = 2
 [node name="Icon" type="TextureRect" parent="Trophies/Contents/InfoSplit"]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
-texture = ExtResource("6_2x11b")
+texture = ExtResource("7_adxmr")
 expand_mode = 1
 
 [node name="Description" type="Label" parent="Trophies/Contents/InfoSplit"]
@@ -259,14 +259,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("7_vw4mk")
+script = ExtResource("8_3h55y")
 
 [node name="Contents" type="VBoxContainer" parent="Leaderboards"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="LabelHeader" parent="Leaderboards/Contents" instance=ExtResource("3_xtq8e")]
+[node name="LabelHeader" parent="Leaderboards/Contents" instance=ExtResource("3_xmfk7")]
 layout_mode = 2
 text = "Leaderboards"
 
@@ -301,17 +301,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("4_xyh74")
+script = ExtResource("9_frqre")
 
 [node name="Contents" type="VBoxContainer" parent="Configuration"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LabelHeader" parent="Configuration/Contents" instance=ExtResource("3_xtq8e")]
+[node name="LabelHeader" parent="Configuration/Contents" instance=ExtResource("3_xmfk7")]
 layout_mode = 2
 text = "Configuration"
 
-[node name="GlobalLabel" parent="Configuration/Contents" instance=ExtResource("5_4v23n")]
+[node name="GlobalLabel" parent="Configuration/Contents" instance=ExtResource("10_a8s4i")]
 layout_mode = 2
 text = "Global"
 
@@ -322,6 +322,7 @@ columns = 2
 [node name="GameIdLabel" type="Label" parent="Configuration/Contents/Global"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Game ID"
 text = "Game ID*"
 text_overrun_behavior = 3
 
@@ -329,7 +330,7 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ClientLabel" parent="Configuration/Contents" instance=ExtResource("5_4v23n")]
+[node name="ClientLabel" parent="Configuration/Contents" instance=ExtResource("10_a8s4i")]
 layout_mode = 2
 text = "Client"
 
@@ -340,6 +341,7 @@ columns = 2
 [node name="SigningKeyLabel" type="Label" parent="Configuration/Contents/Client"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Signing Key"
 text = "Signing Key"
 text_overrun_behavior = 3
 
@@ -347,7 +349,7 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ServerLabel" parent="Configuration/Contents" instance=ExtResource("5_4v23n")]
+[node name="ServerLabel" parent="Configuration/Contents" instance=ExtResource("10_a8s4i")]
 layout_mode = 2
 text = "Server"
 
@@ -358,6 +360,7 @@ columns = 2
 [node name="ApiKeyLabel" type="Label" parent="Configuration/Contents/Server"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "API Key"
 text = "API Key"
 text_overrun_behavior = 3
 
@@ -365,7 +368,7 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DebugLabel" parent="Configuration/Contents" instance=ExtResource("5_4v23n")]
+[node name="DebugLabel" parent="Configuration/Contents" instance=ExtResource("10_a8s4i")]
 layout_mode = 2
 text = "Debug"
 
@@ -376,12 +379,24 @@ columns = 2
 [node name="SessionOverrideLabel" type="Label" parent="Configuration/Contents/Debug"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Session Override"
 text = "Session Override"
 text_overrun_behavior = 3
 
 [node name="SessionOverrideEdit" type="LineEdit" parent="Configuration/Contents/Debug"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="PrintRequestErrorsLabel" type="Label" parent="Configuration/Contents/Debug"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Print Request Errors"
+text = "Print Request Errors"
+text_overrun_behavior = 3
+
+[node name="PrintRequestErrorsCheckButton" type="CheckButton" parent="Configuration/Contents/Debug"]
+layout_mode = 2
+text = "On"
 
 [node name="Done" type="Button" parent="Configuration/Contents"]
 layout_mode = 2
@@ -417,4 +432,5 @@ horizontal_alignment = 1
 [connection signal="text_changed" from="Configuration/Contents/Client/SigningKeyEdit" to="Configuration" method="_on_signing_key_edit_text_changed"]
 [connection signal="text_changed" from="Configuration/Contents/Server/ApiKeyEdit" to="Configuration" method="_on_api_key_edit_text_changed"]
 [connection signal="text_changed" from="Configuration/Contents/Debug/SessionOverrideEdit" to="Configuration" method="_on_session_override_edit_text_changed"]
+[connection signal="toggled" from="Configuration/Contents/Debug/PrintRequestErrorsCheckButton" to="Configuration" method="_on_print_request_errors_checkbox_toggled"]
 [connection signal="pressed" from="Configuration/Contents/Done" to="Configuration" method="_on_done_pressed"]

@@ -2,6 +2,8 @@
 extends Node
 class_name EzchaSingleton
 ## The class representing the "Ezcha" singleton.
+##
+## This is where most of the functionality the plugin offers is accessed from.
 
 const _HOSTNAME: String = "https://ezcha.net"
 const _HOSTNAME_API: String = "https://api.ezcha.net"
@@ -14,6 +16,9 @@ var datastores: EzchaDatastoresAPI = EzchaDatastoresAPI.new()
 
 ## A wrapper for the games section of the API.
 var games: EzchaGamesAPI = EzchaGamesAPI.new()
+
+## A wrapper for the general section of the API.
+var general: EzchaGeneralAPI = EzchaGeneralAPI.new()
 
 ## A wrapper for the leaderboards section of the API.
 var leaderboards: EzchaLeaderboardsAPI = EzchaLeaderboardsAPI.new()
@@ -34,6 +39,7 @@ func _init():
 	client._ezcha = self
 	datastores._ezcha = self
 	games._ezcha = self
+	general._ezcha = self
 	leaderboards._ezcha = self
 	news._ezcha = self
 	sessions._ezcha = self
@@ -56,3 +62,8 @@ func get_signing_key() -> String:
 func get_session_override() -> String:
 	if (!Engine.is_editor_hint() && !OS.is_debug_build()): return ""
 	return ProjectSettings.get_setting("ezcha_network/config/debug/session_override", "")
+
+## A helper to return if request errors should be printed.
+func should_print_request_errors() -> bool:
+	if (!Engine.is_editor_hint() && !OS.is_debug_build()): return false
+	return ProjectSettings.get_setting("ezcha_network/config/debug/print_request_errors", false)

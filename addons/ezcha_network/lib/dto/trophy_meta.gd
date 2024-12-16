@@ -10,6 +10,9 @@ var name: String = ""
 ## The description of the trophy. This typically includes its criteria.
 var description: String = ""
 
+## Indicates if the trophy is hidden from public view.
+var unlisted: bool = false
+
 ## The number of experience points the trophy rewards once recieved.
 var experience_points: int = 0
 

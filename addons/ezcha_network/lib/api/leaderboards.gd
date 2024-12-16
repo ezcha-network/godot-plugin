@@ -14,11 +14,13 @@ enum UpdateMode {
 var _update_mode_map: PackedStringArray = PackedStringArray(["set", "add", "subtract"])
 
 ## Returns a paginated list of entries for a specific leaderboard.
-func get_entries(leaderboard_id: String, page: int = 1) -> EzchaPaginatedLeaderboardEntryListResponse:
+## A session token is only required when attempting to access an unlisted leaderboard.
+func get_entries(leaderboard_id: String, page: int = 1, session_token: String = "") -> EzchaPaginatedLeaderboardEntryListResponse:
 	var resp: EzchaPaginatedLeaderboardEntryListResponse = EzchaPaginatedLeaderboardEntryListResponse.new()
 	EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/leaderboards/entries")\
+		.set_authentication(session_token)\
 		.set_response_object(resp)\
 		.add_query_parameter("leaderboard_id", leaderboard_id)\
 		.add_query_parameter("page", page)\

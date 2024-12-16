@@ -7,16 +7,20 @@ extends "res://addons/ezcha_network/dock/menu.gd"
 	$Contents/Client/SigningKeyEdit,
 	$Contents/Server/ApiKeyEdit,
 	$Contents/Debug/SessionOverrideEdit,
+	$Contents/Debug/PrintRequestErrorsCheckButton,
 	$Contents/Done
 ]
 var update_game: bool = false
+var clear_cache: bool = false
 
 func _opened():
 	update_game = false
+	clear_cache = false
 	$Contents/Global/GameIdEdit.text = _ezcha.get_game_id()
 	$Contents/Client/SigningKeyEdit.text = _ezcha.get_signing_key()
 	$Contents/Server/ApiKeyEdit.text = _ezcha.get_api_key()
 	$Contents/Debug/SessionOverrideEdit.text = _ezcha.get_session_override()
+	$Contents/Debug/PrintRequestErrorsCheckButton.button_pressed = _ezcha.should_print_request_errors()
 	unlock_inputs()
 
 func lock_inputs():
@@ -40,6 +44,7 @@ func hide_error():
 func _on_game_id_edit_text_changed(text: String) -> void:
 	ProjectSettings.set_setting("ezcha_network/config/global/game_id", text)
 	update_game = true
+	clear_cache = true
 
 func _on_signing_key_edit_text_changed(text: String) -> void:
 	ProjectSettings.set_setting("ezcha_network/config/client/signing_key", text)
@@ -49,6 +54,10 @@ func _on_api_key_edit_text_changed(text: String) -> void:
 
 func _on_session_override_edit_text_changed(text: String) -> void:
 	ProjectSettings.set_setting("ezcha_network/config/debug/session_override", text)
+	clear_cache = true
+
+func _on_print_request_errors_checkbox_toggled(toggled: bool):
+	ProjectSettings.set_setting("ezcha_network/config/debug/print_request_errors", toggled)
 
 func _on_done_pressed() -> void:
 	hide_error()
@@ -58,6 +67,13 @@ func _on_done_pressed() -> void:
 	if (game_id.strip_edges() == ""): return show_error("Game ID is required.")
 	
 	lock_inputs()
+	
+	# Clear cache if needed
+	if (clear_cache):
+		dock.plugin.trophies_cached = false
+		dock.plugin.trophies.clear()
+		dock.plugin.leaderboards_cached = false
+		dock.plugin.leaderboards.clear()
 	
 	# Update game data if needed
 	if (!update_game):
@@ -69,10 +85,6 @@ func _on_done_pressed() -> void:
 	if (resp.is_successful()):
 		ProjectSettings.save()
 		dock.plugin.game = resp.game
-		dock.plugin.trophies_cached = false
-		dock.plugin.trophies.clear()
-		dock.plugin.leaderboards_cached = false
-		dock.plugin.leaderboards.clear()
 		dock.show_menu(dock.menu_main)
 		return
 	

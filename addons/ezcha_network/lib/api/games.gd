@@ -61,22 +61,26 @@ func get_game_of_the_day() -> EzchaGameResponse:
 	return resp
 
 ## Requests the trophies belonging to a game.
-func get_trophies(game_id: String) -> EzchaTrophyMetaListResponse:
+## A session with sufficient permissions can be provided to include unlisted trophies, but is not required.
+func get_trophies(game_id: String, session_token: String = "") -> EzchaTrophyMetaListResponse:
 	var resp: EzchaTrophyMetaListResponse = EzchaTrophyMetaListResponse.new()
 	EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/games/trophies")\
+		.set_authentication(session_token)\
 		.set_response_object(resp)\
 		.add_query_parameter("game_id", game_id)\
 		.fetch()
 	return resp
 
 ## Requests the leaderboards belonging to a game.
-func get_leaderboards(game_id: String) -> EzchaLeaderboardListResponse:
+## A session with sufficient permissions can be provided to include unlisted leaderboards, but is not required.
+func get_leaderboards(game_id: String, session_token: String = "") -> EzchaLeaderboardListResponse:
 	var resp: EzchaLeaderboardListResponse = EzchaLeaderboardListResponse.new()
 	EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/games/leaderboards")\
+		.set_authentication(session_token)\
 		.set_response_object(resp)\
 		.add_query_parameter("game_id", game_id)\
 		.fetch()

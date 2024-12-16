@@ -8,6 +8,14 @@ This includes authentication, trophies, leaderboards and more.
 
 ![Browsing through the "Ezcha" menu that the plugin adds](https://github.com/ezcha-network/godot-plugin/assets/15235673/ce7b24e4-d997-4089-a0c8-1c081145a517)
 
+## Developer Applications
+
+Applications to become a developer on the Ezcha Network are now open.
+Get more info [here](https://ezcha.net/news/8-26-24-call-for-developers)
+or [apply now](https://ezcha.net/developer/apply). You must be a verified developer
+on the platform to list your game and to access its API and features. You will not
+be able to use this plugin otherwise.
+
 ## Documentation
 
 Full documentation/reference for the plugin can be viewed [here](docs.md).
