@@ -4,6 +4,8 @@ class_name EzchaPlatformAdapterWeb
 ##
 ## You should never need to use this directly.
 
+signal avatar_prompt_completed(success: bool)
+
 const RESPONSE_WAIT_TIME: float = 0.2
 
 var requesting_session_token: bool = false
@@ -32,17 +34,44 @@ func _session_timeout() -> void:
 	auth_flow_completed.emit(null)
 
 func _on_window_message_event(args: Array) -> void:
-	if (!requesting_session_token): return
 	var event = args[0]
 	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
 	if (event.origin != _ezcha._HOSTNAME): return
 	var data = event.data
 	match(data.type):
 		"session_pending":
+			if (!requesting_session_token): return
 			session_response_timer = null
 		"session_success":
+			if (!requesting_session_token): return
 			requesting_session_token = false
 			auth_flow_completed.emit(data.value)
 		"session_error":
+			if (!requesting_session_token): return
 			requesting_session_token = false
 			auth_flow_completed.emit(null)
+		"avatar_success":
+			avatar_prompt_completed.emit(true)
+		"avatar_error":
+			avatar_prompt_completed.emit(false)
+
+# Experimental features. These may change in the future.
+
+func login_redirect() -> void:
+	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
+	var data: Variant = JavaScriptBridge.create_object("Object")
+	data.type = "login_redirect"
+	window_ref.top.postMessage(data, _ezcha._HOSTNAME)
+
+func avatar_prompt(avatar: Image) -> bool:
+	if (avatar.get_width() != 256 || avatar.get_height() != 256):
+		printerr("Avatar prompt image must be 256x256 pixels.")
+		avatar_prompt_completed.emit(false)
+		return false
+	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
+	var b64: String = Marshalls.raw_to_base64(avatar.save_png_to_buffer())
+	var data: Variant = JavaScriptBridge.create_object("Object")
+	data.type = "avatar_prompt"
+	data.image = "data:image/png;base64," + b64
+	window_ref.top.postMessage(data, _ezcha._HOSTNAME)
+	return (await avatar_prompt_completed)
