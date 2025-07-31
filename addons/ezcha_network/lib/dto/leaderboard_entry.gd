@@ -10,6 +10,9 @@ func _get_type_map() -> Dictionary:
 ## The entry's current score.
 var score: float = 0.0
 
+## The player's current ranking if available.
+var ranking: int = -1
+
 ## The leaderboard that the entry belongs to.
 ## Not all responses will included this data.
 var leaderboard: EzchaLeaderboard = null

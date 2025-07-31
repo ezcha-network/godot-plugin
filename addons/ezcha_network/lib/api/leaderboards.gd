@@ -15,16 +15,19 @@ var _update_mode_map: PackedStringArray = PackedStringArray(["set", "add", "subt
 
 ## Returns a paginated list of entries for a specific leaderboard.
 ## A session token is only required when attempting to access an unlisted leaderboard.
-func get_entries(leaderboard_id: String, page: int = 1, session_token: String = "") -> EzchaPaginatedLeaderboardEntryListResponse:
+func get_entries(leaderboard_id: String, page: int = 1, items_per_page: int = -1, session_token: String = "") -> EzchaPaginatedLeaderboardEntryListResponse:
 	var resp: EzchaPaginatedLeaderboardEntryListResponse = EzchaPaginatedLeaderboardEntryListResponse.new()
-	EzchaRequestBuilder.new()\
+	var builder: EzchaRequestBuilder = EzchaRequestBuilder.new()
+	builder\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/leaderboards/entries")\
 		.set_authentication(session_token)\
 		.set_response_object(resp)\
 		.add_query_parameter("leaderboard_id", leaderboard_id)\
-		.add_query_parameter("page", page)\
-		.fetch()
+		.add_query_parameter("page", page)
+	if (items_per_page > -1):
+		builder.add_query_parameter("items_per_page", items_per_page)
+	builder.fetch()
 	return resp
 
 ## Updates a score from a game client using a session token.
