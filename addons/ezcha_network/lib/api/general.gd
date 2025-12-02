@@ -23,3 +23,14 @@ func get_time() -> EzchaGeneralTimeResponse:
 		.set_response_object(resp)\
 		.fetch()
 	return resp
+
+## Validates a captcha response.
+func post_captcha(response: String) -> EzchaCaptchaResponse:
+	var resp: EzchaCaptchaResponse = EzchaCaptchaResponse.new()
+	EzchaRequestBuilder.new()\
+		.set_method(HTTPClient.METHOD_POST)\
+		.set_endpoint("/v1/general/captcha")\
+		.set_response_object(resp)\
+		.add_body_data("response", response)\
+		.fetch()
+	return resp

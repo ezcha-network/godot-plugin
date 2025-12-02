@@ -26,6 +26,7 @@
 * [EzchaNewsPost](#EzchaNewsPost)
 * [EzchaTrophyMeta](#EzchaTrophyMeta)
 * [EzchaUser](#EzchaUser)
+* [EzchaCaptchaResponse](#EzchaCaptchaResponse)
 * [EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)
 * [EzchaGameResponse](#EzchaGameResponse)
 * [EzchaGameListResponse](#EzchaGameListResponse)
@@ -243,34 +244,48 @@ Update a datastore value belonging to the currently authenticated player. Limit 
 
 **Inherits:** [EzchaPlatformAdapter](#EzchaPlatformAdapter)
 
-A class for internal use to handle web specific logic.
-
-### Description
-
-You should never need to use this directly.
-
-### Properties
-
-|Type|Name|Default|
-|-|-|-|
-|[float](https://docs.godotengine.org/en/4.4/classes/class_float.html)|RESPONSE_WAIT_TIME|0.2|
-|[bool](https://docs.godotengine.org/en/4.4/classes/class_bool.html)|requesting_session_token|false|
-|[SceneTreeTimer](https://docs.godotengine.org/en/4.4/classes/class_scenetreetimer.html)|session_response_timer|null|
-|[JavaScriptObject](https://docs.godotengine.org/en/4.4/classes/class_javascriptobject.html)|window_ref|null|
-|[JavaScriptObject](https://docs.godotengine.org/en/4.4/classes/class_javascriptobject.html)|window_event_ref|null|
+A class to handle web specific logic.
 
 ### Methods
 
 |Returns|Name|
 |-|-|
-|void|login_redirect ( )
-|[bool](https://docs.godotengine.org/en/4.4/classes/class_bool.html)|avatar_prompt ( [Image](https://docs.godotengine.org/en/4.4/classes/class_image.html) avatar )
+|void|[login_redirect](#EzchaPlatformAdapterWeb-method-login_redirect) ( )
+|void|[close_prompts](#EzchaPlatformAdapterWeb-method-close_prompts) ( )
+|[bool](https://docs.godotengine.org/en/4.4/classes/class_bool.html)|[avatar_prompt](#EzchaPlatformAdapterWeb-method-avatar_prompt) ( [Image](https://docs.godotengine.org/en/4.4/classes/class_image.html) avatar )
+|[String](https://docs.godotengine.org/en/4.4/classes/class_string.html)|[captcha_prompt](#EzchaPlatformAdapterWeb-method-captcha_prompt) ( )
 
 ### Signals
 
 **avatar_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.4/classes/class_bool.html) success )
 
+Emitted once the avatar prompt is completed.
 
+**captcha_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.4/classes/class_bool.html) success, [String](https://docs.godotengine.org/en/4.4/classes/class_string.html) response )
+
+Emitted once the captcha prompt is completed.
+
+### Method Descriptions
+
+<a name="EzchaPlatformAdapterWeb-method-login_redirect"></a>
+void **login_redirect** ( )
+
+(Experimental) Redirects to the login page and back.
+
+<a name="EzchaPlatformAdapterWeb-method-close_prompts"></a>
+void **close_prompts** ( )
+
+(Experimental) Closes all web container prompts.
+
+<a name="EzchaPlatformAdapterWeb-method-avatar_prompt"></a>
+[bool](https://docs.godotengine.org/en/4.4/classes/class_bool.html) **avatar_prompt** ( [Image](https://docs.godotengine.org/en/4.4/classes/class_image.html) avatar )
+
+(Experimental) Prompts the user to change their avatar. The provided image must be 256x256px. (Async) Returns true if user accepts and the upload is successful.
+
+<a name="EzchaPlatformAdapterWeb-method-captcha_prompt"></a>
+[String](https://docs.godotengine.org/en/4.4/classes/class_string.html) **captcha_prompt** ( )
+
+(Experimental) Prompts the user to solve a captcha. The response must be validated via the API. (Async) Returns the response if successful, otherwise an empty string.
 
 <a name="EzchaSingleton"></a>
 ## EzchaSingleton
@@ -500,6 +515,7 @@ This should be accessed through the "Ezcha" singleton.
 |-|-|
 |[EzchaGeneralStatusResponse](#EzchaGeneralStatusResponse)|[get_status](#EzchaGeneralAPI-method-get_status) ( )
 |[EzchaGeneralTimeResponse](#EzchaGeneralTimeResponse)|[get_time](#EzchaGeneralAPI-method-get_time) ( )
+|[EzchaCaptchaResponse](#EzchaCaptchaResponse)|[post_captcha](#EzchaGeneralAPI-method-post_captcha) ( [String](https://docs.godotengine.org/en/4.4/classes/class_string.html) response )
 
 ### Method Descriptions
 
@@ -512,6 +528,11 @@ Returns the current status of the API.
 [EzchaGeneralTimeResponse](#EzchaGeneralTimeResponse) **get_time** ( )
 
 Returns the current time from API.
+
+<a name="EzchaGeneralAPI-method-post_captcha"></a>
+[EzchaCaptchaResponse](#EzchaCaptchaResponse) **post_captcha** ( [String](https://docs.godotengine.org/en/4.4/classes/class_string.html) response )
+
+Validates a captcha response.
 
 <a name="EzchaLeaderboardsAPI"></a>
 ## EzchaLeaderboardsAPI
@@ -1433,6 +1454,26 @@ The URL to view the user's profile.
 [String](https://docs.godotengine.org/en/4.4/classes/class_string.html) **avatar_url** = ""
 
 The URL for the user's avatar/profile picture. This will be a png file.
+
+<a name="EzchaCaptchaResponse"></a>
+## EzchaCaptchaResponse
+
+**Inherits:** [EzchaResponse](#EzchaResponse)
+
+A response from the API that returns if a captcha response was valid or not.
+
+### Properties
+
+|Type|Name|Default|
+|-|-|-|
+|[bool](https://docs.godotengine.org/en/4.4/classes/class_bool.html)|[valid](#EzchaCaptchaResponse-property-valid)|false|
+
+### Property Descriptions
+
+<a name="EzchaCaptchaResponse-property-valid"></a>
+[bool](https://docs.godotengine.org/en/4.4/classes/class_bool.html) **valid** = false
+
+Returns true if the captcha response was valid.
 
 <a name="EzchaDatastoreValueResponse"></a>
 ## EzchaDatastoreValueResponse

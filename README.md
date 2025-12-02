@@ -189,7 +189,8 @@ func print_trophies() -> void:
 	var game_id: String = Ezcha.get_game_id()
 	
 	# Request the information
-	var trophy_resp: EzchaTrophyMetaListResponse = await Ezcha.games.get_trophies(game_id)
+	var trophy_resp: EzchaTrophyMetaListResponse = Ezcha.games.get_trophies(game_id)
+	await trophy_resp.recieved
 	
 	# Error handling
 	if (!trophy_resp.is_successful()):
@@ -212,7 +213,8 @@ func print_trophies() -> void:
 ```gdscript
 func print_leaderboard(leaderboard_id: String, page: int = 1) -> void:
 	# Request the information
-	var entries_resp: EzchaPaginatedLeaderboardEntryListResponse = await Ezcha.leaderboards.get_entries(leaderboard_id, page)
+	var entries_resp: EzchaPaginatedLeaderboardEntryListResponse = Ezcha.leaderboards.get_entries(leaderboard_id, page)
+	await entries_resp.recieved
 	
 	# Error handling
 	if (!entries_resp.is_successful()):
@@ -231,4 +233,4 @@ func print_leaderboard(leaderboard_id: String, page: int = 1) -> void:
 			entry.user.name,
 			entry.score
 		])
-```
+``` 
