@@ -51,3 +51,15 @@ func get_list(page: int = 1, category: String = "", order: String = "") -> Ezcha
 		.add_query_parameter("order", order)\
 		.fetch()
 	return resp
+
+## Lists the trophies a user has obtained for the game specified
+func get_trophies(user_id: String, game_id: String) -> EzchaTrophyMetaListResponse:
+	var resp: EzchaTrophyMetaListResponse = EzchaTrophyMetaListResponse.new()
+	EzchaRequestBuilder.new()\
+		.set_method(HTTPClient.METHOD_GET)\
+		.set_endpoint("/v1/users/trophies")\
+		.set_response_object(resp)\
+		.add_query_parameter("user_id", user_id)\
+		.add_query_parameter("game_id", game_id)\
+		.fetch()
+	return resp
