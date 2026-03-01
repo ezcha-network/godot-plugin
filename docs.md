@@ -15,7 +15,7 @@
 * [EzchaTrophiesAPI](#EzchaTrophiesAPI)
 * [EzchaUsersAPI](#EzchaUsersAPI)
 * [EzchaAPI](#EzchaAPI)
-* [EzchaAwaitAll](#EzchaAwaitAll)
+* [EzchaAsyncBatch](#EzchaAsyncBatch)
 * [EzchaDto](#EzchaDto)
 * [EzchaMultiplayerSpawner](#EzchaMultiplayerSpawner)
 * [EzchaPlatformAdapter](#EzchaPlatformAdapter)
@@ -47,6 +47,7 @@
 * [EzchaPaginatedLobbyListResponse](#EzchaPaginatedLobbyListResponse)
 * [EzchaPaginatedNewsListResponse](#EzchaPaginatedNewsListResponse)
 * [EzchaPaginatedUserListResponse](#EzchaPaginatedUserListResponse)
+* [EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse)
 * [EzchaRelayServerListResponse](#EzchaRelayServerListResponse)
 * [EzchaSessionValidationResponse](#EzchaSessionValidationResponse)
 * [EzchaTrophyMetaListResponse](#EzchaTrophyMetaListResponse)
@@ -120,6 +121,7 @@ This should be accessed through the "Ezcha" singleton.
 |[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[get_datastore](#EzchaClient-method-get_datastore) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key )
 |[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[set_datastore](#EzchaClient-method-set_datastore) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) value )
 |[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [EzchaRelayServer](#EzchaRelayServer) ]|[order_relay_servers](#EzchaClient-method-order_relay_servers) ( )
+|[EzchaRelayServer](#EzchaRelayServer)|[determine_relay_server](#EzchaClient-method-determine_relay_server) ( )
 
 ### Signals
 
@@ -139,9 +141,9 @@ Emitted when a trophy grant is queued from the grant_trophy function. trophy_dat
 
 Emitted when a leaderboard update is queued from the update_score function.
 
-**datastore_value_recieved** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) value )
+**datastore_value_received** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) value )
 
-Emitted after a datastore value is requested and recieved
+Emitted after a datastore value is requested and received.
 
 **datastore_value_posted** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key, [bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) successful )
 
@@ -239,7 +241,7 @@ Updates a leaderboard entry belonging to the currently authenticated player. The
 <a name="EzchaClient-method-get_datastore"></a>
 [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **get_datastore** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key )
 
-Get a datastore value belonging to the currently authenticated player. The datastore_value_recieved signal is emitted when the value is recieved. 
+Get a datastore value belonging to the currently authenticated player. The datastore_value_received signal is emitted when the value is received. 
 
  (Async) Returns a string value. The value will be empty if deleted or not yet set.
 
@@ -254,6 +256,11 @@ Update a datastore value belonging to the currently authenticated player. Limit 
 [Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [EzchaRelayServer](#EzchaRelayServer) ] **order_relay_servers** ( )
 
 Test relay servers and return them based on latency. (Async) Returns an array of available servers, sorted from lowest to highest latency.
+
+<a name="EzchaClient-method-determine_relay_server"></a>
+[EzchaRelayServer](#EzchaRelayServer) **determine_relay_server** ( )
+
+Determines the ideal Ezcha Relay server for the user. (Async) Returns a server if available.
 
 <a name="EzchaPlatformAdapterWeb"></a>
 ## EzchaPlatformAdapterWeb
@@ -318,16 +325,16 @@ This is where most of the functionality the plugin offers is accessed from.
 
 |Type|Name|Default|
 |-|-|-|
-|[EzchaClient](#EzchaClient)|[client](#EzchaSingleton-property-client)|EzchaClient.new()|
-|[EzchaDatastoresAPI](#EzchaDatastoresAPI)|[datastores](#EzchaSingleton-property-datastores)|EzchaDatastoresAPI.new()|
-|[EzchaGamesAPI](#EzchaGamesAPI)|[games](#EzchaSingleton-property-games)|EzchaGamesAPI.new()|
-|[EzchaGeneralAPI](#EzchaGeneralAPI)|[general](#EzchaSingleton-property-general)|EzchaGeneralAPI.new()|
-|[EzchaLeaderboardsAPI](#EzchaLeaderboardsAPI)|[leaderboards](#EzchaSingleton-property-leaderboards)|EzchaLeaderboardsAPI.new()|
-|[EzchaNewsAPI](#EzchaNewsAPI)|[news](#EzchaSingleton-property-news)|EzchaNewsAPI.new()|
-|[EzchaRelayAPI](#EzchaRelayAPI)|[relay](#EzchaSingleton-property-relay)|EzchaRelayAPI.new()|
-|[EzchaSessionsAPI](#EzchaSessionsAPI)|[sessions](#EzchaSingleton-property-sessions)|EzchaSessionsAPI.new()|
-|[EzchaTrophiesAPI](#EzchaTrophiesAPI)|[trophies](#EzchaSingleton-property-trophies)|EzchaTrophiesAPI.new()|
-|[EzchaUsersAPI](#EzchaUsersAPI)|[users](#EzchaSingleton-property-users)|EzchaUsersAPI.new()|
+|[EzchaClient](#EzchaClient)|[client](#EzchaSingleton-property-client)|EzchaClient.new(self)|
+|[EzchaDatastoresAPI](#EzchaDatastoresAPI)|[datastores](#EzchaSingleton-property-datastores)|EzchaDatastoresAPI.new(self)|
+|[EzchaGamesAPI](#EzchaGamesAPI)|[games](#EzchaSingleton-property-games)|EzchaGamesAPI.new(self)|
+|[EzchaGeneralAPI](#EzchaGeneralAPI)|[general](#EzchaSingleton-property-general)|EzchaGeneralAPI.new(self)|
+|[EzchaLeaderboardsAPI](#EzchaLeaderboardsAPI)|[leaderboards](#EzchaSingleton-property-leaderboards)|EzchaLeaderboardsAPI.new(self)|
+|[EzchaNewsAPI](#EzchaNewsAPI)|[news](#EzchaSingleton-property-news)|EzchaNewsAPI.new(self)|
+|[EzchaRelayAPI](#EzchaRelayAPI)|[relay](#EzchaSingleton-property-relay)|EzchaRelayAPI.new(self)|
+|[EzchaSessionsAPI](#EzchaSessionsAPI)|[sessions](#EzchaSingleton-property-sessions)|EzchaSessionsAPI.new(self)|
+|[EzchaTrophiesAPI](#EzchaTrophiesAPI)|[trophies](#EzchaSingleton-property-trophies)|EzchaTrophiesAPI.new(self)|
+|[EzchaUsersAPI](#EzchaUsersAPI)|[users](#EzchaSingleton-property-users)|EzchaUsersAPI.new(self)|
 
 ### Methods
 
@@ -342,52 +349,52 @@ This is where most of the functionality the plugin offers is accessed from.
 ### Property Descriptions
 
 <a name="EzchaSingleton-property-client"></a>
-[EzchaClient](#EzchaClient) **client** = EzchaClient.new()
+[EzchaClient](#EzchaClient) **client** = EzchaClient.new(self)
 
 A helper class to simplify Ezcha Network API integration within game clients.
 
 <a name="EzchaSingleton-property-datastores"></a>
-[EzchaDatastoresAPI](#EzchaDatastoresAPI) **datastores** = EzchaDatastoresAPI.new()
+[EzchaDatastoresAPI](#EzchaDatastoresAPI) **datastores** = EzchaDatastoresAPI.new(self)
 
 A wrapper for the datastores section of the API.
 
 <a name="EzchaSingleton-property-games"></a>
-[EzchaGamesAPI](#EzchaGamesAPI) **games** = EzchaGamesAPI.new()
+[EzchaGamesAPI](#EzchaGamesAPI) **games** = EzchaGamesAPI.new(self)
 
 A wrapper for the games section of the API.
 
 <a name="EzchaSingleton-property-general"></a>
-[EzchaGeneralAPI](#EzchaGeneralAPI) **general** = EzchaGeneralAPI.new()
+[EzchaGeneralAPI](#EzchaGeneralAPI) **general** = EzchaGeneralAPI.new(self)
 
 A wrapper for the general section of the API.
 
 <a name="EzchaSingleton-property-leaderboards"></a>
-[EzchaLeaderboardsAPI](#EzchaLeaderboardsAPI) **leaderboards** = EzchaLeaderboardsAPI.new()
+[EzchaLeaderboardsAPI](#EzchaLeaderboardsAPI) **leaderboards** = EzchaLeaderboardsAPI.new(self)
 
 A wrapper for the leaderboards section of the API.
 
 <a name="EzchaSingleton-property-news"></a>
-[EzchaNewsAPI](#EzchaNewsAPI) **news** = EzchaNewsAPI.new()
+[EzchaNewsAPI](#EzchaNewsAPI) **news** = EzchaNewsAPI.new(self)
 
 A wrapper for the news section of the API.
 
 <a name="EzchaSingleton-property-relay"></a>
-[EzchaRelayAPI](#EzchaRelayAPI) **relay** = EzchaRelayAPI.new()
+[EzchaRelayAPI](#EzchaRelayAPI) **relay** = EzchaRelayAPI.new(self)
 
 A wrapper for the relay section of the API.
 
 <a name="EzchaSingleton-property-sessions"></a>
-[EzchaSessionsAPI](#EzchaSessionsAPI) **sessions** = EzchaSessionsAPI.new()
+[EzchaSessionsAPI](#EzchaSessionsAPI) **sessions** = EzchaSessionsAPI.new(self)
 
 A wrapper for the sessions section of the API.
 
 <a name="EzchaSingleton-property-trophies"></a>
-[EzchaTrophiesAPI](#EzchaTrophiesAPI) **trophies** = EzchaTrophiesAPI.new()
+[EzchaTrophiesAPI](#EzchaTrophiesAPI) **trophies** = EzchaTrophiesAPI.new(self)
 
 A wrapper for the trophies section of the API.
 
 <a name="EzchaSingleton-property-users"></a>
-[EzchaUsersAPI](#EzchaUsersAPI) **users** = EzchaUsersAPI.new()
+[EzchaUsersAPI](#EzchaUsersAPI) **users** = EzchaUsersAPI.new(self)
 
 A wrapper for the users section of the API.
 
@@ -646,14 +653,26 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaRelayServerListResponse](#EzchaRelayServerListResponse)|[get_list](#EzchaRelayAPI-method-get_list) ( )
+|[EzchaRelayServerListResponse](#EzchaRelayServerListResponse)|[get_servers](#EzchaRelayAPI-method-get_servers) ( )
+|[EzchaPaginatedLobbyListResponse](#EzchaPaginatedLobbyListResponse)|[get_lobbies](#EzchaRelayAPI-method-get_lobbies) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) game_id, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) version="", [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) game_mode=-1, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) region="", [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) server_id="" )
+|[EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse)|[resolve_lobby](#EzchaRelayAPI-method-resolve_lobby) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) join_code )
 
 ### Method Descriptions
 
-<a name="EzchaRelayAPI-method-get_list"></a>
-[EzchaRelayServerListResponse](#EzchaRelayServerListResponse) **get_list** ( )
+<a name="EzchaRelayAPI-method-get_servers"></a>
+[EzchaRelayServerListResponse](#EzchaRelayServerListResponse) **get_servers** ( )
 
 Returns a list of available relay servers.
+
+<a name="EzchaRelayAPI-method-get_lobbies"></a>
+[EzchaPaginatedLobbyListResponse](#EzchaPaginatedLobbyListResponse) **get_lobbies** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) game_id, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) version="", [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) game_mode=-1, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) region="", [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) server_id="" )
+
+Returns a list of available public lobbies.
+
+<a name="EzchaRelayAPI-method-resolve_lobby"></a>
+[EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse) **resolve_lobby** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) join_code )
+
+Resolves a lobby from its join code.
 
 <a name="EzchaSessionsAPI"></a>
 ## EzchaSessionsAPI
@@ -702,12 +721,12 @@ This should be accessed through the "Ezcha" singleton.
 <a name="EzchaTrophiesAPI-method-post_grant_client"></a>
 [EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse) **post_grant_client** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) session_token )
 
-Updates a score from a game client using a session token. Requires a signing key to be configured.
+Grant a trophy from a game client using a session token. Requires a signing key to be configured.
 
 <a name="EzchaTrophiesAPI-method-post_grant_server"></a>
 [EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse) **post_grant_server** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) user_id )
 
-Updates a score from a game server using an API key. Requires an API key to be configured.
+Grant a trophy from a game server using an API key. Requires an API key to be configured.
 
 <a name="EzchaUsersAPI"></a>
 ## EzchaUsersAPI
@@ -770,47 +789,77 @@ Check if two users are friends
 
 A base class for handling calls to the Ezcha Network API.
 
-<a name="EzchaAwaitAll"></a>
-## EzchaAwaitAll
+<a name="EzchaAsyncBatch"></a>
+## EzchaAsyncBatch
 
 **Inherits:** [RefCounted](https://docs.godotengine.org/en/4.5/classes/class_refcounted.html)
 
-A helper class to conveniently monitor multiple async coroutines.
+A helper class to batch and watch multiple asynchronous coroutines.
 
 ### Description
 
-Emits a signal once all provided coroutines have completed. Provides its own async function that can be used to block execution.
+Tracks return values and emits a signal once all coroutines have completed. Provides its own async function that can be used to block execution.
 
 ### Methods
 
 |Returns|Name|
 |-|-|
-|void|[add](#EzchaAwaitAll-method-add) ( [Callable](https://docs.godotengine.org/en/4.5/classes/class_callable.html) target, [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html)  )
-|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[count](#EzchaAwaitAll-method-count) ( )
-|void|[block](#EzchaAwaitAll-method-block) ( )
+|void|[add](#EzchaAsyncBatch-method-add) ( [Callable](https://docs.godotengine.org/en/4.5/classes/class_callable.html) coroutine, [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html) =[] )
+|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[count](#EzchaAsyncBatch-method-count) ( )
+|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[count_pending](#EzchaAsyncBatch-method-count_pending) ( )
+|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[count_completed](#EzchaAsyncBatch-method-count_completed) ( )
+|[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[is_completed](#EzchaAsyncBatch-method-is_completed) ( )
+|[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[is_processing](#EzchaAsyncBatch-method-is_processing) ( )
+|[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html) ]|[get_results](#EzchaAsyncBatch-method-get_results) ( )
+|[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html) ]|[watch](#EzchaAsyncBatch-method-watch) ( )
 
 ### Signals
 
-**completed** ( )
+**completed** ( [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html)  )
 
 Emitted once all coroutines have completed.
 
 ### Method Descriptions
 
-<a name="EzchaAwaitAll-method-add"></a>
-void **add** ( [Callable](https://docs.godotengine.org/en/4.5/classes/class_callable.html) target, [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html)  )
+<a name="EzchaAsyncBatch-method-add"></a>
+void **add** ( [Callable](https://docs.godotengine.org/en/4.5/classes/class_callable.html) coroutine, [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html) =[] )
 
-Add a coroutine to be watched
+Add a coroutine to the batch.
 
-<a name="EzchaAwaitAll-method-count"></a>
+<a name="EzchaAsyncBatch-method-count"></a>
 [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **count** ( )
 
-Returns how many coroutines are being watched
+Returns how many coroutines have been added.
 
-<a name="EzchaAwaitAll-method-block"></a>
-void **block** ( )
+<a name="EzchaAsyncBatch-method-count_pending"></a>
+[int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **count_pending** ( )
 
-(Async) Blocks execution until all coroutines complete
+Returns how many coroutines are still pending.
+
+<a name="EzchaAsyncBatch-method-count_completed"></a>
+[int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **count_completed** ( )
+
+Returns how many coroutines have been completed.
+
+<a name="EzchaAsyncBatch-method-is_completed"></a>
+[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) **is_completed** ( )
+
+Returns true if all coroutines have completed.
+
+<a name="EzchaAsyncBatch-method-is_processing"></a>
+[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) **is_processing** ( )
+
+Returns true if any coroutines are processing.
+
+<a name="EzchaAsyncBatch-method-get_results"></a>
+[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html) ] **get_results** ( )
+
+Returns the values returned from the coroutines. A value will be null if the coroutine is either pending or void. These will be in the same order as the corresponding coroutines were added.
+
+<a name="EzchaAsyncBatch-method-watch"></a>
+[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html) ] **watch** ( )
+
+Starts and watches all coroutines, waiting until each one is completed. (Async) Returns an array of coroutine results in the same order as they were added.
 
 <a name="EzchaDto"></a>
 ## EzchaDto
@@ -862,24 +911,19 @@ You should never need to use this directly.
 
 A lobby based MultiplayerPeer implementation which uses Ezcha Relay for networking.
 
-### Properties
-
-|Type|Name|Default|
-|-|-|-|
-|[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[address](#EzchaRelayMultiplayerPeer-property-address)|"relay-main.ezcha.net"|
-
 ### Methods
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[handshake](#EzchaRelayMultiplayerPeer-method-handshake) ( )
-|[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[join_lobby](#EzchaRelayMultiplayerPeer-method-join_lobby) ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) lobby_id )
-|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[create_lobby](#EzchaRelayMultiplayerPeer-method-create_lobby) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) max_players, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) game_mode=0, [Visibility](https://docs.godotengine.org/en/4.5/classes/class_visibility.html) visibility=Visibility.PUBLIC, [bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) host_migration=false )
+|void|[resolve_lobby](#EzchaRelayMultiplayerPeer-method-resolve_lobby) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) join_code )
+|void|[join_lobby](#EzchaRelayMultiplayerPeer-method-join_lobby) ( [EzchaRelayLobby](#EzchaRelayLobby) lobby )
+|void|[create_lobby](#EzchaRelayMultiplayerPeer-method-create_lobby) ( [EzchaRelayServer](#EzchaRelayServer) server, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) players, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) game_mode=0, [Visibility](https://docs.godotengine.org/en/4.5/classes/class_visibility.html) visibility=Visibility.PUBLIC, [bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) host_migration=false )
 |void|[kick](#EzchaRelayMultiplayerPeer-method-kick) ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) message="" )
-|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[get_lobby_id](#EzchaRelayMultiplayerPeer-method-get_lobby_id) ( )
+|[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[get_lobby_id](#EzchaRelayMultiplayerPeer-method-get_lobby_id) ( )
+|[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[get_join_code](#EzchaRelayMultiplayerPeer-method-get_join_code) ( )
 |[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[get_lobby_name](#EzchaRelayMultiplayerPeer-method-get_lobby_name) ( )
 |[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[get_game_mode](#EzchaRelayMultiplayerPeer-method-get_game_mode) ( )
-|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[get_max_players](#EzchaRelayMultiplayerPeer-method-get_max_players) ( )
+|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[get_player_limit](#EzchaRelayMultiplayerPeer-method-get_player_limit) ( )
 |[Visibility](https://docs.godotengine.org/en/4.5/classes/class_visibility.html)|[get_visibility_mode](#EzchaRelayMultiplayerPeer-method-get_visibility_mode) ( )
 |[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[get_host_id](#EzchaRelayMultiplayerPeer-method-get_host_id) ( )
 |[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) ]|[get_peers](#EzchaRelayMultiplayerPeer-method-get_peers) ( )
@@ -887,28 +931,27 @@ A lobby based MultiplayerPeer implementation which uses Ezcha Relay for networki
 |[Operation](https://docs.godotengine.org/en/4.5/classes/class_operation.html)|[get_operation](#EzchaRelayMultiplayerPeer-method-get_operation) ( )
 |void|[set_lobby_name](#EzchaRelayMultiplayerPeer-method-set_lobby_name) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) new_name )
 |void|[set_game_mode](#EzchaRelayMultiplayerPeer-method-set_game_mode) ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) new_mode )
-|void|[set_max_players](#EzchaRelayMultiplayerPeer-method-set_max_players) ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) new_limit )
+|void|[set_player_limit](#EzchaRelayMultiplayerPeer-method-set_player_limit) ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) new_limit )
 |void|[set_visibility](#EzchaRelayMultiplayerPeer-method-set_visibility) ( [Visibility](https://docs.godotengine.org/en/4.5/classes/class_visibility.html) new_visibility )
 |void|[migrate_host](#EzchaRelayMultiplayerPeer-method-migrate_host) ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) peer_id )
 |void|[close_lobby](#EzchaRelayMultiplayerPeer-method-close_lobby) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) message="" )
 |[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[in_lobby](#EzchaRelayMultiplayerPeer-method-in_lobby) ( )
 |[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[is_host](#EzchaRelayMultiplayerPeer-method-is_host) ( )
 |[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[can_modify_lobby](#EzchaRelayMultiplayerPeer-method-can_modify_lobby) ( )
-|void|close ( )
 
 ### Signals
 
-**lobby_connected** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) lobby_id )
+**lobby_connected** ( )
 
 Emitted after connecting to a lobby.
 
-**lobby_created** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) lobby_id )
+**lobby_created** ( )
 
 Emitted after creating a new lobby.
 
-**lobby_joined** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) lobby_id )
+**lobby_joined** ( )
 
-Emitted after joining an existing lobby. The list is a dictionary mapping user data to their peer IDs.
+Emitted after joining an existing lobby.
 
 **user_connected** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) peer_id, [EzchaUser](#EzchaUser) user )
 
@@ -926,9 +969,9 @@ Emitted when the name of the lobby changes.
 
 Emitted when the current game mode changes.
 
-**max_players_changed** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) new_limit )
+**player_limit_changed** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) new_limit )
 
-Emitted when the max player limit changes.
+Emitted when the player limit changes.
 
 **visibility_changed** ( [Visibility](https://docs.godotengine.org/en/4.5/classes/class_visibility.html) new_visibility )
 
@@ -956,15 +999,17 @@ enum **ErrorType**:
 * ErrorType **RATE_LIMIT** = 102
 * ErrorType **UNSUPPORTED_PROTOCOL** = 200
 * ErrorType **AUTH_FAILED** = 201
-* ErrorType **GAME_ID_MISMATCH** = 300
-* ErrorType **VERSION_MISMATCH** = 301
-* ErrorType **LOBBY_NOT_FOUND** = 310
+* ErrorType **SERVER_MAX_CAPACITY** = 202
+* ErrorType **LOBBY_NOT_FOUND** = 300
+* ErrorType **GAME_ID_MISMATCH** = 310
+* ErrorType **VERSION_MISMATCH** = 311
 * ErrorType **LOBBY_FULL** = 320
 * ErrorType **NOT_FRIENDS** = 321
 * ErrorType **REFUSING_CONNECTIONS** = 322
-* ErrorType **KICKED** = 400
-* ErrorType **INVALID_PEER** = 401
-* ErrorType **INTERNAL** = 500
+* ErrorType **LOBBY_LIMIT_REACHED** = 400
+* ErrorType **KICKED** = 500
+* ErrorType **INVALID_PEER** = 501
+* ErrorType **INTERNAL** = 900
 
 enum **Visibility**:
 
@@ -975,33 +1020,27 @@ enum **Visibility**:
 enum **Operation**:
 
 * Operation **NONE** = 0
-* Operation **HANDSHAKE** = 1
-* Operation **CREATE_LOBBY** = 2
-* Operation **JOIN_LOBBY** = 3
-
-### Property Descriptions
-
-<a name="EzchaRelayMultiplayerPeer-property-address"></a>
-[String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **address** = "relay-main.ezcha.net"
-
-The address of the Ezcha Relay server to attempt connection with. Use `Ezcha.client.order_relay_servers()` to determine ideal servers.
+* Operation **CONNECT** = 1
+* Operation **HANDSHAKE** = 2
+* Operation **CREATE_LOBBY** = 3
+* Operation **JOIN_LOBBY** = 4
 
 ### Method Descriptions
 
-<a name="EzchaRelayMultiplayerPeer-method-handshake"></a>
-[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) **handshake** ( )
+<a name="EzchaRelayMultiplayerPeer-method-resolve_lobby"></a>
+void **resolve_lobby** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) join_code )
 
-Opens a connection with the Ezcha Relay system and attempts handshake/authentication. Required before creating or joining a lobby. (Async) Returns true if the connection and authentication were successful.
+Resolve a join code, connect to the relay server, and then join the lobby. Do not call this function with `await`.
 
 <a name="EzchaRelayMultiplayerPeer-method-join_lobby"></a>
-[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) **join_lobby** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) lobby_id )
+void **join_lobby** ( [EzchaRelayLobby](#EzchaRelayLobby) lobby )
 
-Join an existing lobby through the relay system. Handshake must be completed first. (Async) Returns true if joining the lobby was successful.
+Connect to a relay server and join a lobby. Do not call this function with `await`.
 
 <a name="EzchaRelayMultiplayerPeer-method-create_lobby"></a>
-[int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **create_lobby** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) max_players, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) game_mode=0, [Visibility](https://docs.godotengine.org/en/4.5/classes/class_visibility.html) visibility=Visibility.PUBLIC, [bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) host_migration=false )
+void **create_lobby** ( [EzchaRelayServer](#EzchaRelayServer) server, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) players, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) game_mode=0, [Visibility](https://docs.godotengine.org/en/4.5/classes/class_visibility.html) visibility=Visibility.PUBLIC, [bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) host_migration=false )
 
-Request a new lobby from the relay system. Handshake must be completed first. (Async) Returns a lobby ID if successful, otherwise -1.
+Request a new lobby from the relay server. Do not call this function with `await`.
 
 <a name="EzchaRelayMultiplayerPeer-method-kick"></a>
 void **kick** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) message="" )
@@ -1009,29 +1048,34 @@ void **kick** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html
 Kick another player from the lobby. (host/moderator only)
 
 <a name="EzchaRelayMultiplayerPeer-method-get_lobby_id"></a>
-[int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **get_lobby_id** ( )
+[String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **get_lobby_id** ( )
 
-Returns the ID of the current lobby.
+Returns the UUID of the lobby.
+
+<a name="EzchaRelayMultiplayerPeer-method-get_join_code"></a>
+[String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **get_join_code** ( )
+
+Returns the UUID of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_lobby_name"></a>
 [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **get_lobby_name** ( )
 
-Returns the name of the current lobby.
+Returns the name of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_game_mode"></a>
 [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **get_game_mode** ( )
 
-Returns the game mode of the current lobby.
+Returns the game mode of the lobby.
 
-<a name="EzchaRelayMultiplayerPeer-method-get_max_players"></a>
-[int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **get_max_players** ( )
+<a name="EzchaRelayMultiplayerPeer-method-get_player_limit"></a>
+[int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **get_player_limit** ( )
 
-Returns the max player count of the current lobby.
+Returns the player limit of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_visibility_mode"></a>
 [Visibility](https://docs.godotengine.org/en/4.5/classes/class_visibility.html) **get_visibility_mode** ( )
 
-Returns the visibility mode of the current lobby.
+Returns the visibility mode of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_host_id"></a>
 [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **get_host_id** ( )
@@ -1063,8 +1107,8 @@ void **set_game_mode** ( [int](https://docs.godotengine.org/en/4.5/classes/class
 
 Change the game mode of the lobby. (host/moderator only, requires migration to be enabled)
 
-<a name="EzchaRelayMultiplayerPeer-method-set_max_players"></a>
-void **set_max_players** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) new_limit )
+<a name="EzchaRelayMultiplayerPeer-method-set_player_limit"></a>
+void **set_player_limit** ( [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) new_limit )
 
 Change the game mode of the lobby. (host/moderator only, requires migration to be enabled)
 
@@ -1096,7 +1140,7 @@ Returns if the current peer is the host.
 <a name="EzchaRelayMultiplayerPeer-method-can_modify_lobby"></a>
 [bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) **can_modify_lobby** ( )
 
-Returns if the current peer can modify the current lobby.
+Returns if the current peer can modify the lobby.
 
 <a name="EzchaRelayPacket"></a>
 ## EzchaRelayPacket
@@ -1286,9 +1330,9 @@ Emitted when a trophy grant is queued from the grant_trophy function. trophy_dat
 
 Emitted when a leaderboard update is queued from the update_score function.
 
-**datastore_value_recieved** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) value )
+**datastore_value_received** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) value )
 
-Emitted after a datastore value is requested and recieved
+Emitted after a datastore value is requested and received
 
 **datastore_value_posted** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key, [bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) successful )
 
@@ -1364,7 +1408,7 @@ Updates a leaderboard entry belonging to the player.
 <a name="EzchaServerPlayer-method-get_datastore"></a>
 [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **get_datastore** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) key )
 
-Get a datastore value belonging to the currently authenticated player. The datastore_value_recieved signal is emitted when the value is recieved. 
+Get a datastore value belonging to the currently authenticated player. The datastore_value_received signal is emitted when the value is received. 
 
  (Async) Returns a string value. The value will be empty if deleted or not yet set.
 
@@ -1679,21 +1723,28 @@ The URL of the news post's featured image. Not all news posts will have this.
 
 |Type|Name|Default|
 |-|-|-|
-|[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[id](#EzchaRelayLobby-property-id)|-1|
+|[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[id](#EzchaRelayLobby-property-id)|""|
+|[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[join_code](#EzchaRelayLobby-property-join_code)|""|
 |[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[name](#EzchaRelayLobby-property-name)|""|
 |[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[version](#EzchaRelayLobby-property-version)|""|
 |[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[game_mode](#EzchaRelayLobby-property-game_mode)|-1|
 |[Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html)|[player_count](#EzchaRelayLobby-property-player_count)|-1|
-|[Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html)|[max_player_count](#EzchaRelayLobby-property-max_player_count)|-1|
+|[Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html)|[player_limit](#EzchaRelayLobby-property-player_limit)|-1|
 |[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[created_at](#EzchaRelayLobby-property-created_at)|""|
 |[EzchaUser](#EzchaUser)|[host](#EzchaRelayLobby-property-host)|null|
+|[EzchaRelayServer](#EzchaRelayServer)|[server](#EzchaRelayLobby-property-server)|null|
 
 ### Property Descriptions
 
 <a name="EzchaRelayLobby-property-id"></a>
-[int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **id** = -1
+[String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **id** = ""
 
-The 6 digit identifier/pin of the lobby.
+The UUID of the lobby.
+
+<a name="EzchaRelayLobby-property-join_code"></a>
+[String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **join_code** = ""
+
+The 6 character join code of the lobby.
 
 <a name="EzchaRelayLobby-property-name"></a>
 [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **name** = ""
@@ -1715,8 +1766,8 @@ The game mode the lobby currently is in.
 
 The current player count.
 
-<a name="EzchaRelayLobby-property-max_player_count"></a>
-[Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html) **max_player_count** = -1
+<a name="EzchaRelayLobby-property-player_limit"></a>
+[Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html) **player_limit** = -1
 
 The lobby's player limit.
 
@@ -1730,6 +1781,11 @@ A timestamp of when the lobby was created.
 
 The current host of the lobby.
 
+<a name="EzchaRelayLobby-property-server"></a>
+[EzchaRelayServer](#EzchaRelayServer) **server** = null
+
+The server which the lobby is hosted on.
+
 <a name="EzchaRelayServer"></a>
 ## EzchaRelayServer
 
@@ -1741,8 +1797,9 @@ The current host of the lobby.
 |-|-|-|
 |[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[id](#EzchaRelayServer-property-id)|""|
 |[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[name](#EzchaRelayServer-property-name)|""|
-|[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[country](#EzchaRelayServer-property-country)|""|
+|[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[region](#EzchaRelayServer-property-region)|""|
 |[String](https://docs.godotengine.org/en/4.5/classes/class_string.html)|[address](#EzchaRelayServer-property-address)|""|
+|[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html)|[elite_exclusive](#EzchaRelayServer-property-elite_exclusive)|false|
 |[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[lobby_count](#EzchaRelayServer-property-lobby_count)|-1|
 |[Variant](https://docs.godotengine.org/en/4.5/classes/class_variant.html)|[player_count](#EzchaRelayServer-property-player_count)|-1|
 
@@ -1750,7 +1807,6 @@ The current host of the lobby.
 
 |Returns|Name|
 |-|-|
-|[EzchaPaginatedLobbyListResponse](#EzchaPaginatedLobbyListResponse)|[get_lobbies](#EzchaRelayServer-method-get_lobbies) ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) game_id, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) version="", [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) game_mode=-1 )
 |[int](https://docs.godotengine.org/en/4.5/classes/class_int.html)|[ping](#EzchaRelayServer-method-ping) ( )
 
 ### Property Descriptions
@@ -1765,15 +1821,20 @@ The server's unique identifier.
 
 The user friendly name of the region.
 
-<a name="EzchaRelayServer-property-country"></a>
-[String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **country** = ""
+<a name="EzchaRelayServer-property-region"></a>
+[String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **region** = ""
 
-2 character country code (ISO 3166).
+The region the server is in.
 
 <a name="EzchaRelayServer-property-address"></a>
 [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **address** = ""
 
 The address of the relay server.
+
+<a name="EzchaRelayServer-property-elite_exclusive"></a>
+[bool](https://docs.godotengine.org/en/4.5/classes/class_bool.html) **elite_exclusive** = false
+
+Whether or not the server is elite exclusive.
 
 <a name="EzchaRelayServer-property-lobby_count"></a>
 [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **lobby_count** = -1
@@ -1786,11 +1847,6 @@ The cached lobby count.
 The cached player count.
 
 ### Method Descriptions
-
-<a name="EzchaRelayServer-method-get_lobbies"></a>
-[EzchaPaginatedLobbyListResponse](#EzchaPaginatedLobbyListResponse) **get_lobbies** ( [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) game_id, [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) version="", [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) game_mode=-1 )
-
-Returns a list of public lobbies.
 
 <a name="EzchaRelayServer-method-ping"></a>
 [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **ping** ( )
@@ -1839,7 +1895,7 @@ Indicates if the trophy is hidden from public view.
 <a name="EzchaTrophyMeta-property-experience_points"></a>
 [int](https://docs.godotengine.org/en/4.5/classes/class_int.html) **experience_points** = 0
 
-The number of experience points the trophy rewards once recieved.
+The number of experience points the trophy rewards once received.
 
 <a name="EzchaTrophyMeta-property-created_timestamp"></a>
 [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) **created_timestamp** = ""
@@ -2233,6 +2289,26 @@ A response from the API containing a paginated list of users.
 
 The list of users returned by the API request.
 
+<a name="EzchaRelayLobbyResponse"></a>
+## EzchaRelayLobbyResponse
+
+**Inherits:** [EzchaResponse](#EzchaResponse)
+
+A response from the API containing a single game.
+
+### Properties
+
+|Type|Name|Default|
+|-|-|-|
+|[EzchaRelayLobby](#EzchaRelayLobby)|[lobby](#EzchaRelayLobbyResponse-property-lobby)|null|
+
+### Property Descriptions
+
+<a name="EzchaRelayLobbyResponse-property-lobby"></a>
+[EzchaRelayLobby](#EzchaRelayLobby) **lobby** = null
+
+The lobby returned by the API request.
+
 <a name="EzchaRelayServerListResponse"></a>
 ## EzchaRelayServerListResponse
 
@@ -2245,6 +2321,7 @@ A response from the API containing a list of available relay servers.
 |Type|Name|Default|
 |-|-|-|
 |[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [EzchaRelayServer](#EzchaRelayServer) ]|[servers](#EzchaRelayServerListResponse-property-servers)|[]|
+|[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) ]|[countries](#EzchaRelayServerListResponse-property-countries)|[]|
 
 ### Property Descriptions
 
@@ -2252,6 +2329,11 @@ A response from the API containing a list of available relay servers.
 [Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [EzchaRelayServer](#EzchaRelayServer) ] **servers** = []
 
 The list of relay servers returned by the API request.
+
+<a name="EzchaRelayServerListResponse-property-countries"></a>
+[Array](https://docs.godotengine.org/en/4.5/classes/class_array.html) [ [String](https://docs.godotengine.org/en/4.5/classes/class_string.html) ] **countries** = []
+
+The country codes of available relay servers.
 
 <a name="EzchaSessionValidationResponse"></a>
 ## EzchaSessionValidationResponse
