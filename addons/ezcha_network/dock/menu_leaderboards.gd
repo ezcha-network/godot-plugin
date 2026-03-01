@@ -24,7 +24,7 @@ func render_list() -> void:
 func refresh_leaderboards() -> void:
 	reset()
 	var resp: EzchaLeaderboardListResponse = _ezcha.games.get_leaderboards(dock.plugin.game.id, _ezcha.get_session_override())
-	await resp.recieved
+	await resp.completed
 	if (!resp.is_successful()): return
 	dock.plugin.leaderboards = resp.leaderboards
 	render_list()

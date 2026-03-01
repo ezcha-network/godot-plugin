@@ -15,8 +15,8 @@ signal trophy_grant_completed(trophy_id: String, successful: bool, trophy_data: 
 ## Emitted when a leaderboard update is queued from the update_score function.
 signal leaderboard_update_completed(leaderboard_id: String, successful: bool)
 
-## Emitted after a datastore value is requested and recieved
-signal datastore_value_recieved(key: String, value: String)
+## Emitted after a datastore value is requested and received
+signal datastore_value_received(key: String, value: String)
 
 ## Emitted after a datastore value update is posted.
 signal datastore_value_posted(key: String, successful: bool)
@@ -50,7 +50,7 @@ func _init() -> void:
 func authenticate(session_token: String) -> bool:
 	if (_authenticated): return true
 	var response: EzchaSessionValidationResponse = _ezcha.sessions.post_validation(session_token, _ezcha.get_game_id())
-	await response.recieved
+	await response.completed
 	if (!response.is_successful()):
 		authentication_completed.emit(false)
 		return false
@@ -81,7 +81,7 @@ func grant_trophy(trophy_id: String) -> bool:
 	if (has_trophy(trophy_id, true)): return false
 	_pending_trophy_ids.append(trophy_id)
 	var response: EzchaTrophyQueuedResponse = _ezcha.trophies.post_grant_server(trophy_id, user.id)
-	await response.recieved
+	await response.completed
 	var idx: int = _pending_trophy_ids.find(trophy_id)
 	if (idx > -1): _pending_trophy_ids.remove_at(idx)
 	if (!response.is_successful() || !response.queued):
@@ -110,7 +110,7 @@ func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
 func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsAPI.UpdateMode = EzchaLeaderboardsAPI.UpdateMode.SET) -> bool:
 	if (!_authenticated): return false
 	var response: EzchaLeaderboardQueuedResponse = _ezcha.leaderboards.post_entry_server(leaderboard_id, user.id, score, mode)
-	await response.recieved
+	await response.completed
 	if (!response.is_successful() || !response.queued):
 		leaderboard_update_completed.emit(leaderboard_id, false)
 		return false
@@ -118,17 +118,17 @@ func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsA
 	return true
 
 ## Get a datastore value belonging to the currently authenticated player.
-## The datastore_value_recieved signal is emitted when the value is recieved.
+## The datastore_value_received signal is emitted when the value is received.
 ##
 ## (Async) Returns a string value. The value will be empty if deleted or not yet set.
 func get_datastore(key: String) -> String:
 	if (!_authenticated): return ""
 	var response: EzchaDatastoreValueResponse = _ezcha.datastores.get_server(user.id, key)
-	await response.recieved
+	await response.completed
 	if (!response.is_successful()):
-		datastore_value_recieved.emit(key, "")
+		datastore_value_received.emit(key, "")
 		return ""
-	datastore_value_recieved.emit(key, response.value)
+	datastore_value_received.emit(key, response.value)
 	return response.value
 
 ## Update a datastore value belonging to the currently authenticated player.
@@ -140,7 +140,7 @@ func get_datastore(key: String) -> String:
 func set_datastore(key: String, value: String) -> bool:
 	if (!_authenticated): false
 	var response: EzchaResponse = _ezcha.datastores.post_server(user.id, key, value)
-	await response.recieved
+	await response.completed
 	if (!response.is_successful()):
 		datastore_value_posted.emit(key, false)
 		return false

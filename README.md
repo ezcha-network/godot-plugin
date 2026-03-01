@@ -2,39 +2,48 @@
 
 [Looking for the Godot 3 version?](https://github.com/ezcha-network/godot-plugin/tree/godot-3.x)
 
-This repository contains the official Ezcha Network plugin for Godot. It allows you to
-integrate the [Ezcha Network](https://ezcha.net/) platform and its features into your games.
-This includes authentication, trophies, leaderboards and more.
+This repository contains the official Ezcha Network plugin for the [Godot game engine](https://godotengine.org/).
+It allows developers to integrate the [Ezcha Network](https://ezcha.net/) online platform and its features into
+their games with relative ease.
 
-![Browsing through the "Ezcha" menu that the plugin adds](https://github.com/ezcha-network/godot-plugin/assets/15235673/ce7b24e4-d997-4089-a0c8-1c081145a517)
+![Browsing through the "Ezcha" menu that the plugin provides](https://github.com/ezcha-network/godot-plugin/assets/15235673/ce7b24e4-d997-4089-a0c8-1c081145a517)
+
+## Supported Features
+
+This plugin supports the following Ezcha Network features:
+
+- Authentication
+- Users/profiles
+- Ezcha Relay (easy online multiplayer/lobbies)
+- Trophies
+- Leaderboards
+- Datastores (simple text based cloud saves)
+- News
+- General (time, captcha, etc)
 
 ## Developer Applications
 
-Applications to become a developer on the Ezcha Network are now open.
-Get more info [here](https://ezcha.net/news/8-26-24-call-for-developers)
-or [apply now](https://ezcha.net/developer/apply). You must be a verified developer
-on the platform to list your game and to access its API and features. You will not
-be able to use this plugin otherwise.
-
-## Documentation
-
-Full documentation/reference for the plugin can be viewed [here](docs.md).
+To fully use this plugin and access all of the platform's features you must first become an approved
+developer. This can be done by submitting a quick one-time application, which mostly asks about the game
+you intend on publishing first. Read [this news post](https://ezcha.net/news/8-26-24-call-for-developers)
+for more information or [apply now](https://ezcha.net/developer/apply).
 
 ## Setup
 
-Follow the steps below to setup the plugin in your project.
-
 1. Create a game listing on Ezcha Network.
 2. Copy the game ID from its developer panel, found under the "API" tab.
-3. Add the plugin to the `/addons` directory of your Godot project.
+3. Add the plugin to the `/addons` directory of your project or install
+it from the [asset library](https://godotengine.org/asset-library/asset/4528).
 4. Enable the "Ezcha Network" plugin in the project settings.
 5. Find the new "Ezcha" menu below the inspector.
 6. Use the menu to configure your game's ID.
 
-If you are working on a singleplayer game and want to grant trophies or update the player's
-leaderboard scores, you will also need to configure a **signing** key. If you are working on
-a dedicated server for a game use an API key instead. These can be
-created from within the "API" tab of your game's developer panel on Ezcha Network.
+For a more complete guide on how to prepare a game listing and to use this plugin please
+refer to [this news post](https://ezcha.net/news/11-30-25-godot-engine-ezcha-network).
+
+## Documentation
+
+Full documentation/reference for the plugin can be viewed [here](docs.md).
 
 ## Usage
 
@@ -234,3 +243,12 @@ func print_leaderboard(leaderboard_id: String, page: int = 1) -> void:
 			entry.score
 		])
 ``` 
+
+## Feature Flags
+
+The plugin also supports some feature flags:
+
+- `ezcha_exclude_api_key`
+  - Removes the API key from the export.
+- `ezcha_exclude_signing_key`
+  - Removes the signing key from the export.

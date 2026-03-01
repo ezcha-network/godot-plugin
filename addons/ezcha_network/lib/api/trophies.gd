@@ -4,7 +4,7 @@ class_name EzchaTrophiesAPI
 ##
 ## This should be accessed through the "Ezcha" singleton.
 
-## Updates a score from a game client using a session token.
+## Grant a trophy from a game client using a session token.
 ## Requires a signing key to be configured.
 func post_grant_client(trophy_id: String, session_token: String) -> EzchaTrophyQueuedResponse:
 	var resp: EzchaTrophyQueuedResponse = EzchaTrophyQueuedResponse.new()
@@ -18,7 +18,7 @@ func post_grant_client(trophy_id: String, session_token: String) -> EzchaTrophyQ
 		.fetch()
 	return resp
 
-## Updates a score from a game server using an API key.
+## Grant a trophy from a game server using an API key.
 ## Requires an API key to be configured.
 func post_grant_server(trophy_id: String, user_id: String) -> EzchaTrophyQueuedResponse:
 	var resp: EzchaTrophyQueuedResponse = EzchaTrophyQueuedResponse.new()

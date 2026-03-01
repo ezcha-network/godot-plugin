@@ -32,7 +32,7 @@ func load_game() -> void:
 		return show_menu(menu_configuration)
 	
 	var resp: EzchaGameResponse = _ezcha.games.get_from_id(game_id)
-	await resp.recieved
+	await resp.completed
 	if (!resp.is_successful()):
 		show_menu(menu_configuration)
 		menu_configuration.update_game = true

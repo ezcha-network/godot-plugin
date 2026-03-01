@@ -5,14 +5,22 @@ class_name EzchaRequestBuilder
 const _USER_AGENT: String = "User-Agent: EzchaNetworkSDK/1.0 Godot4"
 
 var _method: HTTPClient.Method = HTTPClient.METHOD_GET
+var _hostname: String = "api.ezcha.net"
 var _endpoint: String = ""
 var _auth_token: String = ""
 var _query_parameters: Dictionary = {}
 var _body_data: Dictionary = {}
 var _signing_key: String = ""
+var _parse_response: bool = true
 var _http_req: HTTPRequest = null
 var _response_object: EzchaResponse = null
+var _timeout: float = 10.0
 var _print_error: bool = false
+
+## Sets the target hostname.
+func set_hostname(value: String) -> EzchaRequestBuilder:
+	_hostname = value
+	return self
 
 ## Sets the target endpoint.
 func set_endpoint(value: String) -> EzchaRequestBuilder:
@@ -35,9 +43,19 @@ func set_signing_key(key: String) -> EzchaRequestBuilder:
 	_signing_key = key
 	return self
 
+## Enable/disable response parsing for performance.
+func set_parse_response(enabled: bool) -> EzchaRequestBuilder:
+	_parse_response = enabled
+	return self
+
 ## Set the response object.
 func set_response_object(obj: EzchaResponse) -> EzchaRequestBuilder:
 	_response_object = obj
+	return self
+
+## Set the request timeout. Defaults to 10 seconds.
+func set_timeout(time: float) -> EzchaRequestBuilder:
+	_timeout = time
 	return self
 
 ## Adds a parameter to the query string.
@@ -120,10 +138,10 @@ func fetch() -> void:
 	# Make the request node
 	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
 	_print_error = _ezcha.should_print_request_errors()
-	var final_url: String = _ezcha._HOSTNAME_API + _endpoint + query_str
+	var final_url: String = "https://%s%s%s" % [_hostname, _endpoint, query_str]
 	_http_req = HTTPRequest.new()
 	_ezcha.add_child(_http_req)
-	_http_req.timeout = 15.0
+	_http_req.timeout = _timeout
 	_http_req.use_threads = (OS.get_name() != "Web")
 	_http_req.request_completed.connect(_on_request_completed)
 	reference()
@@ -132,7 +150,7 @@ func fetch() -> void:
 func _all_done() -> void:
 	if (_response_object != null):
 		_response_object._pending = false
-		_response_object.recieved.emit()
+		_response_object.completed.emit()
 	if (_http_req != null):
 		_http_req.queue_free()
 	unreference()
@@ -144,35 +162,40 @@ func _on_request_completed(_result: int, response_code: int, headers: PackedStri
 	# Check if JSON response
 	var body_str: String = body.get_string_from_utf8()
 	var is_json: bool = false
-	if (OS.get_name() == "Web"):
-		# Lazy check since headers are inaccessible
-		is_json = (body_str.begins_with("{") && body_str.ends_with("}"))
-	else:
-		# Check for content-type header
-		for header: String in headers:
-			if (!header.to_lower().contains("content-type: application/json")): continue
-			is_json = true
-			break
+	if (_parse_response):
+		if (OS.get_name() == "Web"):
+			# Lazy check since headers are inaccessible
+			is_json = (body_str.begins_with("{") && body_str.ends_with("}"))
+		else:
+			# Check for content-type header
+			for header: String in headers:
+				if (!header.to_lower().contains("content-type: application/json")): continue
+				is_json = true
+				break
 	
 	# Parse response
 	var json: Variant = null
-	if (is_json): json = JSON.parse_string(body_str)
-	if (is_json && json == null): printerr("[Ezcha Network] Failed to parse JSON response.")
+	if (is_json):
+		json = JSON.parse_string(body_str)
+		if (json == null):
+			printerr("[Ezcha Network] Failed to parse JSON response.")
+		else:
+			EzchaUtil.unpack_data(_response_object, json)
+		
+	# Handle errors
 	if (!_response_object.is_successful()):
-		if (json is Dictionary && json.has("message")):
-			if (_print_error):
+		if (_print_error):
+			if (json != null && json.has("message")):
 				printerr("[Ezcha Network] API error.\nEndpoint: %s\nStatus code: %s\nMessage: %s" % [
 					_endpoint,
 					str(response_code),
 					json["message"]
 				])
-			_response_object._error_msg = json["message"]
-		elif (_print_error):
-			printerr("[Ezcha Network] API error.\nEndpoint: %s\nStatus code: %s" % [
-				_endpoint,
-				str(response_code)
-			])
+			else:
+				printerr("[Ezcha Network] API error.\nEndpoint: %s\nStatus code: %s" % [
+					_endpoint,
+					str(response_code)
+				])
 		return _all_done()
 	
-	if (json != null): _response_object._unpack_data(json)
 	_all_done()

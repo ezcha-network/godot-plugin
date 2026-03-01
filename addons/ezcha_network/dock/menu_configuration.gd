@@ -81,7 +81,7 @@ func _on_done_pressed() -> void:
 		dock.show_menu(dock.menu_main)
 		return
 	var resp: EzchaGameResponse = _ezcha.games.get_from_id(game_id)
-	await resp.recieved
+	await resp.completed
 	if (resp.is_successful()):
 		ProjectSettings.save()
 		dock.plugin.game = resp.game

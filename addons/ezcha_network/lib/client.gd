@@ -4,6 +4,8 @@ class_name EzchaClient
 ##
 ## This should be accessed through the "Ezcha" singleton.
 
+const _RELAY_PING_BATCH_LIMIT: int = 5
+
 ## Emitted once the authentication process has completed.
 signal authentication_completed(successful: bool)
 
@@ -17,8 +19,8 @@ signal trophy_grant_completed(trophy_id: String, successful: bool, trophy_data: 
 ## Emitted when a leaderboard update is queued from the update_score function.
 signal leaderboard_update_completed(leaderboard_id: String, successful: bool)
 
-## Emitted after a datastore value is requested and recieved
-signal datastore_value_recieved(key: String, value: String)
+## Emitted after a datastore value is requested and received.
+signal datastore_value_received(key: String, value: String)
 
 ## Emitted after a datastore value update is posted.
 signal datastore_value_posted(key: String, successful: bool)
@@ -37,20 +39,21 @@ var leaderboard_entries: Array[EzchaLeaderboardEntry] = []
 var moderation_tools: bool = false
 
 var _adapter: EzchaPlatformAdapter = null
-var _ezcha: Node = null
+var _ezcha: EzchaSingleton = null
 var _obtained_trophy_ids: PackedStringArray = PackedStringArray()
 var _pending_trophy_ids: PackedStringArray = PackedStringArray()
 var _authenticated: bool = false
 var _session_token: String = ""
 
-func _init() -> void:
+func _init(ez: EzchaSingleton) -> void:
+	_ezcha = ez
 	# Set default web adapter
 	if (OS.get_name() != "Web"): return
 	_adapter = EzchaPlatformAdapterWeb.new()
 
 func _validate_session(token: String) -> bool:
 	var response: EzchaSessionValidationResponse = _ezcha.sessions.post_validation(token, _ezcha.get_game_id())
-	await response.recieved
+	await response.completed
 	if (!response.is_successful()):
 		authentication_completed.emit(false)
 		return false
@@ -165,7 +168,7 @@ func grant_trophy(trophy_id: String) -> bool:
 	if (has_trophy(trophy_id, true)): return false
 	_pending_trophy_ids.append(trophy_id)
 	var response: EzchaTrophyQueuedResponse = _ezcha.trophies.post_grant_client(trophy_id, _session_token)
-	await response.recieved
+	await response.completed
 	var idx: int = _pending_trophy_ids.find(trophy_id)
 	if (idx > -1): _pending_trophy_ids.remove_at(idx)
 	if (!response.is_successful() || !response.queued):
@@ -196,25 +199,27 @@ func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
 func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsAPI.UpdateMode = EzchaLeaderboardsAPI.UpdateMode.SET) -> bool:
 	if (!_authenticated): return false
 	var response: EzchaLeaderboardQueuedResponse = _ezcha.leaderboards.post_entry_client(leaderboard_id, _session_token, score, mode)
-	await response.recieved
+	await response.completed
 	if (!response.is_successful() || !response.queued):
 		leaderboard_update_completed.emit(leaderboard_id, false)
 		return false
 	leaderboard_update_completed.emit(leaderboard_id, true)
 	return true
 
+# Datastores
+
 ## Get a datastore value belonging to the currently authenticated player.
-## The datastore_value_recieved signal is emitted when the value is recieved.
+## The datastore_value_received signal is emitted when the value is received.
 ##
 ## (Async) Returns a string value. The value will be empty if deleted or not yet set.
 func get_datastore(key: String) -> String:
 	if (!_authenticated): return ""
 	var response: EzchaDatastoreValueResponse = _ezcha.datastores.get_client(key, _session_token)
-	await response.recieved
+	await response.completed
 	if (!response.is_successful()):
-		datastore_value_recieved.emit(key, "")
+		datastore_value_received.emit(key, "")
 		return ""
-	datastore_value_recieved.emit(key, response.value)
+	datastore_value_received.emit(key, response.value)
 	return response.value
 
 ## Update a datastore value belonging to the currently authenticated player.
@@ -226,9 +231,50 @@ func get_datastore(key: String) -> String:
 func set_datastore(key: String, value: String) -> bool:
 	if (!_authenticated): false
 	var response: EzchaResponse = _ezcha.datastores.post_client(key, value, _session_token)
-	await response.recieved
+	await response.completed
 	if (!response.is_successful()):
 		datastore_value_posted.emit(key, false)
 		return false
 	datastore_value_posted.emit(key, true)
 	return true
+
+## Test relay servers and return them based on latency.
+## (Async) Returns an array of available servers, sorted from lowest to highest latency.
+func order_relay_servers() -> Array[EzchaRelayServer]:
+	# Get available relay servers
+	var list_res: EzchaRelayServerListResponse = _ezcha.relay.get_servers()
+	await list_res.completed
+	if (!list_res.is_successful()): return []
+	if (list_res.servers.is_empty()): return []
+	# Batch servers for testingg
+	var server_count: int = list_res.servers.size()
+	var batch_count: int = ceili(float(server_count) / float(_RELAY_PING_BATCH_LIMIT))
+	var ping_results: Array[int] = []
+	for idx: int in batch_count:
+		var start: int = idx * _RELAY_PING_BATCH_LIMIT
+		var end: int = mini((idx + 1) * _RELAY_PING_BATCH_LIMIT, server_count)
+		var servers: Array[EzchaRelayServer] = list_res.servers.slice(start, end)
+		# Test latency of servers
+		var batch: EzchaAsyncBatch = EzchaAsyncBatch.new()
+		for server: EzchaRelayServer in servers: batch.add(server.ping, [])
+		ping_results.append_array(await batch.watch())
+	# Map server/ping, exclude if test failed
+	var ping_map: Dictionary[EzchaRelayServer, int] = {}
+	for idx: int in server_count:
+		var ping: int = ping_results[idx]
+		if (ping < 0): continue
+		ping_map[list_res.servers[idx]] = ping
+	# Sort final results based on ping
+	var final_results: Array[EzchaRelayServer] = ping_map.keys()
+	final_results.sort_custom(_relay_ping_sort.bind(ping_map))
+	return final_results
+
+func _relay_ping_sort(a: EzchaRelayServer, b: EzchaRelayServer, map: Dictionary[EzchaRelayServer, int]) -> bool:
+	return (map[a] < map[b])
+
+## Determines the ideal Ezcha Relay server for the user.
+## (Async) Returns a server if available.
+func determine_relay_server() -> EzchaRelayServer:
+	var results: Array[EzchaRelayServer] = await order_relay_servers()
+	if (results.is_empty()): return null
+	return results[0]

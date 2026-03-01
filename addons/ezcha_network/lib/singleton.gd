@@ -6,45 +6,36 @@ class_name EzchaSingleton
 ## This is where most of the functionality the plugin offers is accessed from.
 
 const _HOSTNAME: String = "https://ezcha.net"
-const _HOSTNAME_API: String = "https://api.ezcha.net"
 
 ## A helper class to simplify Ezcha Network API integration within game clients.
-var client: EzchaClient = EzchaClient.new()
+var client: EzchaClient = EzchaClient.new(self)
 
 ## A wrapper for the datastores section of the API.
-var datastores: EzchaDatastoresAPI = EzchaDatastoresAPI.new()
+var datastores: EzchaDatastoresAPI = EzchaDatastoresAPI.new(self)
 
 ## A wrapper for the games section of the API.
-var games: EzchaGamesAPI = EzchaGamesAPI.new()
+var games: EzchaGamesAPI = EzchaGamesAPI.new(self)
 
 ## A wrapper for the general section of the API.
-var general: EzchaGeneralAPI = EzchaGeneralAPI.new()
+var general: EzchaGeneralAPI = EzchaGeneralAPI.new(self)
 
 ## A wrapper for the leaderboards section of the API.
-var leaderboards: EzchaLeaderboardsAPI = EzchaLeaderboardsAPI.new()
+var leaderboards: EzchaLeaderboardsAPI = EzchaLeaderboardsAPI.new(self)
 
 ## A wrapper for the news section of the API.
-var news: EzchaNewsAPI = EzchaNewsAPI.new()
+var news: EzchaNewsAPI = EzchaNewsAPI.new(self)
+
+## A wrapper for the relay section of the API.
+var relay: EzchaRelayAPI = EzchaRelayAPI.new(self)
 
 ## A wrapper for the sessions section of the API.
-var sessions: EzchaSessionsAPI = EzchaSessionsAPI.new()
+var sessions: EzchaSessionsAPI = EzchaSessionsAPI.new(self)
 
 ## A wrapper for the trophies section of the API.
-var trophies: EzchaTrophiesAPI = EzchaTrophiesAPI.new()
+var trophies: EzchaTrophiesAPI = EzchaTrophiesAPI.new(self)
 
 ## A wrapper for the users section of the API.
-var users: EzchaUsersAPI = EzchaUsersAPI.new()
-
-func _init():
-	client._ezcha = self
-	datastores._ezcha = self
-	games._ezcha = self
-	general._ezcha = self
-	leaderboards._ezcha = self
-	news._ezcha = self
-	sessions._ezcha = self
-	trophies._ezcha = self
-	users._ezcha = self
+var users: EzchaUsersAPI = EzchaUsersAPI.new(self)
 
 ## A helper to return the currently configured game identifier.
 func get_game_id() -> String:

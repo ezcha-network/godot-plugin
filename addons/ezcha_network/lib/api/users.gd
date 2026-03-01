@@ -63,3 +63,15 @@ func get_trophies(user_id: String, game_id: String) -> EzchaTrophyMetaListRespon
 		.add_query_parameter("game_id", game_id)\
 		.fetch()
 	return resp
+
+## Check if two users are friends
+func check_friends(user_id_a: String, user_id_b: String) -> EzchaFriendsResponse:
+	var resp: EzchaFriendsResponse = EzchaFriendsResponse.new()
+	EzchaRequestBuilder.new()\
+		.set_method(HTTPClient.METHOD_GET)\
+		.set_endpoint("/v1/users/friends/check")\
+		.set_response_object(resp)\
+		.add_query_parameter("user_id_a", user_id_a)\
+		.add_query_parameter("user_id_b", user_id_b)\
+		.fetch()
+	return resp

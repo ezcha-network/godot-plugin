@@ -13,7 +13,7 @@ var description: String = ""
 ## Indicates if the trophy is hidden from public view.
 var unlisted: bool = false
 
-## The number of experience points the trophy rewards once recieved.
+## The number of experience points the trophy rewards once received.
 var experience_points: int = 0
 
 ## The timestamp of when the trophy was created.

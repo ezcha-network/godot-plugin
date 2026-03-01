@@ -19,6 +19,9 @@ signal error()
 ## If the image type cannot be determined it will set it to this value.
 @export var assume_type: String = ""
 
+## Generate mipmaps for the downloaded image.
+@export var generate_mipmaps: bool = true
+
 var _url: String = ""
 var _loaded: bool = false
 var _errored: bool = false
@@ -92,6 +95,7 @@ func _on_http_req_completed(result: int, response_code: int, headers: PackedStri
 		error.emit()
 		return
 	
+	if (generate_mipmaps): img.generate_mipmaps()
 	set_image(img)
 	_loaded = true
 	loaded.emit()
