@@ -45,15 +45,14 @@ var _pending_trophy_ids: PackedStringArray = PackedStringArray()
 var _authenticated: bool = false
 var _session_token: String = ""
 
-func _init(ez: EzchaSingleton) -> void:
-	_ezcha = ez
+func _init(singleton: EzchaSingleton) -> void:
+	_ezcha = singleton
 	# Set default web adapter
 	if (OS.get_name() != "Web"): return
-	_adapter = EzchaPlatformAdapterWeb.new()
+	_adapter = EzchaPlatformAdapterWeb.new(singleton)
 
 func _validate_session(token: String) -> bool:
-	var response: EzchaSessionValidationResponse = _ezcha.sessions.post_validation(token, _ezcha.get_game_id())
-	await response.completed
+	var response: EzchaSessionValidationResponse = await _ezcha.sessions.post_validation(token, _ezcha.get_game_id()).async()
 	if (!response.is_successful()):
 		authentication_completed.emit(false)
 		return false
@@ -93,6 +92,10 @@ func authenticate() -> bool:
 		authentication_completed.emit(false)
 		return false
 	return await _validate_session(token)
+
+## Returns the current platform adapter.
+func get_adapter() -> EzchaPlatformAdapter:
+	return _adapter
 
 ## Returns true if the current platform allows for native login/logout.
 func supports_native_login() -> bool:
@@ -167,8 +170,7 @@ func grant_trophy(trophy_id: String) -> bool:
 	if (!_authenticated): return false
 	if (has_trophy(trophy_id, true)): return false
 	_pending_trophy_ids.append(trophy_id)
-	var response: EzchaTrophyQueuedResponse = _ezcha.trophies.post_grant_client(trophy_id, _session_token)
-	await response.completed
+	var response: EzchaTrophyQueuedResponse = await _ezcha.trophies.post_grant_client(trophy_id, _session_token).async()
 	var idx: int = _pending_trophy_ids.find(trophy_id)
 	if (idx > -1): _pending_trophy_ids.remove_at(idx)
 	if (!response.is_successful() || !response.queued):
@@ -198,8 +200,7 @@ func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
 ## (Async) Returns true if the score update was queued.
 func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsAPI.UpdateMode = EzchaLeaderboardsAPI.UpdateMode.SET) -> bool:
 	if (!_authenticated): return false
-	var response: EzchaLeaderboardQueuedResponse = _ezcha.leaderboards.post_entry_client(leaderboard_id, _session_token, score, mode)
-	await response.completed
+	var response: EzchaLeaderboardQueuedResponse = await _ezcha.leaderboards.post_entry_client(leaderboard_id, _session_token, score, mode).async()
 	if (!response.is_successful() || !response.queued):
 		leaderboard_update_completed.emit(leaderboard_id, false)
 		return false
@@ -211,11 +212,10 @@ func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsA
 ## Get a datastore value belonging to the currently authenticated player.
 ## The datastore_value_received signal is emitted when the value is received.
 ##
-## (Async) Returns a string value. The value will be empty if deleted or not yet set.
+## (Async) Returns a string value. The value will be empty if unset.
 func get_datastore(key: String) -> String:
 	if (!_authenticated): return ""
-	var response: EzchaDatastoreValueResponse = _ezcha.datastores.get_client(key, _session_token)
-	await response.completed
+	var response: EzchaDatastoreValueResponse = await _ezcha.datastores.get_client(key, _session_token).async()
 	if (!response.is_successful()):
 		datastore_value_received.emit(key, "")
 		return ""
@@ -230,8 +230,7 @@ func get_datastore(key: String) -> String:
 ## (Async) Returns true if the value was successfully updated.
 func set_datastore(key: String, value: String) -> bool:
 	if (!_authenticated): false
-	var response: EzchaResponse = _ezcha.datastores.post_client(key, value, _session_token)
-	await response.completed
+	var response: EzchaResponse = await _ezcha.datastores.post_client(key, value, _session_token).async()
 	if (!response.is_successful()):
 		datastore_value_posted.emit(key, false)
 		return false
@@ -239,11 +238,11 @@ func set_datastore(key: String, value: String) -> bool:
 	return true
 
 ## Test relay servers and return them based on latency.
+##
 ## (Async) Returns an array of available servers, sorted from lowest to highest latency.
 func order_relay_servers() -> Array[EzchaRelayServer]:
 	# Get available relay servers
-	var list_res: EzchaRelayServerListResponse = _ezcha.relay.get_servers()
-	await list_res.completed
+	var list_res: EzchaRelayServerListResponse = await _ezcha.relay.get_servers().async()
 	if (!list_res.is_successful()): return []
 	if (list_res.servers.is_empty()): return []
 	# Batch servers for testingg
@@ -273,8 +272,20 @@ func _relay_ping_sort(a: EzchaRelayServer, b: EzchaRelayServer, map: Dictionary[
 	return (map[a] < map[b])
 
 ## Determines the ideal Ezcha Relay server for the user.
-## (Async) Returns a server if available.
+##
+## (Async) Returns a server if available, null otherwise.
 func determine_relay_server() -> EzchaRelayServer:
 	var results: Array[EzchaRelayServer] = await order_relay_servers()
 	if (results.is_empty()): return null
 	return results[0]
+
+## Fetches a list of open Ezcha Relay lobbies for the current game and version.
+##
+## Returns an EzchaLobbyListResponse object.
+func get_relay_lobbies(page: int = 1, game_mode: int = -1) -> EzchaLobbyListResponse:
+	return _ezcha.relay.get_lobbies(
+		_ezcha.get_game_id(),
+		page,
+		EzchaUtil.get_game_version(),
+		game_mode
+	)

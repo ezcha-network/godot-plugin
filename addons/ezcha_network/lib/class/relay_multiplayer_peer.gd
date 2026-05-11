@@ -147,11 +147,7 @@ func _init() -> void:
 ## Do not call this function with `await`.
 func resolve_lobby(join_code: String) -> void:
 	if (!_prepare_connection()): return
-	var resolve_res: EzchaRelayLobbyResponse = _ezcha.relay.resolve_lobby(
-		_ezcha.get_game_id(),
-		join_code
-	)
-	await resolve_res.completed
+	var resolve_res: EzchaRelayLobbyResponse = await _ezcha.relay.resolve_lobby(_ezcha.get_game_id(), join_code).async()
 	if (!resolve_res.is_successful()):
 		_handle_connection_failed()
 		error.emit(

@@ -34,7 +34,7 @@ var leaderboard_entries: Array[EzchaLeaderboardEntry] = []
 ## If true the user should have access to any moderation tools.
 var moderation_tools: bool = false
 
-var _ezcha: Node = null
+var _ezcha: EzchaSingleton = null
 var _obtained_trophy_ids: PackedStringArray = PackedStringArray()
 var _pending_trophy_ids: PackedStringArray = PackedStringArray()
 var _authenticated: bool = false
@@ -49,8 +49,7 @@ func _init() -> void:
 ## The authentication_completed signal is emitted on completion.
 func authenticate(session_token: String) -> bool:
 	if (_authenticated): return true
-	var response: EzchaSessionValidationResponse = _ezcha.sessions.post_validation(session_token, _ezcha.get_game_id())
-	await response.completed
+	var response: EzchaSessionValidationResponse = await _ezcha.sessions.post_validation(session_token, _ezcha.get_game_id()).async()
 	if (!response.is_successful()):
 		authentication_completed.emit(false)
 		return false
@@ -80,8 +79,7 @@ func grant_trophy(trophy_id: String) -> bool:
 	if (!_authenticated): return false
 	if (has_trophy(trophy_id, true)): return false
 	_pending_trophy_ids.append(trophy_id)
-	var response: EzchaTrophyQueuedResponse = _ezcha.trophies.post_grant_server(trophy_id, user.id)
-	await response.completed
+	var response: EzchaTrophyQueuedResponse = await _ezcha.trophies.post_grant_server(trophy_id, user.id).async()
 	var idx: int = _pending_trophy_ids.find(trophy_id)
 	if (idx > -1): _pending_trophy_ids.remove_at(idx)
 	if (!response.is_successful() || !response.queued):
@@ -109,8 +107,7 @@ func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
 ## (Async) Returns true if the score update was queued.
 func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsAPI.UpdateMode = EzchaLeaderboardsAPI.UpdateMode.SET) -> bool:
 	if (!_authenticated): return false
-	var response: EzchaLeaderboardQueuedResponse = _ezcha.leaderboards.post_entry_server(leaderboard_id, user.id, score, mode)
-	await response.completed
+	var response: EzchaLeaderboardQueuedResponse = await _ezcha.leaderboards.post_entry_server(leaderboard_id, user.id, score, mode).async()
 	if (!response.is_successful() || !response.queued):
 		leaderboard_update_completed.emit(leaderboard_id, false)
 		return false
@@ -123,8 +120,7 @@ func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsA
 ## (Async) Returns a string value. The value will be empty if deleted or not yet set.
 func get_datastore(key: String) -> String:
 	if (!_authenticated): return ""
-	var response: EzchaDatastoreValueResponse = _ezcha.datastores.get_server(user.id, key)
-	await response.completed
+	var response: EzchaDatastoreValueResponse = await _ezcha.datastores.get_server(user.id, key).async()
 	if (!response.is_successful()):
 		datastore_value_received.emit(key, "")
 		return ""
@@ -139,8 +135,7 @@ func get_datastore(key: String) -> String:
 ## (Async) Returns true if the value was successfully updated.
 func set_datastore(key: String, value: String) -> bool:
 	if (!_authenticated): false
-	var response: EzchaResponse = _ezcha.datastores.post_server(user.id, key, value)
-	await response.completed
+	var response: EzchaResponse = await _ezcha.datastores.post_server(user.id, key, value).async()
 	if (!response.is_successful()):
 		datastore_value_posted.emit(key, false)
 		return false

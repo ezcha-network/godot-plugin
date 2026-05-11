@@ -7,12 +7,10 @@ class_name EzchaSessionsAPI
 ## Returns a paginated list of news posts based on the criteria provided.
 ## Category and series are mutually exclusive and cannot be used together.
 func post_validation(session_token: String = "", game_id: String = "") -> EzchaSessionValidationResponse:
-	var resp: EzchaSessionValidationResponse = EzchaSessionValidationResponse.new()
-	EzchaRequestBuilder.new()\
+	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_POST)\
 		.set_endpoint("/v1/sessions/validate")\
 		.set_authentication(session_token)\
-		.set_response_object(resp)\
+		.set_response_object(EzchaSessionValidationResponse.new())\
 		.add_body_data("game_id", game_id)\
 		.fetch()
-	return resp

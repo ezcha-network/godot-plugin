@@ -1,5 +1,5 @@
 extends EzchaPaginatedResponse
-class_name EzchaPaginatedLobbyListResponse
+class_name EzchaLobbyListResponse
 ## A response from the relay API containing a list of games.
 
 func _get_array_type_map() -> Dictionary:

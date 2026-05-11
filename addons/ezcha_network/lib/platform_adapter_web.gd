@@ -8,6 +8,9 @@ signal avatar_prompt_completed(success: bool)
 ## Emitted once the captcha prompt is completed.
 signal captcha_prompt_completed(success: bool, response: String)
 
+## Emitted once the rewarded ad prompt is completed.
+signal ad_prompt_completed(success: bool, rewarded: bool)
+
 const _RESPONSE_WAIT_TIME: float = 0.2
 
 var _in_prompt: bool = false
@@ -15,16 +18,15 @@ var _requesting_session_token: bool = false
 var _session_response_timer: SceneTreeTimer = null
 var _window_ref: JavaScriptObject = null
 var _window_event_ref: JavaScriptObject = null
-var _captcha_response: String = ""
 
-func _init() -> void:
+func _init(singleton: EzchaSingleton) -> void:
+	super(singleton)
 	_window_event_ref = JavaScriptBridge.create_callback(_on_window_message_event)
 	_window_ref = JavaScriptBridge.get_interface("window")
 	_window_ref.addEventListener("message", _window_event_ref)
 
 func _start_auth_flow() -> void:
 	if (_requesting_session_token): return
-	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
 	_requesting_session_token = true
 	_session_response_timer = _ezcha.get_tree().create_timer(_RESPONSE_WAIT_TIME)
 	_session_response_timer.timeout.connect(_session_timeout)
@@ -39,58 +41,50 @@ func _session_timeout() -> void:
 
 func _on_window_message_event(args: Array) -> void:
 	var event = args[0]
-	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
 	if (event.origin != _ezcha._HOSTNAME): return
 	var data = event.data
 	match(data.type):
 		"session_pending":
 			if (!_requesting_session_token): return
 			_session_response_timer = null
-		"session_success":
+		"session_response":
 			if (!_requesting_session_token): return
 			_requesting_session_token = false
-			auth_flow_completed.emit(data.value)
-		"session_error":
-			if (!_requesting_session_token): return
-			_requesting_session_token = false
-			auth_flow_completed.emit(null)
-		"avatar_success":
+			auth_flow_completed.emit(null if data.error else data.token)
+		"avatar_prompt_response":
 			if (!_in_prompt): return
-			avatar_prompt_completed.emit(true)
+			avatar_prompt_completed.emit(!data.error)
 			_in_prompt = false
-		"avatar_error":
+		"captcha_prompt_response":
 			if (!_in_prompt): return
-			avatar_prompt_completed.emit(false)
+			captcha_prompt_completed.emit(!data.error, "" if data.error else data.value)
 			_in_prompt = false
-		"captcha_success":
+		"ad_prompt_response":
 			if (!_in_prompt): return
-			_captcha_response = data.value
-			captcha_prompt_completed.emit(true, data.value)
-			_in_prompt = false
-		"captcha_error":
-			if (!_in_prompt): return
-			_captcha_response = ""
-			captcha_prompt_completed.emit(false, "")
+			ad_prompt_completed.emit(!data.error, data.rewarded)
 			_in_prompt = false
 
-## (Experimental)
+## Redirects to the register page and back.
+func register_redirect() -> void:
+	var data: Variant = JavaScriptBridge.create_object("Object")
+	data.type = "register_redirect"
+	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
+
 ## Redirects to the login page and back.
 func login_redirect() -> void:
-	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
 	var data: Variant = JavaScriptBridge.create_object("Object")
 	data.type = "login_redirect"
 	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
 
-## (Experimental) Closes all web container prompts.
+## Closes all web embed prompts.
 func close_prompts() -> void:
 	if (!_in_prompt): return
-	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
 	var data: Variant = JavaScriptBridge.create_object("Object")
 	data.type = "close_prompts"
 	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
 
-## (Experimental)
 ## Prompts the user to change their avatar. The provided image must be 256x256px.
+##
 ## (Async) Returns true if user accepts and the upload is successful.
 func avatar_prompt(avatar: Image) -> bool:
 	if (_in_prompt): return false
@@ -99,7 +93,6 @@ func avatar_prompt(avatar: Image) -> bool:
 		printerr("Avatar prompt image must be 256x256 pixels.")
 		avatar_prompt_completed.emit(false)
 		return false
-	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
 	var b64: String = Marshalls.raw_to_base64(avatar.save_png_to_buffer())
 	var data: Variant = JavaScriptBridge.create_object("Object")
 	data.type = "avatar_prompt"
@@ -107,15 +100,24 @@ func avatar_prompt(avatar: Image) -> bool:
 	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
 	return (await avatar_prompt_completed)
 
-## (Experimental)
 ## Prompts the user to solve a captcha. The response must be validated via the API.
+##
 ## (Async) Returns the response if successful, otherwise an empty string.
 func captcha_prompt() -> String:
 	if (_in_prompt): return ""
 	_in_prompt = true
-	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
 	var data: Variant = JavaScriptBridge.create_object("Object")
 	data.type = "captcha_prompt"
 	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
-	await captcha_prompt_completed
-	return _captcha_response
+	return (await captcha_prompt_completed)[1]
+
+## Shows the user an interstitial video advertisment.
+##
+## (Async) Returns the true if the player should be rewarded.
+func ad_prompt() -> bool:
+	if (_in_prompt): false
+	_in_prompt = true
+	var data: Variant = JavaScriptBridge.create_object("Object")
+	data.type = "ad_prompt"
+	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
+	return (await ad_prompt_completed)[1]

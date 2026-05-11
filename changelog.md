@@ -1,3 +1,38 @@
+# Version 2.4.1
+
+Version 2.4.1 makes improvements to the plugin's platform adapter system. The adapter
+is now exposed and its functions are no longer marked as experimental. These enable platform
+specific features and interoperability. It also brings some nice quality of life changes to
+the request/response classes.
+
+- New `get_adapter` function in `EzchaClient`
+	- Exposes the current platform adapter
+	- Returns `EzchaPlatformAdapterWeb` for web embeds uploaded to the platform
+- General `EzchaPlatformAdapterWeb` improvements
+	- Improved event/message handling
+	- The `login_redirect`, `avatar_prompt`, `captcha_prompt` functions are no longer marked as experimental
+	- New `register_redirect` function
+- Implemented new rewarded ad functionality to `EzchaPlatformAdapterWeb`
+	- Enables the game to display short video ads to the player and reward them
+	- New async `ad_prompt` function, returns the `rewarded` value
+	- New `ad_prompt_completed` signal
+- New `get_relay_lobbies` method in `EzchaClient`
+	- Automatically supplies game ID and version when making the request
+	- Returns `EzchaLobbyListResponse`
+- **BREAKING!** Renamed `EzchaUserListResponse` to `EzchaUsersResponse`
+- **BREAKING!** Removed "Paginated" from applicable response class names
+	- `EzchaPaginatedLeaderboardEntryListResponse` is now `EzchaLeaderboardEntryListResponse`
+	- `EzchaPaginatedLobbyListResponse` is now `EzchaLobbyListResponse`
+	- `EzchaPaginatedNewsListResponse` is now `EzchaNewsListResponse`
+	- `EzchaPaginatedUserListResponse` is now `EzchaUserListResponse`
+- General `EzchaRequestBuilder` improvements
+	- The `fetch` function now returns `EzchaResponse` instead of `void`
+- New `async` method in `EzchaResponse`
+	- Waits for the request to be completed and returns itself
+- Cleaned up API wrappers
+
+---
+
 # Version 2.4.0
 
 Version 2.4.0 is a major update which integrates Ezcha Relay. This is a service that allows
@@ -9,7 +44,7 @@ conceals the IP address of each peer and ties into the main Ezcha API to provide
 ## Ezcha Relay Integration
 
 - New `EzchaRelayAPI` class, accessible via `Ezcha.relay`
-    - Includes `get_server` function which lists available relay servers
+	- Includes `get_server` function which lists available relay servers
 	- Includes `get_lobbies` function which lists public relay lobbies
 	- Includes `resolve_lobby` function which finds a lobby from its join code
 - New `EzchaRelayServer` class

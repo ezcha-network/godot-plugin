@@ -6,72 +6,60 @@ class_name EzchaUsersAPI
 
 ## Requests a user from their ID.
 func get_from_id(user_id: String) -> EzchaUserResponse:
-	var resp: EzchaUserResponse = EzchaUserResponse.new()
-	EzchaRequestBuilder.new()\
+	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/users")\
-		.set_response_object(resp)\
+		.set_response_object(EzchaUserResponse.new())\
 		.add_query_parameter("user_id", user_id)\
 		.fetch()
-	return resp
 
 ## Requests a user from their name.
 func get_from_name(username: String) -> EzchaUserResponse:
-	var resp: EzchaUserResponse = EzchaUserResponse.new()
-	EzchaRequestBuilder.new()\
+	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/users")\
-		.set_response_object(resp)\
+		.set_response_object(EzchaUserResponse.new())\
 		.add_query_parameter("username", username)\
 		.fetch()
-	return resp
 
 ## Requests several users at once.
-func get_many(user_ids: PackedStringArray, usernames: PackedStringArray = PackedStringArray()) -> EzchaUserListResponse:
-	var resp: EzchaUserListResponse = EzchaUserListResponse.new()
-	EzchaRequestBuilder.new()\
+func get_many(user_ids: PackedStringArray, usernames: PackedStringArray = PackedStringArray()) -> EzchaUsersResponse:
+	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/users")\
-		.set_response_object(resp)\
+		.set_response_object(EzchaUsersResponse.new())\
 		.add_query_parameter("user_id", user_ids)\
 		.add_query_parameter("username", usernames)\
 		.add_query_parameter("force_list", true)\
 		.fetch()
-	return resp
 
 ## Returns a paginated list of user based on the criteria provided.
-func get_list(page: int = 1, category: String = "", order: String = "") -> EzchaPaginatedUserListResponse:
-	var resp: EzchaPaginatedUserListResponse = EzchaPaginatedUserListResponse.new()
-	EzchaRequestBuilder.new()\
+func get_list(page: int = 1, category: String = "", order: String = "") -> EzchaUserListResponse:
+	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/users/list")\
-		.set_response_object(resp)\
+		.set_response_object(EzchaUserListResponse.new())\
 		.add_query_parameter("page", page)\
 		.add_query_parameter("category", category)\
 		.add_query_parameter("order", order)\
 		.fetch()
-	return resp
 
 ## Lists the trophies a user has obtained for the game specified
 func get_trophies(user_id: String, game_id: String) -> EzchaTrophyMetaListResponse:
-	var resp: EzchaTrophyMetaListResponse = EzchaTrophyMetaListResponse.new()
-	EzchaRequestBuilder.new()\
+	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/users/trophies")\
-		.set_response_object(resp)\
+		.set_response_object(EzchaTrophyMetaListResponse.new())\
 		.add_query_parameter("user_id", user_id)\
 		.add_query_parameter("game_id", game_id)\
 		.fetch()
-	return resp
 
 ## Check if two users are friends
 func check_friends(user_id_a: String, user_id_b: String) -> EzchaFriendsResponse:
-	var resp: EzchaFriendsResponse = EzchaFriendsResponse.new()
-	EzchaRequestBuilder.new()\
+	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/users/friends/check")\
-		.set_response_object(resp)\
+		.set_response_object(EzchaFriendsResponse.new())\
 		.add_query_parameter("user_id_a", user_id_a)\
 		.add_query_parameter("user_id_b", user_id_b)\
 		.fetch()
-	return resp

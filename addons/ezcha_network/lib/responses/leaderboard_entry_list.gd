@@ -1,5 +1,5 @@
 extends EzchaPaginatedResponse
-class_name EzchaPaginatedLeaderboardEntryListResponse
+class_name EzchaLeaderboardEntryListResponse
 ## A response from the API containing a paginated list of leaderboards.
 
 func _get_array_type_map() -> Dictionary:

@@ -8,6 +8,11 @@ signal auth_flow_completed(token: Variant)
 signal login_flow_completed(token: Variant)
 signal logout_completed(success: bool)
 
+var _ezcha: EzchaSingleton = null
+
+func _init(singleton: EzchaSingleton) -> void:
+	_ezcha = singleton
+
 func supports_login() -> bool:
 	return false
 

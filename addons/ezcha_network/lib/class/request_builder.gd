@@ -15,7 +15,6 @@ var _parse_response: bool = true
 var _http_req: HTTPRequest = null
 var _response_object: EzchaResponse = null
 var _timeout: float = 10.0
-var _print_error: bool = false
 
 ## Sets the target hostname.
 func set_hostname(value: String) -> EzchaRequestBuilder:
@@ -61,13 +60,13 @@ func set_timeout(time: float) -> EzchaRequestBuilder:
 ## Adds a parameter to the query string.
 ## The value should either be a string or an array of strings.
 func add_query_parameter(key: String, value: Variant) -> EzchaRequestBuilder:
-	if (value == null || (value is String && value == "")): return self
+	if (value == null || (value is String && value.is_empty())): return self
 	_query_parameters[key] = value
 	return self
 
 ## Adds a value to the body data.
 func add_body_data(key: String, value: Variant) -> EzchaRequestBuilder:
-	if (value == null || (value is String && value == "")): return self
+	if (value == null || (value is String && value.is_empty())): return self
 	_body_data[key] = value
 	return self
 
@@ -86,7 +85,7 @@ func _stringify_values(value: Variant, progress: PackedStringArray = PackedStrin
 	return progress
 
 ## Makes the request.
-func fetch() -> void:
+func fetch() -> EzchaResponse:
 	# Generate headers
 	var headers: PackedStringArray = PackedStringArray()
 	headers.append(_USER_AGENT)
@@ -135,17 +134,25 @@ func fetch() -> void:
 		headers.append("Content-Type: application/json")
 		body_str = JSON.stringify(_body_data, "", false, false)
 	
-	# Make the request node
-	var _ezcha: Node = Engine.get_main_loop().root.get_node("Ezcha")
-	_print_error = _ezcha.should_print_request_errors()
-	var final_url: String = "https://%s%s%s" % [_hostname, _endpoint, query_str]
+	# Prepare response object if none defined
+	if (_response_object == null):
+		_response_object = EzchaResponse.new()
+	
+	# Don't dispose until the request is completed
+	reference()
+	
+	# Prepare the request node
+	var _ezcha: EzchaSingleton = Engine.get_main_loop().root.get_node("Ezcha")
 	_http_req = HTTPRequest.new()
-	_ezcha.add_child(_http_req)
 	_http_req.timeout = _timeout
 	_http_req.use_threads = (OS.get_name() != "Web")
 	_http_req.request_completed.connect(_on_request_completed)
-	reference()
+	_ezcha.add_child(_http_req)
+	
+	# Send request
+	var final_url: String = "https://%s%s%s" % [_hostname, _endpoint, query_str]
 	_http_req.request(final_url, headers, _method, body_str)
+	return _response_object
 
 func _all_done() -> void:
 	if (_response_object != null):
@@ -153,6 +160,7 @@ func _all_done() -> void:
 		_response_object.completed.emit()
 	if (_http_req != null):
 		_http_req.queue_free()
+	# Ready for disposal
 	unreference()
 
 func _on_request_completed(_result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
@@ -184,7 +192,8 @@ func _on_request_completed(_result: int, response_code: int, headers: PackedStri
 		
 	# Handle errors
 	if (!_response_object.is_successful()):
-		if (_print_error):
+		var _ezcha: EzchaSingleton = Engine.get_main_loop().root.get_node("Ezcha")
+		if (_ezcha.should_print_request_errors()):
 			if (json != null && json.has("message")):
 				printerr("[Ezcha Network] API error.\nEndpoint: %s\nStatus code: %s\nMessage: %s" % [
 					_endpoint,

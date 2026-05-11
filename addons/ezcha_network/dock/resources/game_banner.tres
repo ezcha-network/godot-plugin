@@ -1,4 +1,4 @@
-[gd_resource type="ImageTexture" script_class="EzchaWebTexture" load_steps=5 format=3 uid="uid://71ggon0dbiyo"]
+[gd_resource type="ImageTexture" script_class="EzchaWebTexture" format=3 uid="uid://71ggon0dbiyo"]
 
 [ext_resource type="Script" uid="uid://c6i7kahsji6g" path="res://addons/ezcha_network/lib/class/web_texture.gd" id="1_hun5e"]
 

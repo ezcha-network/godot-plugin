@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-@onready var _ezcha: Node = get_node_or_null("/root/Ezcha")
+@onready var _ezcha: EzchaSingleton = get_node_or_null("/root/Ezcha")
 
 var plugin: EzchaPlugin = null
 var menu_main: ScrollContainer
