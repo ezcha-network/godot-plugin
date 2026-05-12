@@ -5,7 +5,10 @@ General bug fixes and improvements.
 - Split `EzchaPlatformAdapterWeb`'s `ad_prompt` function into two
 	- `interstitial_ad_prompt`: shown during breaks, automatically skipped for elite members
 	- `rewarded_ad_prompt`: visible to all players, may reward in-game bonuses
-- `EzchaAsyncBatch` now uses `call_deferred` when starting the added async functions
+- General `EzchaAsyncBatch` improvements
+	- Now uses `call_deferred` when starting the added async functions
+	- The `add` and `watch` functions can now be chained together
+	- Made the `completed` signal private, use `await batch.watch()` instead
 - `EzchaRequestBuilder` now uses `call_deferred` upon making the request
 
 ---
