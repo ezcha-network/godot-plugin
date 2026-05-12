@@ -151,7 +151,7 @@ func fetch() -> EzchaResponse:
 	
 	# Send request
 	var final_url: String = "https://%s%s%s" % [_hostname, _endpoint, query_str]
-	_http_req.request(final_url, headers, _method, body_str)
+	_http_req.request.call_deferred(final_url, headers, _method, body_str)
 	return _response_object
 
 func _all_done() -> void:

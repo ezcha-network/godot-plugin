@@ -1,3 +1,15 @@
+# Version 2.4.2
+
+General bug fixes and improvements.
+
+- Split `EzchaPlatformAdapterWeb`'s `ad_prompt` function into two
+	- `interstitial_ad_prompt`: shown during breaks, automatically skipped for elite members
+	- `rewarded_ad_prompt`: visible to all players, may reward in-game bonuses
+- `EzchaAsyncBatch` now uses `call_deferred` when starting the added async functions
+- `EzchaRequestBuilder` now uses `call_deferred` upon making the request
+
+---
+
 # Version 2.4.1
 
 Version 2.4.1 makes improvements to the plugin's platform adapter system. The adapter

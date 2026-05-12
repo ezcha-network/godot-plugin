@@ -5,8 +5,7 @@ class_name EzchaAsyncBatch
 ## Tracks return values and emits a signal once all coroutines have completed.
 ## Provides its own async function that can be used to block execution.
 
-## Emitted once all coroutines have completed.
-signal completed(results: Array[Variant])
+signal _completed(results: Array[Variant])
 
 enum _State {
 	PREPARING = 0,
@@ -21,13 +20,14 @@ var _total_count: int = 0
 var _completed_count: int = 0
 
 ## Add a coroutine to the batch.
-func add(coroutine: Callable, args: Array[Variant] = []) -> void:
+func add(coroutine: Callable, args: Array[Variant] = []) -> EzchaAsyncBatch:
 	if (_state != _State.PREPARING):
 		push_error("AsyncBatch: Cannot add coroutines once watched.")
-		return
+		return self
 	_results.append(null)
 	_pending.append(coroutine.bindv(args))
 	_total_count += 1
+	return self
 
 ## Returns how many coroutines have been added.
 func count() -> int:
@@ -56,6 +56,7 @@ func get_results() -> Array[Variant]:
 	return _results
 
 ## Starts and watches all coroutines, waiting until each one is completed.
+##
 ## (Async) Returns an array of coroutine results in the same order as they were added.
 func watch() -> Array[Variant]:
 	if (_state != _State.PREPARING):
@@ -63,16 +64,16 @@ func watch() -> Array[Variant]:
 		return []
 	if (_pending.is_empty()):
 		_state = _State.COMPLETED
-		completed.emit()
+		_completed.emit([])
 		return []
 	_state = _State.PROCESSING
-	for idx: int in _pending.size(): _execute(idx, _pending.pop_front())
-	await completed
-	return _results
+	for idx: int in _pending.size():
+		_execute.call_deferred(idx, _pending.pop_front())
+	return (await _completed)
 
 func _execute(index: int, coroutine: Callable) -> void:
 	_results[index] = await coroutine.call()
 	_completed_count += 1
 	if (_completed_count != _total_count): return
 	_state = _State.COMPLETED
-	completed.emit(_results)
+	_completed.emit(_results)

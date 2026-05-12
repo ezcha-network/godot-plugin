@@ -113,11 +113,24 @@ func captcha_prompt() -> String:
 
 ## Shows the user an interstitial video advertisment.
 ##
-## (Async) Returns the true if the player should be rewarded.
-func ad_prompt() -> bool:
+## (Async) Returns the true if an advertisment was displayed.
+func interstitial_ad_prompt() -> bool:
 	if (_in_prompt): false
 	_in_prompt = true
 	var data: Variant = JavaScriptBridge.create_object("Object")
 	data.type = "ad_prompt"
+	data.kind = "interstitial"
+	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
+	return (await ad_prompt_completed)[1]
+
+## Shows the user a rewarded video advertisment.
+##
+## (Async) Returns the true if the player should be rewarded.
+func rewarded_ad_prompt() -> bool:
+	if (_in_prompt): false
+	_in_prompt = true
+	var data: Variant = JavaScriptBridge.create_object("Object")
+	data.type = "ad_prompt"
+	data.kind = "rewarded"
 	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
 	return (await ad_prompt_completed)[1]

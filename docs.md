@@ -296,7 +296,8 @@ A class to handle web specific logic.
 |void|[close_prompts](#EzchaPlatformAdapterWeb-method-close_prompts) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[avatar_prompt](#EzchaPlatformAdapterWeb-method-avatar_prompt) ( [Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar )
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[captcha_prompt](#EzchaPlatformAdapterWeb-method-captcha_prompt) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[ad_prompt](#EzchaPlatformAdapterWeb-method-ad_prompt) ( )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[interstitial_ad_prompt](#EzchaPlatformAdapterWeb-method-interstitial_ad_prompt) ( )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[rewarded_ad_prompt](#EzchaPlatformAdapterWeb-method-rewarded_ad_prompt) ( )
 
 ### Signals
 
@@ -343,10 +344,17 @@ Prompts the user to solve a captcha. The response must be validated via the API.
 
  (Async) Returns the response if successful, otherwise an empty string.
 
-<a name="EzchaPlatformAdapterWeb-method-ad_prompt"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **ad_prompt** ( )
+<a name="EzchaPlatformAdapterWeb-method-interstitial_ad_prompt"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **interstitial_ad_prompt** ( )
 
 Shows the user an interstitial video advertisment. 
+
+ (Async) Returns the true if an advertisment was displayed.
+
+<a name="EzchaPlatformAdapterWeb-method-rewarded_ad_prompt"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **rewarded_ad_prompt** ( )
+
+Shows the user a rewarded video advertisment. 
 
  (Async) Returns the true if the player should be rewarded.
 
@@ -844,7 +852,7 @@ Tracks return values and emits a signal once all coroutines have completed. Prov
 
 |Returns|Name|
 |-|-|
-|void|[add](#EzchaAsyncBatch-method-add) ( [Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) coroutine, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) =[] )
+|[EzchaAsyncBatch](#EzchaAsyncBatch)|[add](#EzchaAsyncBatch-method-add) ( [Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) coroutine, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) =[] )
 |[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count](#EzchaAsyncBatch-method-count) ( )
 |[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count_pending](#EzchaAsyncBatch-method-count_pending) ( )
 |[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count_completed](#EzchaAsyncBatch-method-count_completed) ( )
@@ -853,16 +861,10 @@ Tracks return values and emits a signal once all coroutines have completed. Prov
 |[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) ]|[get_results](#EzchaAsyncBatch-method-get_results) ( )
 |[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) ]|[watch](#EzchaAsyncBatch-method-watch) ( )
 
-### Signals
-
-**completed** ( [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html)  )
-
-Emitted once all coroutines have completed.
-
 ### Method Descriptions
 
 <a name="EzchaAsyncBatch-method-add"></a>
-void **add** ( [Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) coroutine, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) =[] )
+[EzchaAsyncBatch](#EzchaAsyncBatch) **add** ( [Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) coroutine, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) =[] )
 
 Add a coroutine to the batch.
 
@@ -899,7 +901,9 @@ Returns the values returned from the coroutines. A value will be null if the cor
 <a name="EzchaAsyncBatch-method-watch"></a>
 [Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) ] **watch** ( )
 
-Starts and watches all coroutines, waiting until each one is completed. (Async) Returns an array of coroutine results in the same order as they were added.
+Starts and watches all coroutines, waiting until each one is completed. 
+
+ (Async) Returns an array of coroutine results in the same order as they were added.
 
 <a name="EzchaDto"></a>
 ## EzchaDto
