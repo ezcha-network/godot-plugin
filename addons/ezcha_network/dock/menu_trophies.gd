@@ -22,20 +22,20 @@ func reset() -> void:
 
 func render_list() -> void:
 	reset()
-	for trophy: EzchaTrophyMeta in dock.plugin.trophies:
+	for trophy: EzchaTrophy in dock.plugin.trophies:
 		var idx: int = list.add_item(trophy.name)
 		list.set_item_tooltip(idx, trophy.id)
 
 func refresh_trophies() -> void:
 	reset()
-	var resp: EzchaTrophyMetaListResponse = _ezcha.games.get_trophies(dock.plugin.game.id, _ezcha.get_session_override())
+	var resp: EzchaTrophyListResponse = _ezcha.games.get_trophies(dock.plugin.game.id, _ezcha.get_session_override())
 	await resp.completed
 	if (!resp.is_successful()): return
 	dock.plugin.trophies = resp.trophies
 	render_list()
 
 func _on_list_item_selected(index: int) -> void:
-	var trophy: EzchaTrophyMeta = dock.plugin.trophies[index]
+	var trophy: EzchaTrophy = dock.plugin.trophies[index]
 	copy_btn.disabled = false
 	info_split.visible = true
 	description_label.text = trophy.description

@@ -45,11 +45,11 @@ func get_list(page: int = 1, category: String = "", order: String = "") -> Ezcha
 		.fetch()
 
 ## Lists the trophies a user has obtained for the game specified
-func get_trophies(user_id: String, game_id: String) -> EzchaTrophyMetaListResponse:
+func get_trophies(user_id: String, game_id: String) -> EzchaTrophyObtainedListResponse:
 	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/users/trophies")\
-		.set_response_object(EzchaTrophyMetaListResponse.new())\
+		.set_response_object(EzchaTrophyObtainedListResponse.new())\
 		.add_query_parameter("user_id", user_id)\
 		.add_query_parameter("game_id", game_id)\
 		.fetch()

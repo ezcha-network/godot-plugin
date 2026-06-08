@@ -198,7 +198,7 @@ func print_trophies() -> void:
 	var game_id: String = Ezcha.get_game_id()
 	
 	# Request the information
-	var trophy_resp: EzchaTrophyMetaListResponse = await Ezcha.games.get_trophies(game_id).async()
+	var trophy_resp: EzchaTrophyListResponse = await Ezcha.games.get_trophies(game_id).async()
 	
 	# Error handling
 	if (!trophy_resp.is_successful()):
@@ -209,7 +209,7 @@ func print_trophies() -> void:
 		return
 	
 	# Print a list with the name and ID of each trophy
-	for trophy: EzchaTrophyMeta in trophy_resp.trophies:
+	for trophy: EzchaTrophy in trophy_resp.trophies:
 		print("%s (ID: %s)" % [
 			trophy.name,
 			trophy.id

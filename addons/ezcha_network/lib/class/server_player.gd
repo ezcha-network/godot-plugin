@@ -10,7 +10,7 @@ signal authentication_completed(successful: bool)
 
 ## Emitted when a trophy grant is queued from the grant_trophy function.
 ## trophy_data will be null if the grant could not be queued.
-signal trophy_grant_completed(trophy_id: String, successful: bool, trophy_data: EzchaTrophyMeta)
+signal trophy_grant_completed(trophy_id: String, successful: bool, trophy_data: EzchaTrophy)
 
 ## Emitted when a leaderboard update is queued from the update_score function.
 signal leaderboard_update_completed(leaderboard_id: String, successful: bool)
@@ -26,7 +26,7 @@ signal datastore_value_posted(key: String, successful: bool)
 var user: EzchaUser = null
 
 ## The trophies that the user has obtained from this game.
-var trophies_obtained: Array[EzchaTrophyMeta] = []
+var trophies_obtained: Array[EzchaTrophyObtained] = []
 
 ## The leaderboard entries that the currently authenticated user has for this game.
 var leaderboard_entries: Array[EzchaLeaderboardEntry] = []
@@ -71,6 +71,12 @@ func is_authenticated() -> bool:
 func has_trophy(trophy_id: String, include_pending: bool = true) -> bool:
 	if (include_pending && _pending_trophy_ids.has(trophy_id)): return true
 	return _obtained_trophy_ids.has(trophy_id)
+
+## Returns the trophy if the player has obtained it, null otherwise.
+func get_trophy(trophy_id: String) -> EzchaTrophyObtained:
+	for trophy: EzchaTrophyObtained in trophies_obtained:
+		if (trophy.id == trophy_id): return trophy
+	return null
 
 ## Grants a trophy to the currently authenticated user.
 ##

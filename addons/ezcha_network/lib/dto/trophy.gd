@@ -1,5 +1,5 @@
 extends EzchaDto
-class_name EzchaTrophyMeta
+class_name EzchaTrophy
 
 ## The trophy's unique identifier.
 var id: String = ""

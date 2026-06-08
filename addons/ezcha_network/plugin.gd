@@ -23,7 +23,7 @@ var dock: Control = null
 var dock_initialized: bool = false
 var game: EzchaGame = null
 var trophies_cached: bool = false
-var trophies: Array[EzchaTrophyMeta] = []
+var trophies: Array[EzchaTrophy] = []
 var leaderboards_cached: bool = false
 var leaderboards: Array[EzchaLeaderboard] = []
 

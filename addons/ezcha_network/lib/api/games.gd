@@ -52,12 +52,12 @@ func get_game_of_the_day() -> EzchaGameResponse:
 
 ## Requests the trophies belonging to a game.
 ## A session with sufficient permissions can be provided to include unlisted trophies, but is not required.
-func get_trophies(game_id: String, session_token: String = "") -> EzchaTrophyMetaListResponse:
+func get_trophies(game_id: String, session_token: String = "") -> EzchaTrophyListResponse:
 	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
 		.set_endpoint("/v1/games/trophies")\
 		.set_authentication(session_token)\
-		.set_response_object(EzchaTrophyMetaListResponse.new())\
+		.set_response_object(EzchaTrophyListResponse.new())\
 		.add_query_parameter("game_id", game_id)\
 		.fetch()
 

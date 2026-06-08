@@ -1,3 +1,19 @@
+# Version 2.5.0
+
+- **BREAKING!** Renamed `EzchaTrophyMeta` to `EzchaTrophy`
+- **BREAKING!** Renamed `EzchaTrophyMetaListResponse` to `EzchaTrophyListResponse`
+- Added `EzchaTrophyObtained` (extends `EzchaTrophy`)
+	- Contains a `obtained_timestamp` field
+- Added `Ezcha.client.get_trophy(id)`
+- `EzchaSessionValidationResponse.trophies_obtained` is now `EzchaTrophyObtained[]` instead of `EzchaTrophy[]`
+- `Ezcha.client.trophies_obtained` is now `EzchaTrophyObtained[]` instead of `EzchaTrophy[]`
+- `EzchaServerPlayer.trophies_obtained` is now `EzchaTrophyObtained[]` instead of `EzchaTrophy[]`
+- `Ezcha.users.get_trophies(user_id, game_id)` now returns `EzchaTrophyObtainedListResponse` instead of `EzchaTrophyListResponse`
+- Added `EzchaServerPlayer.get_trophy(id)`
+- `interstitial_ad_prompt()` and `rewarded_ad_prompt()` now automatically toggles game audio
+
+---
+
 # Version 2.4.2
 
 General bug fixes and improvements.

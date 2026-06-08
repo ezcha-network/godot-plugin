@@ -14,6 +14,7 @@ signal ad_prompt_completed(success: bool, rewarded: bool)
 const _RESPONSE_WAIT_TIME: float = 0.2
 
 var _in_prompt: bool = false
+var _audio_was_muted: bool = false
 var _requesting_session_token: bool = false
 var _session_response_timer: SceneTreeTimer = null
 var _window_ref: JavaScriptObject = null
@@ -61,6 +62,7 @@ func _on_window_message_event(args: Array) -> void:
 			_in_prompt = false
 		"ad_prompt_response":
 			if (!_in_prompt): return
+			if (!_audio_was_muted): AudioServer.set_bus_mute(0, false)
 			ad_prompt_completed.emit(!data.error, data.rewarded)
 			_in_prompt = false
 
@@ -117,6 +119,8 @@ func captcha_prompt() -> String:
 func interstitial_ad_prompt() -> bool:
 	if (_in_prompt): false
 	_in_prompt = true
+	_audio_was_muted = AudioServer.is_bus_mute(0)
+	if (!_audio_was_muted): AudioServer.set_bus_mute(0, true)
 	var data: Variant = JavaScriptBridge.create_object("Object")
 	data.type = "ad_prompt"
 	data.kind = "interstitial"
@@ -129,6 +133,8 @@ func interstitial_ad_prompt() -> bool:
 func rewarded_ad_prompt() -> bool:
 	if (_in_prompt): false
 	_in_prompt = true
+	_audio_was_muted = AudioServer.is_bus_mute(0)
+	if (!_audio_was_muted): AudioServer.set_bus_mute(0, true)
 	var data: Variant = JavaScriptBridge.create_object("Object")
 	data.type = "ad_prompt"
 	data.kind = "rewarded"

@@ -1,11 +1,11 @@
 extends EzchaResponse
-class_name EzchaTrophyMetaListResponse
+class_name EzchaTrophyListResponse
 ## A response from the API containing a list of trophies.
 
 func _get_array_type_map() -> Dictionary:
 	return {
-		"trophies": EzchaTrophyMeta
+		"trophies": EzchaTrophy
 	}
 
 ## The list of trophies returned by the API request.
-var trophies: Array[EzchaTrophyMeta] = []
+var trophies: Array[EzchaTrophy] = []

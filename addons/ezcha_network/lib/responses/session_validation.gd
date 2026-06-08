@@ -9,7 +9,7 @@ func _get_type_map() -> Dictionary:
 
 func _get_array_type_map() -> Dictionary:
 	return {
-		"trophies_obtained": EzchaTrophyMeta,
+		"trophies_obtained": EzchaTrophyObtained,
 		"leaderboard_entries": EzchaLeaderboardEntry
 	}
 
@@ -17,7 +17,7 @@ func _get_array_type_map() -> Dictionary:
 var user: EzchaUser = null
 
 ## The trophies that the user has obtained from this game.
-var trophies_obtained: Array[EzchaTrophyMeta] = []
+var trophies_obtained: Array[EzchaTrophyObtained] = []
 
 ## The leaderboard entries the user has for this game.
 var leaderboard_entries: Array[EzchaLeaderboardEntry] = []

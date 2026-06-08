@@ -4,11 +4,11 @@ class_name EzchaTrophyQueuedResponse
 
 func _get_type_map() -> Dictionary:
 	return {
-		"trophy": EzchaTrophyMeta
+		"trophy": EzchaTrophy
 	}
 
 ## Returns true if the grant has been queued.
 var queued: bool = false
 
 ## The data of the trophy queued to be granted.
-var trophy: EzchaTrophyMeta = null
+var trophy: EzchaTrophy = null

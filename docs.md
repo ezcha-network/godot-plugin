@@ -31,7 +31,8 @@
 * [EzchaNewsPost](#EzchaNewsPost)
 * [EzchaRelayLobby](#EzchaRelayLobby)
 * [EzchaRelayServer](#EzchaRelayServer)
-* [EzchaTrophyMeta](#EzchaTrophyMeta)
+* [EzchaTrophy](#EzchaTrophy)
+* [EzchaTrophyObtained](#EzchaTrophyObtained)
 * [EzchaUser](#EzchaUser)
 * [EzchaCaptchaResponse](#EzchaCaptchaResponse)
 * [EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)
@@ -49,7 +50,8 @@
 * [EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse)
 * [EzchaRelayServerListResponse](#EzchaRelayServerListResponse)
 * [EzchaSessionValidationResponse](#EzchaSessionValidationResponse)
-* [EzchaTrophyMetaListResponse](#EzchaTrophyMetaListResponse)
+* [EzchaTrophyListResponse](#EzchaTrophyListResponse)
+* [EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse)
 * [EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse)
 * [EzchaUserResponse](#EzchaUserResponse)
 * [EzchaUserListResponse](#EzchaUserListResponse)
@@ -79,7 +81,7 @@ You should never need to use this directly. The "EzchaSingleton" class is a good
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|dock_initialized|false|
 |[EzchaGame](#EzchaGame)|game|null|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|trophies_cached|false|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ]|trophies|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophy](#EzchaTrophy) ]|trophies|[]|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|leaderboards_cached|false|
 |[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboard](#EzchaLeaderboard) ]|leaderboards|[]|
 
@@ -99,7 +101,7 @@ This should be accessed through the "Ezcha" singleton.
 |Type|Name|Default|
 |-|-|-|
 |[EzchaUser](#EzchaUser)|[user](#EzchaClient-property-user)|null|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ]|[trophies_obtained](#EzchaClient-property-trophies_obtained)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ]|[trophies_obtained](#EzchaClient-property-trophies_obtained)|[]|
 |[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ]|[leaderboard_entries](#EzchaClient-property-leaderboard_entries)|[]|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[moderation_tools](#EzchaClient-property-moderation_tools)|false|
 
@@ -115,6 +117,7 @@ This should be accessed through the "Ezcha" singleton.
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_authenticated](#EzchaClient-method-is_authenticated) ( )
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_session_token](#EzchaClient-method-get_session_token) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_trophy](#EzchaClient-method-has_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
+|[EzchaTrophyObtained](#EzchaTrophyObtained)|[get_trophy](#EzchaClient-method-get_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[grant_trophy](#EzchaClient-method-grant_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_score](#EzchaClient-method-has_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id )
 |[float](https://docs.godotengine.org/en/4.6/classes/class_float.html)|[get_score](#EzchaClient-method-get_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0 )
@@ -135,7 +138,7 @@ Emitted once the authentication process has completed.
 
 Emitted once logged out (not support on web).
 
-**trophy_grant_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful, [EzchaTrophyMeta](#EzchaTrophyMeta) trophy_data )
+**trophy_grant_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful, [EzchaTrophy](#EzchaTrophy) trophy_data )
 
 Emitted when a trophy grant is queued from the grant_trophy function. trophy_data will be null if the grant could not be queued.
 
@@ -159,7 +162,7 @@ Emitted after a datastore value update is posted.
 The user who is currently playing the game. Only available after authenticating.
 
 <a name="EzchaClient-property-trophies_obtained"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ] **trophies_obtained** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ] **trophies_obtained** = []
 
 The trophies that the currently authenticated user has obtained from this game.
 
@@ -220,6 +223,11 @@ Returns the player's session token if authenticated.
 [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
 
 Returns true if the currently authenticated player has the trophy specified.
+
+<a name="EzchaClient-method-get_trophy"></a>
+[EzchaTrophyObtained](#EzchaTrophyObtained) **get_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
+
+Returns the trophy if the player has obtained it, null otherwise.
 
 <a name="EzchaClient-method-grant_trophy"></a>
 [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **grant_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
@@ -542,7 +550,7 @@ This should be accessed through the "Ezcha" singleton.
 |[EzchaGameListResponse](#EzchaGameListResponse)|[get_many](#EzchaGamesAPI-method-get_many) ( [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_slugs=PackedStringArray() )
 |[EzchaGameResponse](#EzchaGameResponse)|[get_random](#EzchaGamesAPI-method-get_random) ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_exclusives=false )
 |[EzchaGameResponse](#EzchaGameResponse)|[get_game_of_the_day](#EzchaGamesAPI-method-get_game_of_the_day) ( )
-|[EzchaTrophyMetaListResponse](#EzchaTrophyMetaListResponse)|[get_trophies](#EzchaGamesAPI-method-get_trophies) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
+|[EzchaTrophyListResponse](#EzchaTrophyListResponse)|[get_trophies](#EzchaGamesAPI-method-get_trophies) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
 |[EzchaLeaderboardListResponse](#EzchaLeaderboardListResponse)|[get_leaderboards](#EzchaGamesAPI-method-get_leaderboards) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
 
 ### Method Descriptions
@@ -573,7 +581,7 @@ Requests a randomly chosen game.
 Requests the current game of the day.
 
 <a name="EzchaGamesAPI-method-get_trophies"></a>
-[EzchaTrophyMetaListResponse](#EzchaTrophyMetaListResponse) **get_trophies** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
+[EzchaTrophyListResponse](#EzchaTrophyListResponse) **get_trophies** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
 
 Requests the trophies belonging to a game. A session with sufficient permissions can be provided to include unlisted trophies, but is not required.
 
@@ -795,7 +803,7 @@ This should be accessed through the "Ezcha" singleton.
 |[EzchaUserResponse](#EzchaUserResponse)|[get_from_name](#EzchaUsersAPI-method-get_from_name) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) username )
 |[EzchaUsersResponse](#EzchaUsersResponse)|[get_many](#EzchaUsersAPI-method-get_many) ( [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) user_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) usernames=PackedStringArray() )
 |[EzchaUserListResponse](#EzchaUserListResponse)|[get_list](#EzchaUsersAPI-method-get_list) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="" )
-|[EzchaTrophyMetaListResponse](#EzchaTrophyMetaListResponse)|[get_trophies](#EzchaUsersAPI-method-get_trophies) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id )
+|[EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse)|[get_trophies](#EzchaUsersAPI-method-get_trophies) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id )
 |[EzchaFriendsResponse](#EzchaFriendsResponse)|[check_friends](#EzchaUsersAPI-method-check_friends) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_a, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_b )
 
 ### Method Descriptions
@@ -821,7 +829,7 @@ Requests several users at once.
 Returns a paginated list of user based on the criteria provided.
 
 <a name="EzchaUsersAPI-method-get_trophies"></a>
-[EzchaTrophyMetaListResponse](#EzchaTrophyMetaListResponse) **get_trophies** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id )
+[EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse) **get_trophies** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id )
 
 Lists the trophies a user has obtained for the game specified
 
@@ -1348,7 +1356,7 @@ You shouldn't use this client-side or when making a singleplayer game. In those 
 |Type|Name|Default|
 |-|-|-|
 |[EzchaUser](#EzchaUser)|[user](#EzchaServerPlayer-property-user)|null|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ]|[trophies_obtained](#EzchaServerPlayer-property-trophies_obtained)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ]|[trophies_obtained](#EzchaServerPlayer-property-trophies_obtained)|[]|
 |[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ]|[leaderboard_entries](#EzchaServerPlayer-property-leaderboard_entries)|[]|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[moderation_tools](#EzchaServerPlayer-property-moderation_tools)|false|
 
@@ -1359,6 +1367,7 @@ You shouldn't use this client-side or when making a singleplayer game. In those 
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[authenticate](#EzchaServerPlayer-method-authenticate) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_authenticated](#EzchaServerPlayer-method-is_authenticated) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_trophy](#EzchaServerPlayer-method-has_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
+|[EzchaTrophyObtained](#EzchaTrophyObtained)|[get_trophy](#EzchaServerPlayer-method-get_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[grant_trophy](#EzchaServerPlayer-method-grant_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_score](#EzchaServerPlayer-method-has_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id )
 |[float](https://docs.godotengine.org/en/4.6/classes/class_float.html)|[get_score](#EzchaServerPlayer-method-get_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0 )
@@ -1372,7 +1381,7 @@ You shouldn't use this client-side or when making a singleplayer game. In those 
 
 Emitted once a session token has been authenticated.
 
-**trophy_grant_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful, [EzchaTrophyMeta](#EzchaTrophyMeta) trophy_data )
+**trophy_grant_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful, [EzchaTrophy](#EzchaTrophy) trophy_data )
 
 Emitted when a trophy grant is queued from the grant_trophy function. trophy_data will be null if the grant could not be queued.
 
@@ -1396,7 +1405,7 @@ Emitted after a datastore value update is posted.
 The user data of the player. Only available after authenticating.
 
 <a name="EzchaServerPlayer-property-trophies_obtained"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ] **trophies_obtained** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ] **trophies_obtained** = []
 
 The trophies that the user has obtained from this game.
 
@@ -1430,6 +1439,11 @@ Returns true if the player has authenticated and user data is available.
 [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
 
 Returns true if the player has the trophy specified.
+
+<a name="EzchaServerPlayer-method-get_trophy"></a>
+[EzchaTrophyObtained](#EzchaTrophyObtained) **get_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
+
+Returns the trophy if the player has obtained it, null otherwise.
 
 <a name="EzchaServerPlayer-method-grant_trophy"></a>
 [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **grant_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
@@ -1903,8 +1917,8 @@ The cached player count.
 
 Attempt to ping the server. (Async) Returns the time spent in milliseconds or -1 if failed.
 
-<a name="EzchaTrophyMeta"></a>
-## EzchaTrophyMeta
+<a name="EzchaTrophy"></a>
+## EzchaTrophy
 
 **Inherits:** [EzchaDto](#EzchaDto)
 
@@ -1912,50 +1926,68 @@ Attempt to ping the server. (Async) Returns the time spent in milliseconds or -1
 
 |Type|Name|Default|
 |-|-|-|
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[id](#EzchaTrophyMeta-property-id)|""|
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[name](#EzchaTrophyMeta-property-name)|""|
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[description](#EzchaTrophyMeta-property-description)|""|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[unlisted](#EzchaTrophyMeta-property-unlisted)|false|
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[experience_points](#EzchaTrophyMeta-property-experience_points)|0|
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[created_timestamp](#EzchaTrophyMeta-property-created_timestamp)|""|
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[icon_url](#EzchaTrophyMeta-property-icon_url)|""|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[id](#EzchaTrophy-property-id)|""|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[name](#EzchaTrophy-property-name)|""|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[description](#EzchaTrophy-property-description)|""|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[unlisted](#EzchaTrophy-property-unlisted)|false|
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[experience_points](#EzchaTrophy-property-experience_points)|0|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[created_timestamp](#EzchaTrophy-property-created_timestamp)|""|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[icon_url](#EzchaTrophy-property-icon_url)|""|
 
 ### Property Descriptions
 
-<a name="EzchaTrophyMeta-property-id"></a>
+<a name="EzchaTrophy-property-id"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **id** = ""
 
 The trophy's unique identifier.
 
-<a name="EzchaTrophyMeta-property-name"></a>
+<a name="EzchaTrophy-property-name"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **name** = ""
 
 The display name of the trophy.
 
-<a name="EzchaTrophyMeta-property-description"></a>
+<a name="EzchaTrophy-property-description"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **description** = ""
 
 The description of the trophy. This typically includes its criteria.
 
-<a name="EzchaTrophyMeta-property-unlisted"></a>
+<a name="EzchaTrophy-property-unlisted"></a>
 [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **unlisted** = false
 
 Indicates if the trophy is hidden from public view.
 
-<a name="EzchaTrophyMeta-property-experience_points"></a>
+<a name="EzchaTrophy-property-experience_points"></a>
 [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **experience_points** = 0
 
 The number of experience points the trophy rewards once received.
 
-<a name="EzchaTrophyMeta-property-created_timestamp"></a>
+<a name="EzchaTrophy-property-created_timestamp"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **created_timestamp** = ""
 
 The timestamp of when the trophy was created.
 
-<a name="EzchaTrophyMeta-property-icon_url"></a>
+<a name="EzchaTrophy-property-icon_url"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **icon_url** = ""
 
 The URL for the trophy's icon image. This will be a png file.
+
+<a name="EzchaTrophyObtained"></a>
+## EzchaTrophyObtained
+
+**Inherits:** [EzchaTrophy](#EzchaTrophy)
+
+### Properties
+
+|Type|Name|Default|
+|-|-|-|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[obtained_timestamp](#EzchaTrophyObtained-property-obtained_timestamp)|""|
+
+### Property Descriptions
+
+<a name="EzchaTrophyObtained-property-obtained_timestamp"></a>
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **obtained_timestamp** = ""
+
+The timestamp for when the user obtained the trophy.
 
 <a name="EzchaUser"></a>
 ## EzchaUser
@@ -2377,7 +2409,7 @@ A response from the API containing the information related to a validated sessio
 |Type|Name|Default|
 |-|-|-|
 |[EzchaUser](#EzchaUser)|[user](#EzchaSessionValidationResponse-property-user)|null|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ]|[trophies_obtained](#EzchaSessionValidationResponse-property-trophies_obtained)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ]|[trophies_obtained](#EzchaSessionValidationResponse-property-trophies_obtained)|[]|
 |[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ]|[leaderboard_entries](#EzchaSessionValidationResponse-property-leaderboard_entries)|[]|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[moderation_tools](#EzchaSessionValidationResponse-property-moderation_tools)|false|
 
@@ -2389,7 +2421,7 @@ A response from the API containing the information related to a validated sessio
 The user associated with the session.
 
 <a name="EzchaSessionValidationResponse-property-trophies_obtained"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ] **trophies_obtained** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ] **trophies_obtained** = []
 
 The trophies that the user has obtained from this game.
 
@@ -2403,8 +2435,8 @@ The leaderboard entries the user has for this game.
 
 If true the user should have access to any available moderation tools.
 
-<a name="EzchaTrophyMetaListResponse"></a>
-## EzchaTrophyMetaListResponse
+<a name="EzchaTrophyListResponse"></a>
+## EzchaTrophyListResponse
 
 **Inherits:** [EzchaResponse](#EzchaResponse)
 
@@ -2414,12 +2446,32 @@ A response from the API containing a list of trophies.
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ]|[trophies](#EzchaTrophyMetaListResponse-property-trophies)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophy](#EzchaTrophy) ]|[trophies](#EzchaTrophyListResponse-property-trophies)|[]|
 
 ### Property Descriptions
 
-<a name="EzchaTrophyMetaListResponse-property-trophies"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyMeta](#EzchaTrophyMeta) ] **trophies** = []
+<a name="EzchaTrophyListResponse-property-trophies"></a>
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophy](#EzchaTrophy) ] **trophies** = []
+
+The list of trophies returned by the API request.
+
+<a name="EzchaTrophyObtainedListResponse"></a>
+## EzchaTrophyObtainedListResponse
+
+**Inherits:** [EzchaResponse](#EzchaResponse)
+
+A response from the API containing a list of trophies.
+
+### Properties
+
+|Type|Name|Default|
+|-|-|-|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ]|[trophies](#EzchaTrophyObtainedListResponse-property-trophies)|[]|
+
+### Property Descriptions
+
+<a name="EzchaTrophyObtainedListResponse-property-trophies"></a>
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ] **trophies** = []
 
 The list of trophies returned by the API request.
 
@@ -2435,7 +2487,7 @@ A response from the API that returns if a trophy grant has been queued.
 |Type|Name|Default|
 |-|-|-|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[queued](#EzchaTrophyQueuedResponse-property-queued)|false|
-|[EzchaTrophyMeta](#EzchaTrophyMeta)|[trophy](#EzchaTrophyQueuedResponse-property-trophy)|null|
+|[EzchaTrophy](#EzchaTrophy)|[trophy](#EzchaTrophyQueuedResponse-property-trophy)|null|
 
 ### Property Descriptions
 
@@ -2445,7 +2497,7 @@ A response from the API that returns if a trophy grant has been queued.
 Returns true if the grant has been queued.
 
 <a name="EzchaTrophyQueuedResponse-property-trophy"></a>
-[EzchaTrophyMeta](#EzchaTrophyMeta) **trophy** = null
+[EzchaTrophy](#EzchaTrophy) **trophy** = null
 
 The data of the trophy queued to be granted.
 
