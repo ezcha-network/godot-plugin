@@ -6,11 +6,17 @@ class_name EzchaClient
 
 const _RELAY_PING_BATCH_LIMIT: int = 5
 
-## Emitted once the authentication process has completed.
+## Emitted when the authentication process has completed.
 signal authentication_completed(successful: bool)
 
-## Emitted once logged out (not support on web).
+## Emitted when the login flow has completed. (not support on web).
+signal login_completed(successful: bool)
+
+## Emitted when the user logs out. (not support on web).
 signal logout_completed(successful: bool)
+
+## Emitted if the session has expired or is otherwise no longer valid.
+signal session_expired()
 
 ## Emitted when a trophy grant is queued from the grant_trophy function.
 ## trophy_data will be null if the grant could not be queued.
@@ -49,7 +55,17 @@ func _init(singleton: EzchaSingleton) -> void:
 	_ezcha = singleton
 	# Set default web adapter
 	if (OS.get_name() != "Web"): return
-	_adapter = EzchaPlatformAdapterWeb.new(singleton)
+	_adapter = EzchaWebAdapter.new(singleton)
+
+func _reset_state() -> void:
+	user = null
+	trophies_obtained.clear()
+	leaderboard_entries.clear()
+	moderation_tools = false
+	_obtained_trophy_ids.clear()
+	_pending_trophy_ids.clear()
+	_authenticated = false
+	_session_token = ""
 
 func _validate_session(token: String) -> bool:
 	var response: EzchaSessionValidationResponse = await _ezcha.sessions.post_validation(token, _ezcha.get_game_id()).async()
@@ -60,10 +76,13 @@ func _validate_session(token: String) -> bool:
 	_session_token = token
 	user = response.user
 	trophies_obtained = response.trophies_obtained
-	for trophy in trophies_obtained:
+	for trophy: EzchaTrophyObtained in trophies_obtained:
 		_obtained_trophy_ids.append(trophy.id)
 	leaderboard_entries = response.leaderboard_entries
 	moderation_tools = response.moderation_tools
+	if (_adapter != null):
+		_adapter.session_expired.connect(_on_session_expired, CONNECT_ONE_SHOT)
+		_adapter._notify_authenticated(user)
 	authentication_completed.emit(true)
 	return true
 
@@ -77,18 +96,16 @@ func authenticate() -> bool:
 		authentication_completed.emit(true)
 		return true
 	
-	# Check for session override debug option
 	var session_override: String = _ezcha.get_session_override()
 	if (OS.is_debug_build() && session_override != ""):
 		return await _validate_session(session_override)
 	
-	# Request token from adapter
 	if (_adapter == null):
 		authentication_completed.emit(false)
 		return false
 	_adapter._start_auth_flow()
-	var token = await _adapter.auth_flow_completed
-	if (token == null):
+	var token: String = await _adapter.auth_flow_completed
+	if (token.is_empty()):
 		authentication_completed.emit(false)
 		return false
 	return await _validate_session(token)
@@ -109,21 +126,17 @@ func supports_native_login() -> bool:
 ## (Async) Returns true if authentication was successful.
 func request_login() -> bool:
 	if (_authenticated): return true
-	
-	# Check for session override debug option
-	var session_override: String = _ezcha.get_session_override()
-	if (OS.is_debug_build() && session_override != ""):
-		return await _validate_session(session_override)
-	
-	# Request login flow from adapter
 	if (_adapter == null): return false
 	if (!_adapter.supports_login()): return false
 	_adapter._start_login_flow()
-	var token = await _adapter.login_flow_completed
-	if (token == null):
+	var token: String = await _adapter.login_flow_completed
+	if (token.is_empty()):
 		authentication_completed.emit(false)
+		login_completed.emit(false)
 		return false
-	return await _validate_session(token)
+	var validated: bool = await _validate_session(token)
+	login_completed.emit(validated)
+	return validated
 
 ## Requests to logout the current user for platforms that support it.
 ## The logout_completed signal is emitted on completion.
@@ -131,22 +144,20 @@ func request_login() -> bool:
 ## (Async) Returns true if logout was successful.
 func request_logout() -> bool:
 	if (!_authenticated): return true
-	
-	# Request logout from adapter
 	if (_adapter == null): return false
 	if (!_adapter.supports_login()): return false
 	var success: bool = await _adapter._logout()
-	if (success):
-		user = null
-		trophies_obtained.clear()
-		leaderboard_entries.clear()
-		moderation_tools = false
-		_obtained_trophy_ids.clear()
-		_pending_trophy_ids.clear()
-		_authenticated = false
-		_session_token = ""
+	if (success): _reset_state()
 	logout_completed.emit(success)
 	return success
+
+## Opens the account management page for platforms that support it.
+##
+## (Async) Returns once the user closes the page.
+func request_account_management() -> void:
+	if (_adapter == null): return
+	if (!_adapter.supports_login()): return
+	await _adapter._request_account_management()
 
 ## Returns true if the client has authenticated and user data is available.
 func is_authenticated() -> bool:
@@ -189,13 +200,13 @@ func grant_trophy(trophy_id: String) -> bool:
 
 ## Checks if the currently authenticated player has a score on a leaderboard.
 func has_score(leaderboard_id: String) -> bool:
-	for entry in leaderboard_entries:
+	for entry: EzchaLeaderboardEntry in leaderboard_entries:
 		if (entry.leaderboard.id == leaderboard_id): return true
 	return false
 
 ## Returns the currently authenticated player's score on a specific leaderboard.
 func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
-	for entry in leaderboard_entries:
+	for entry: EzchaLeaderboardEntry in leaderboard_entries:
 		if (entry.leaderboard.id == leaderboard_id): return entry.score
 	return defaults_to
 
@@ -295,3 +306,9 @@ func get_relay_lobbies(page: int = 1, game_mode: int = -1) -> EzchaLobbyListResp
 		EzchaUtil.get_game_version(),
 		game_mode
 	)
+
+# Events
+
+func _on_session_expired() -> void:
+	_reset_state()
+	session_expired.emit()

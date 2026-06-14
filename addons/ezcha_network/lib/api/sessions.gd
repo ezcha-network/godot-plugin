@@ -4,8 +4,7 @@ class_name EzchaSessionsAPI
 ##
 ## This should be accessed through the "Ezcha" singleton.
 
-## Returns a paginated list of news posts based on the criteria provided.
-## Category and series are mutually exclusive and cannot be used together.
+## Validates a session token and returns user information related to the current game.
 func post_validation(session_token: String = "", game_id: String = "") -> EzchaSessionValidationResponse:
 	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_POST)\

@@ -1,3 +1,16 @@
+# Version 2.5.1
+
+- **BREAKING!** Renamed `EzchaPlatformAdapterWeb` to `EzchaWebAdapter`
+- The editor plugin now keeps the override session alive
+- Added a `request_account_management()` function to `EzchaClient`
+	- Only supported on platforms where `supports_native_login()` is `true`
+- Added a `session_expired` signal to `EzchaClient`
+	- Emits when a previously valid session expires or is otherwise detected as invalid
+- Added a `login_completed` signal to `EzchaClient`
+- General behind the scenes improvements for the native login flow
+
+---
+
 # Version 2.5.0
 
 - **BREAKING!** Renamed `EzchaTrophyMeta` to `EzchaTrophy`

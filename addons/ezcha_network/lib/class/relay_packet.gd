@@ -1,6 +1,7 @@
 extends RefCounted
 class_name EzchaRelayPacket
 ## The class representing a relay packet received via Ezcha Relay.
+##
 ## Stores Godot-specific metadata (transfer mode, channel) extracted from payload.
 ## Internal use only.
 

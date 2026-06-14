@@ -19,8 +19,12 @@ const _SETTINGS_MAP: Array[Dictionary] = [
 ]
 
 var export_plugin: EditorExportPlugin = null
+
 var dock: Control = null
 var dock_initialized: bool = false
+
+var keep_alive_timer: Timer = null
+
 var game: EzchaGame = null
 var trophies_cached: bool = false
 var trophies: Array[EzchaTrophy] = []
@@ -50,6 +54,13 @@ func _enter_tree() -> void:
 	dock = load("res://addons/ezcha_network/dock/dock.tscn").instantiate()
 	dock.plugin = self
 	add_control_to_dock.call_deferred(DOCK_SLOT_RIGHT_BL, dock)
+	
+	# Create keep alive timer
+	keep_alive_timer = Timer.new()
+	keep_alive_timer.wait_time = 300.0
+	keep_alive_timer.autostart = true
+	keep_alive_timer.timeout.connect(_on_keep_alive_timeout)
+	add_child(keep_alive_timer)
 
 func _common_cleanup() -> void:
 	# Free dock
@@ -75,3 +86,17 @@ func _disable_plugin() -> void:
 	
 	# Remove singleton
 	remove_autoload_singleton("Ezcha")
+
+func _on_keep_alive_timeout() -> void:
+	var singleton: EzchaSingleton = get_node_or_null("/root/Ezcha")
+	if (singleton == null): return
+	var game_id: String = singleton.get_game_id()
+	var session: String = singleton.get_session_override()
+	if (game_id.is_empty() || session.is_empty()): return
+	
+	var validate_res: EzchaSessionValidationResponse = await singleton.sessions.post_validation(session, game_id).async()
+	if (validate_res.is_successful()):
+		print_rich("[color=#FFFFFF80][i]Ezcha session override refreshed.[/i][/color]")
+		return
+	ProjectSettings.clear("ezcha_network/config/debug/session_override")
+	print_rich("[color=#FFFFFF80][i]Ezcha session override expired.[/i][/color]")

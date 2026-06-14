@@ -1,12 +1,11 @@
 extends RefCounted
 class_name EzchaPlatformAdapter
-## A class for internal use to handle platform specific logic.
-##
-## You should never need to use this directly.
+## A class for handling platform specific logic.
 
-signal auth_flow_completed(token: Variant)
-signal login_flow_completed(token: Variant)
+signal auth_flow_completed(token: String)
+signal login_flow_completed(token: String)
 signal logout_completed(success: bool)
+signal session_expired()
 
 var _ezcha: EzchaSingleton = null
 
@@ -24,3 +23,6 @@ func _start_login_flow() -> void:
 
 func _logout() -> bool:
 	return false
+
+func _request_account_management() -> void:
+	pass

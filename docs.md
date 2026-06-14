@@ -5,6 +5,7 @@
 * [EzchaPlatformAdapterWeb](#EzchaPlatformAdapterWeb)
 * [EzchaSingleton](#EzchaSingleton)
 * [EzchaUtil](#EzchaUtil)
+* [EzchaWebAdapter](#EzchaWebAdapter)
 * [EzchaDatastoresAPI](#EzchaDatastoresAPI)
 * [EzchaGamesAPI](#EzchaGamesAPI)
 * [EzchaGeneralAPI](#EzchaGeneralAPI)
@@ -79,6 +80,7 @@ You should never need to use this directly. The "EzchaSingleton" class is a good
 |[EditorExportPlugin](https://docs.godotengine.org/en/4.6/classes/class_editorexportplugin.html)|export_plugin|null|
 |[Control](https://docs.godotengine.org/en/4.6/classes/class_control.html)|dock|null|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|dock_initialized|false|
+|[Timer](https://docs.godotengine.org/en/4.6/classes/class_timer.html)|keep_alive_timer|null|
 |[EzchaGame](#EzchaGame)|game|null|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|trophies_cached|false|
 |[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophy](#EzchaTrophy) ]|trophies|[]|
@@ -114,6 +116,7 @@ This should be accessed through the "Ezcha" singleton.
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[supports_native_login](#EzchaClient-method-supports_native_login) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[request_login](#EzchaClient-method-request_login) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[request_logout](#EzchaClient-method-request_logout) ( )
+|void|[request_account_management](#EzchaClient-method-request_account_management) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_authenticated](#EzchaClient-method-is_authenticated) ( )
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_session_token](#EzchaClient-method-get_session_token) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_trophy](#EzchaClient-method-has_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
@@ -132,11 +135,19 @@ This should be accessed through the "Ezcha" singleton.
 
 **authentication_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
 
-Emitted once the authentication process has completed.
+Emitted when the authentication process has completed.
+
+**login_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+
+Emitted when the login flow has completed. (not support on web).
 
 **logout_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
 
-Emitted once logged out (not support on web).
+Emitted when the user logs out. (not support on web).
+
+**session_expired** ( )
+
+Emitted if the session has expired or is otherwise no longer valid.
 
 **trophy_grant_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful, [EzchaTrophy](#EzchaTrophy) trophy_data )
 
@@ -208,6 +219,13 @@ Requests the native login flow for platforms that support it. This can be ran at
 Requests to logout the current user for platforms that support it. The logout_completed signal is emitted on completion. 
 
  (Async) Returns true if logout was successful.
+
+<a name="EzchaClient-method-request_account_management"></a>
+void **request_account_management** ( )
+
+Opens the account management page for platforms that support it. 
+
+ (Async) Returns once the user closes the page.
 
 <a name="EzchaClient-method-is_authenticated"></a>
 [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_authenticated** ( )
@@ -488,6 +506,84 @@ A helper to return if request errors should be printed.
 
 Common utilities used across the plugin.
 
+<a name="EzchaWebAdapter"></a>
+## EzchaWebAdapter
+
+**Inherits:** [EzchaPlatformAdapter](#EzchaPlatformAdapter)
+
+A class to handle web specific logic.
+
+### Methods
+
+|Returns|Name|
+|-|-|
+|void|[register_redirect](#EzchaWebAdapter-method-register_redirect) ( )
+|void|[login_redirect](#EzchaWebAdapter-method-login_redirect) ( )
+|void|[close_prompts](#EzchaWebAdapter-method-close_prompts) ( )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[avatar_prompt](#EzchaWebAdapter-method-avatar_prompt) ( [Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar )
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[captcha_prompt](#EzchaWebAdapter-method-captcha_prompt) ( )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[interstitial_ad_prompt](#EzchaWebAdapter-method-interstitial_ad_prompt) ( )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[rewarded_ad_prompt](#EzchaWebAdapter-method-rewarded_ad_prompt) ( )
+
+### Signals
+
+**avatar_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success )
+
+Emitted once the avatar prompt is completed.
+
+**captcha_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) response )
+
+Emitted once the captcha prompt is completed.
+
+**ad_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) rewarded )
+
+Emitted once the rewarded ad prompt is completed.
+
+### Method Descriptions
+
+<a name="EzchaWebAdapter-method-register_redirect"></a>
+void **register_redirect** ( )
+
+Redirects to the register page and back.
+
+<a name="EzchaWebAdapter-method-login_redirect"></a>
+void **login_redirect** ( )
+
+Redirects to the login page and back.
+
+<a name="EzchaWebAdapter-method-close_prompts"></a>
+void **close_prompts** ( )
+
+Closes all web embed prompts.
+
+<a name="EzchaWebAdapter-method-avatar_prompt"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **avatar_prompt** ( [Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar )
+
+Prompts the user to change their avatar. The provided image must be 256x256px. 
+
+ (Async) Returns true if user accepts and the upload is successful.
+
+<a name="EzchaWebAdapter-method-captcha_prompt"></a>
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **captcha_prompt** ( )
+
+Prompts the user to solve a captcha. The response must be validated via the API. 
+
+ (Async) Returns the response if successful, otherwise an empty string.
+
+<a name="EzchaWebAdapter-method-interstitial_ad_prompt"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **interstitial_ad_prompt** ( )
+
+Shows the user an interstitial video advertisment. 
+
+ (Async) Returns the true if an advertisment was displayed.
+
+<a name="EzchaWebAdapter-method-rewarded_ad_prompt"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **rewarded_ad_prompt** ( )
+
+Shows the user a rewarded video advertisment. 
+
+ (Async) Returns the true if the player should be rewarded.
+
 <a name="EzchaDatastoresAPI"></a>
 ## EzchaDatastoresAPI
 
@@ -752,7 +848,7 @@ This should be accessed through the "Ezcha" singleton.
 <a name="EzchaSessionsAPI-method-post_validation"></a>
 [EzchaSessionValidationResponse](#EzchaSessionValidationResponse) **post_validation** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id="" )
 
-Returns a paginated list of news posts based on the criteria provided. Category and series are mutually exclusive and cannot be used together.
+Validates a session token and returns user information related to the current game.
 
 <a name="EzchaTrophiesAPI"></a>
 ## EzchaTrophiesAPI
@@ -930,11 +1026,7 @@ A base class for handling data returned by the Ezcha Network API.
 
 **Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
 
-A class for internal use to handle platform specific logic.
-
-### Description
-
-You should never need to use this directly.
+A class for handling platform specific logic.
 
 ### Methods
 
@@ -944,15 +1036,19 @@ You should never need to use this directly.
 
 ### Signals
 
-**auth_flow_completed** ( [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) token )
+**auth_flow_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token )
 
 
 
-**login_flow_completed** ( [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) token )
+**login_flow_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token )
 
 
 
 **logout_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success )
+
+
+
+**session_expired** ( )
 
 
 

@@ -13,3 +13,13 @@ export_presets.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Platform-specific ignores
+Thumbs.db
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
