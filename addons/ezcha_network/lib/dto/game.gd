@@ -44,3 +44,8 @@ var released_timestamp: String = ""
 ## The timestamp for when the game was published on other platforms before Ezcha.
 ## Not all games will have this.
 var original_released_timestamp: String = ""
+
+## Check if two instances represent the same game.
+## Data can vary if requested at different times.
+func equals(other: EzchaGame) -> bool:
+	return (id == other.id)

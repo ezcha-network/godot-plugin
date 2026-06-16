@@ -23,6 +23,9 @@ var level: int = -1
 ## If true the user currently has elite membership.
 var elite: bool = false
 
+## If true the user represents an Ezcha Relay guest.
+var guest: bool = false
+
 ## The timestamp of when the user registered their account.
 var registered_timestamp: String = ""
 
@@ -35,3 +38,8 @@ var url: String = ""
 ## The URL for the user's avatar/profile picture.
 ## This will be a png file.
 var avatar_url: String = ""
+
+## Check if two instances represent the same user.
+## Data can vary if requested at different times.
+func equals(other: EzchaUser) -> bool:
+	return (id == other.id)

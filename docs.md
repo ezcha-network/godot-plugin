@@ -118,6 +118,7 @@ This should be accessed through the "Ezcha" singleton.
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[request_logout](#EzchaClient-method-request_logout) ( )
 |void|[request_account_management](#EzchaClient-method-request_account_management) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_authenticated](#EzchaClient-method-is_authenticated) ( )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_guest](#EzchaClient-method-is_guest) ( )
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_session_token](#EzchaClient-method-get_session_token) ( )
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_trophy](#EzchaClient-method-has_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
 |[EzchaTrophyObtained](#EzchaTrophyObtained)|[get_trophy](#EzchaClient-method-get_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
@@ -231,6 +232,11 @@ Opens the account management page for platforms that support it.
 [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_authenticated** ( )
 
 Returns true if the client has authenticated and user data is available.
+
+<a name="EzchaClient-method-is_guest"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_guest** ( )
+
+Returns true if the user has a guest profile loaded from a relay lobby.
 
 <a name="EzchaClient-method-get_session_token"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_session_token** ( )
@@ -1067,6 +1073,7 @@ A lobby based MultiplayerPeer implementation which uses Ezcha Relay for networki
 |void|[join_lobby](#EzchaRelayMultiplayerPeer-method-join_lobby) ( [EzchaRelayLobby](#EzchaRelayLobby) lobby )
 |void|[create_lobby](#EzchaRelayMultiplayerPeer-method-create_lobby) ( [EzchaRelayServer](#EzchaRelayServer) server, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) players, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=0, [Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html) visibility=Visibility.PUBLIC, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) host_migration=false )
 |void|[kick](#EzchaRelayMultiplayerPeer-method-kick) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
+|void|[ban](#EzchaRelayMultiplayerPeer-method-ban) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_lobby_id](#EzchaRelayMultiplayerPeer-method-get_lobby_id) ( )
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_join_code](#EzchaRelayMultiplayerPeer-method-get_join_code) ( )
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_lobby_name](#EzchaRelayMultiplayerPeer-method-get_lobby_name) ( )
@@ -1154,6 +1161,7 @@ enum **ErrorType**:
 * ErrorType **LOBBY_FULL** = 320
 * ErrorType **NOT_FRIENDS** = 321
 * ErrorType **REFUSING_CONNECTIONS** = 322
+* ErrorType **BANNED** = 323
 * ErrorType **LOBBY_LIMIT_REACHED** = 400
 * ErrorType **KICKED** = 500
 * ErrorType **INVALID_PEER** = 501
@@ -1188,12 +1196,17 @@ Connect to a relay server and join a lobby. Do not call this function with `awai
 <a name="EzchaRelayMultiplayerPeer-method-create_lobby"></a>
 void **create_lobby** ( [EzchaRelayServer](#EzchaRelayServer) server, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) players, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=0, [Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html) visibility=Visibility.PUBLIC, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) host_migration=false )
 
-Request a new lobby from the relay server. Do not call this function with `await`.
+Request a new lobby from the relay server. Hosting requires the user to be authenticated. Do not call this function with `await`.
 
 <a name="EzchaRelayMultiplayerPeer-method-kick"></a>
 void **kick** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
 
 Kick another player from the lobby. (host/moderator only)
+
+<a name="EzchaRelayMultiplayerPeer-method-ban"></a>
+void **ban** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
+
+Ban another player from the lobby. (host/moderator only)
 
 <a name="EzchaRelayMultiplayerPeer-method-get_lobby_id"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_lobby_id** ( )
@@ -1295,7 +1308,11 @@ Returns if the current peer can modify the lobby.
 
 **Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
 
-The class representing a relay packet received via Ezcha Relay. Stores Godot-specific metadata (transfer mode, channel) extracted from payload. Internal use only.
+The class representing a relay packet received via Ezcha Relay.
+
+### Description
+
+Stores Godot-specific metadata (transfer mode, channel) extracted from payload. Internal use only.
 
 ### Properties
 
@@ -1441,11 +1458,11 @@ Returns if the response is pending or not.
 
 **Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
 
-A helper class for managing player data (sessions, user info, trophies, etc) on a server.
+A helper class for managing players on dedicated servers.
 
 ### Description
 
-You shouldn't use this client-side or when making a singleplayer game. In those cases you should use Ezcha.client instead.
+You shouldn't use this client-side or when making a singleplayer/relay based game. In those cases you should rely on Ezcha.client instead.
 
 ### Properties
 
@@ -1632,6 +1649,12 @@ Returns true if the image has been downloaded and parsed.
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[released_timestamp](#EzchaGame-property-released_timestamp)|""|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[original_released_timestamp](#EzchaGame-property-original_released_timestamp)|""|
 
+### Methods
+
+|Returns|Name|
+|-|-|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaGame-method-equals) ( [EzchaGame](#EzchaGame) other )
+
 ### Property Descriptions
 
 <a name="EzchaGame-property-id"></a>
@@ -1694,6 +1717,13 @@ The timestamp for when the game was released on Ezcha.
 
 The timestamp for when the game was published on other platforms before Ezcha. Not all games will have this.
 
+### Method Descriptions
+
+<a name="EzchaGame-method-equals"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaGame](#EzchaGame) other )
+
+Check if two instances represent the same game. Data can vary if requested at different times.
+
 <a name="EzchaLeaderboard"></a>
 ## EzchaLeaderboard
 
@@ -1711,6 +1741,12 @@ The timestamp for when the game was published on other platforms before Ezcha. N
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[value_prefix](#EzchaLeaderboard-property-value_prefix)|""|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[value_suffix](#EzchaLeaderboard-property-value_suffix)|""|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[created_timestamp](#EzchaLeaderboard-property-created_timestamp)|""|
+
+### Methods
+
+|Returns|Name|
+|-|-|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaLeaderboard-method-equals) ( [EzchaLeaderboard](#EzchaLeaderboard) other )
 
 ### Property Descriptions
 
@@ -1753,6 +1789,13 @@ The suffix to show after the values when displayed.
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **created_timestamp** = ""
 
 The timestamp of when the leaderboard was created.
+
+### Method Descriptions
+
+<a name="EzchaLeaderboard-method-equals"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaLeaderboard](#EzchaLeaderboard) other )
+
+Check if two instances represent the same leaderboard. Data can vary if requested at different times.
 
 <a name="EzchaLeaderboardEntry"></a>
 ## EzchaLeaderboardEntry
@@ -1822,6 +1865,12 @@ The timestamp of when this entry was last updated.
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[url](#EzchaNewsPost-property-url)|""|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[image_url](#EzchaNewsPost-property-image_url)|""|
 
+### Methods
+
+|Returns|Name|
+|-|-|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaNewsPost-method-equals) ( [EzchaNewsPost](#EzchaNewsPost) other )
+
 ### Property Descriptions
 
 <a name="EzchaNewsPost-property-id"></a>
@@ -1874,6 +1923,13 @@ The URL that the news post can be viewed at.
 
 The URL of the news post's featured image. Not all news posts will have this.
 
+### Method Descriptions
+
+<a name="EzchaNewsPost-method-equals"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaNewsPost](#EzchaNewsPost) other )
+
+Check if two instances represent the same news post. Data can vary if requested at different times.
+
 <a name="EzchaRelayLobby"></a>
 ## EzchaRelayLobby
 
@@ -1893,6 +1949,12 @@ The URL of the news post's featured image. Not all news posts will have this.
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[created_at](#EzchaRelayLobby-property-created_at)|""|
 |[EzchaUser](#EzchaUser)|[host](#EzchaRelayLobby-property-host)|null|
 |[EzchaRelayServer](#EzchaRelayServer)|[server](#EzchaRelayLobby-property-server)|null|
+
+### Methods
+
+|Returns|Name|
+|-|-|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaRelayLobby-method-equals) ( [EzchaRelayLobby](#EzchaRelayLobby) other )
 
 ### Property Descriptions
 
@@ -1946,6 +2008,13 @@ The current host of the lobby.
 
 The server which the lobby is hosted on.
 
+### Method Descriptions
+
+<a name="EzchaRelayLobby-method-equals"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaRelayLobby](#EzchaRelayLobby) other )
+
+Check if two instances represent the same lobby. Data can vary if requested at different times.
+
 <a name="EzchaRelayServer"></a>
 ## EzchaRelayServer
 
@@ -1968,6 +2037,7 @@ The server which the lobby is hosted on.
 |Returns|Name|
 |-|-|
 |[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[ping](#EzchaRelayServer-method-ping) ( )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaRelayServer-method-equals) ( [EzchaRelayServer](#EzchaRelayServer) other )
 
 ### Property Descriptions
 
@@ -2013,6 +2083,11 @@ The cached player count.
 
 Attempt to ping the server. (Async) Returns the time spent in milliseconds or -1 if failed.
 
+<a name="EzchaRelayServer-method-equals"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaRelayServer](#EzchaRelayServer) other )
+
+Check if two instances represent the same server. Data can vary if requested at different times.
+
 <a name="EzchaTrophy"></a>
 ## EzchaTrophy
 
@@ -2029,6 +2104,12 @@ Attempt to ping the server. (Async) Returns the time spent in milliseconds or -1
 |[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[experience_points](#EzchaTrophy-property-experience_points)|0|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[created_timestamp](#EzchaTrophy-property-created_timestamp)|""|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[icon_url](#EzchaTrophy-property-icon_url)|""|
+
+### Methods
+
+|Returns|Name|
+|-|-|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaTrophy-method-equals) ( [EzchaTrophy](#EzchaTrophy) other )
 
 ### Property Descriptions
 
@@ -2067,6 +2148,13 @@ The timestamp of when the trophy was created.
 
 The URL for the trophy's icon image. This will be a png file.
 
+### Method Descriptions
+
+<a name="EzchaTrophy-method-equals"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaTrophy](#EzchaTrophy) other )
+
+Check if two instances represent the same trophy. Data can vary if requested at different times.
+
 <a name="EzchaTrophyObtained"></a>
 ## EzchaTrophyObtained
 
@@ -2101,10 +2189,17 @@ The timestamp for when the user obtained the trophy.
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[title](#EzchaUser-property-title)|""|
 |[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[level](#EzchaUser-property-level)|-1|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[elite](#EzchaUser-property-elite)|false|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[guest](#EzchaUser-property-guest)|false|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[registered_timestamp](#EzchaUser-property-registered_timestamp)|""|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[last_seen_timestamp](#EzchaUser-property-last_seen_timestamp)|""|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[url](#EzchaUser-property-url)|""|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[avatar_url](#EzchaUser-property-avatar_url)|""|
+
+### Methods
+
+|Returns|Name|
+|-|-|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaUser-method-equals) ( [EzchaUser](#EzchaUser) other )
 
 ### Property Descriptions
 
@@ -2143,6 +2238,11 @@ The total level the user is currently at.
 
 If true the user currently has elite membership.
 
+<a name="EzchaUser-property-guest"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **guest** = false
+
+If true the user represents an Ezcha Relay guest.
+
 <a name="EzchaUser-property-registered_timestamp"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **registered_timestamp** = ""
 
@@ -2162,6 +2262,13 @@ The URL to view the user's profile.
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **avatar_url** = ""
 
 The URL for the user's avatar/profile picture. This will be a png file.
+
+### Method Descriptions
+
+<a name="EzchaUser-method-equals"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaUser](#EzchaUser) other )
+
+Check if two instances represent the same user. Data can vary if requested at different times.
 
 <a name="EzchaCaptchaResponse"></a>
 ## EzchaCaptchaResponse

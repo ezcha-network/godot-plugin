@@ -37,3 +37,8 @@ func ping() -> int:
 	await res.completed
 	if (!res.is_successful()): return -1
 	return Time.get_ticks_msec() - start_ms
+
+## Check if two instances represent the same server.
+## Data can vary if requested at different times.
+func equals(other: EzchaRelayServer) -> bool:
+	return (id == other.id)

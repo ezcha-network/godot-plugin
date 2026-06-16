@@ -1,3 +1,18 @@
+# Version 2.5.2
+
+This version implements the new partial guest support for Ezcha Relay, along with various
+other improvements. Joining a lobby as a guest will now simulate authentication as a temporary user,
+allowing you to get user data like you normally would. To enabled guests developers must toggle the
+new option in the developer panel under the "API" tab. Users can now also be banned from lobbies.
+
+- Access errors now print to the output
+- Added `is_guest()` helper function to `EzchaClient`
+- Added a `guest` bool field to `EzchaUser`
+- Added `equals(other)` helper function to all DTO objects.
+- Added `ban(peer_id, message = "")` to `EzchaRelayMultiplayerPeer`
+
+---
+
 # Version 2.5.1
 
 - **BREAKING!** Renamed `EzchaPlatformAdapterWeb` to `EzchaWebAdapter`

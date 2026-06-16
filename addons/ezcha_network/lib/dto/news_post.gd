@@ -37,3 +37,8 @@ var url: String = ""
 ## The URL of the news post's featured image.
 ## Not all news posts will have this.
 var image_url: String = ""
+
+## Check if two instances represent the same news post.
+## Data can vary if requested at different times.
+func equals(other: EzchaNewsPost) -> bool:
+	return (id == other.id)

@@ -36,3 +36,8 @@ var host: EzchaUser = null
 
 ## The server which the lobby is hosted on.
 var server: EzchaRelayServer = null
+
+## Check if two instances represent the same lobby.
+## Data can vary if requested at different times.
+func equals(other: EzchaRelayLobby) -> bool:
+	return (id == other.id)

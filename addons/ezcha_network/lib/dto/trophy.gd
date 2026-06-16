@@ -22,3 +22,8 @@ var created_timestamp: String = ""
 ## The URL for the trophy's icon image.
 ## This will be a png file.
 var icon_url: String = ""
+
+## Check if two instances represent the same trophy.
+## Data can vary if requested at different times.
+func equals(other: EzchaTrophy) -> bool:
+	return (id == other.id)

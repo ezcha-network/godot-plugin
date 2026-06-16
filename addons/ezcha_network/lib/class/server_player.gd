@@ -1,8 +1,8 @@
 extends RefCounted
 class_name EzchaServerPlayer
-## A helper class for managing player data (sessions, user info, trophies, etc) on a server.
+## A helper class for managing players on dedicated servers.
 ##
-## You shouldn't use this client-side or when making a singleplayer game.
+## You shouldn't use this client-side or when making a singleplayer/relay based game.
 ## In those cases you should use Ezcha.client instead.
 
 ## Emitted once a session token has been authenticated.
@@ -82,8 +82,15 @@ func get_trophy(trophy_id: String) -> EzchaTrophyObtained:
 ##
 ## (Async) Returns true if the trophy grant was queued.
 func grant_trophy(trophy_id: String) -> bool:
-	if (!_authenticated): return false
-	if (has_trophy(trophy_id, true)): return false
+	if (!_authenticated):
+		printerr("EzchaServerPlayer: User must be authenticated before granting trophies.")
+		return false
+	if (user.guest):
+		printerr("EzchaServerPlayer: Guests cannot be granted trophies.")
+		return false
+	if (has_trophy(trophy_id, true)):
+		printerr("EzchaServerPlayer: User has already obtained this trophy.")
+		return false
 	_pending_trophy_ids.append(trophy_id)
 	var response: EzchaTrophyQueuedResponse = await _ezcha.trophies.post_grant_server(trophy_id, user.id).async()
 	var idx: int = _pending_trophy_ids.find(trophy_id)
@@ -112,7 +119,12 @@ func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
 ##
 ## (Async) Returns true if the score update was queued.
 func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsAPI.UpdateMode = EzchaLeaderboardsAPI.UpdateMode.SET) -> bool:
-	if (!_authenticated): return false
+	if (!_authenticated):
+		printerr("EzchaServerPlayer: User must be authenticated before tracking scores.")
+		return false
+	if (user.guest):
+		printerr("EzchaServerPlayer: Guests cannot track scores.")
+		return false
 	var response: EzchaLeaderboardQueuedResponse = await _ezcha.leaderboards.post_entry_server(leaderboard_id, user.id, score, mode).async()
 	if (!response.is_successful() || !response.queued):
 		leaderboard_update_completed.emit(leaderboard_id, false)
@@ -125,7 +137,12 @@ func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsA
 ##
 ## (Async) Returns a string value. The value will be empty if deleted or not yet set.
 func get_datastore(key: String) -> String:
-	if (!_authenticated): return ""
+	if (!_authenticated):
+		printerr("EzchaServerPlayer: User must be authenticated before accessing datastores.")
+		return ""
+	if (user.guest):
+		printerr("EzchaServerPlayer: Guests cannot access datastores.")
+		return ""
 	var response: EzchaDatastoreValueResponse = await _ezcha.datastores.get_server(user.id, key).async()
 	if (!response.is_successful()):
 		datastore_value_received.emit(key, "")
@@ -140,7 +157,12 @@ func get_datastore(key: String) -> String:
 ##
 ## (Async) Returns true if the value was successfully updated.
 func set_datastore(key: String, value: String) -> bool:
-	if (!_authenticated): false
+	if (!_authenticated):
+		printerr("EzchaServerPlayer: User must be authenticated before accessing datastores.")
+		return false
+	if (user.guest):
+		printerr("EzchaServerPlayer: Guests cannot access datastores.")
+		return false
 	var response: EzchaResponse = await _ezcha.datastores.post_server(user.id, key, value).async()
 	if (!response.is_successful()):
 		datastore_value_posted.emit(key, false)

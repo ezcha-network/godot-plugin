@@ -24,3 +24,8 @@ var value_suffix: String = ""
 
 ## The timestamp of when the leaderboard was created.
 var created_timestamp: String = ""
+
+## Check if two instances represent the same leaderboard.
+## Data can vary if requested at different times.
+func equals(other: EzchaLeaderboard) -> bool:
+	return (id == other.id)
