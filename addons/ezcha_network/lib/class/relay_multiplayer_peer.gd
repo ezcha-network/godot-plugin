@@ -229,7 +229,7 @@ func ban(peer_id: int, message: String = "") -> void:
 func get_lobby_id() -> String:
 	return _lobby_id
 
-## Returns the UUID of the lobby.
+## Returns the join code of the lobby.
 func get_join_code() -> String:
 	return _join_code
 
@@ -306,7 +306,7 @@ func set_game_mode(new_mode: int) -> void:
 	packet.encode_u8(2, new_mode)
 	_ws.send(packet)
 
-## Change the game mode of the lobby.
+## Change the player limit of the lobby.
 ## (host/moderator only, requires migration to be enabled)
 func set_player_limit(new_limit: int) -> void:
 	# Check state

@@ -9,8 +9,8 @@ const TROPHY_ICON: EzchaWebTexture = preload("res://addons/ezcha_network/dock/re
 @onready var copy_btn: Button = $Contents/Actions/Copy
 
 func _opened() -> void:
-	if (!dock.plugin.trophies_cached):
-		dock.plugin.trophies_cached = true
+	if (!dock.plugin._trophies_cached):
+		dock.plugin._trophies_cached = true
 		refresh_trophies()
 		return
 	render_list()
@@ -22,20 +22,21 @@ func reset() -> void:
 
 func render_list() -> void:
 	reset()
-	for trophy: EzchaTrophy in dock.plugin.trophies:
+	for trophy: EzchaTrophy in dock.plugin._trophies:
 		var idx: int = list.add_item(trophy.name)
 		list.set_item_tooltip(idx, trophy.id)
 
 func refresh_trophies() -> void:
 	reset()
-	var resp: EzchaTrophyListResponse = _ezcha.games.get_trophies(dock.plugin.game.id, _ezcha.get_session_override())
-	await resp.completed
+	var resp: EzchaTrophyListResponse = await _ezcha.games.get_trophies(
+		dock.plugin._game.id, _ezcha.get_session_override()
+	).async()
 	if (!resp.is_successful()): return
-	dock.plugin.trophies = resp.trophies
+	dock.plugin._trophies = resp.trophies
 	render_list()
 
 func _on_list_item_selected(index: int) -> void:
-	var trophy: EzchaTrophy = dock.plugin.trophies[index]
+	var trophy: EzchaTrophy = dock.plugin._trophies[index]
 	copy_btn.disabled = false
 	info_split.visible = true
 	description_label.text = trophy.description
@@ -44,7 +45,7 @@ func _on_list_item_selected(index: int) -> void:
 func _on_copy_pressed() -> void:
 	if (!list.is_anything_selected()): return
 	var index: int = list.get_selected_items()[0]
-	DisplayServer.clipboard_set(dock.plugin.trophies[index].id)
+	DisplayServer.clipboard_set(dock.plugin._trophies[index].id)
 
 func _on_refresh_pressed() -> void:
 	refresh_trophies()

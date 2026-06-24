@@ -4,13 +4,13 @@ extends Control
 @onready var _ezcha: EzchaSingleton = get_node_or_null("/root/Ezcha")
 
 var plugin: EzchaPlugin = null
-var menu_main: ScrollContainer
-var menu_information: ScrollContainer
-var menu_trophies: ScrollContainer
-var menu_leaderboards: ScrollContainer
-var menu_configuration: ScrollContainer
+var menu_main: ScrollContainer = null
+var menu_information: ScrollContainer = null
+var menu_trophies: ScrollContainer = null
+var menu_leaderboards: ScrollContainer = null
+var menu_configuration: ScrollContainer = null
 
-func _enter_tree():
+func _enter_tree() -> void:
 	# Get menu nodes
 	menu_main = $Main
 	menu_information = $Information
@@ -19,8 +19,8 @@ func _enter_tree():
 	menu_configuration = $Configuration
 	
 	# Initial game load
-	if (plugin != null && !plugin.dock_initialized):
-		plugin.dock_initialized = true
+	if (plugin != null && !plugin._dock_initialized):
+		plugin._dock_initialized = true
 		load_game.call_deferred()
 
 func _ready() -> void:
@@ -28,21 +28,18 @@ func _ready() -> void:
 
 func load_game() -> void:
 	var game_id: String = ProjectSettings.get_setting("ezcha_network/config/global/game_id", "")
-	if (game_id == ""):
-		return show_menu(menu_configuration)
-	
-	var resp: EzchaGameResponse = _ezcha.games.get_from_id(game_id)
-	await resp.completed
+	if (game_id == ""): return show_menu(menu_configuration)
+	var resp: EzchaGameResponse = await _ezcha.games.get_from_id(game_id).async()
 	if (!resp.is_successful()):
 		show_menu(menu_configuration)
 		menu_configuration.update_game = true
 		return
-	plugin.game = resp.game
+	plugin._game = resp.game
 	show_menu(menu_main)
 
 func show_menu(menu: Control) -> void:
-	for child in get_children():
+	for child: Node in get_children():
 		child.visible = (child == menu)
-		if (child.visible):
-			child._opened()
-			child.set_deferred("scroll_vertical", 0)
+		if (!child.visible): continue
+		child._opened()
+		child.set_deferred("scroll_vertical", 0)

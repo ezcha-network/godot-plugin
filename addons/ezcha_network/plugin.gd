@@ -18,67 +18,68 @@ const _SETTINGS_MAP: Array[Dictionary] = [
 	{ "name": "ezcha_network/config/debug/print_request_errors", "value": false }
 ]
 
-var export_plugin: EditorExportPlugin = null
+var _export_plugin: EditorExportPlugin = null
 
-var dock: Control = null
-var dock_initialized: bool = false
+var _dock: Control = null
+var _dock_initialized: bool = false
 
-var keep_alive_timer: Timer = null
+var _keep_alive_timer: Timer = null
 
-var game: EzchaGame = null
-var trophies_cached: bool = false
-var trophies: Array[EzchaTrophy] = []
-var leaderboards_cached: bool = false
-var leaderboards: Array[EzchaLeaderboard] = []
+var _game: EzchaGame = null
+var _trophies_cached: bool = false
+var _trophies: Array[EzchaTrophy] = []
+var _leaderboards_cached: bool = false
+var _leaderboards: Array[EzchaLeaderboard] = []
 
 func _enter_tree() -> void:
 	# Create settings
-	for setting in _SETTINGS_MAP:
-		if (ProjectSettings.has_setting(setting["name"])): continue
-		ProjectSettings.set_setting(setting["name"], setting["value"])
+	for setting: Dictionary in _SETTINGS_MAP:
+		if (!ProjectSettings.has_setting(setting["name"])):
+			ProjectSettings.set_setting(setting["name"], setting["value"])
 		ProjectSettings.set_initial_value(setting["name"], setting["value"])
-		var info: Dictionary = {
+		ProjectSettings.add_property_info({
 			"name": setting["name"],
 			"type": typeof(setting["value"]),
-		}
-		ProjectSettings.add_property_info(info)
+			"hint": setting.get("hint", PROPERTY_HINT_NONE),
+			"hint_string": setting.get("hint_string", "")
+		})
 	
 	# Add singleton
 	add_autoload_singleton("Ezcha", "res://addons/ezcha_network/lib/singleton.gd")
 	
 	# Enable export plugin
-	export_plugin = _EXPORT_PLUGIN.new()
-	add_export_plugin(export_plugin)
+	_export_plugin = _EXPORT_PLUGIN.new()
+	add_export_plugin(_export_plugin)
 	
 	# Add dock
-	dock = load("res://addons/ezcha_network/dock/dock.tscn").instantiate()
-	dock.plugin = self
-	add_control_to_dock.call_deferred(DOCK_SLOT_RIGHT_BL, dock)
+	_dock = load("res://addons/ezcha_network/dock/dock.tscn").instantiate()
+	_dock.plugin = self
+	add_control_to_dock.call_deferred(DOCK_SLOT_RIGHT_BL, _dock)
 	
 	# Create keep alive timer
-	keep_alive_timer = Timer.new()
-	keep_alive_timer.wait_time = 300.0
-	keep_alive_timer.autostart = true
-	keep_alive_timer.timeout.connect(_on_keep_alive_timeout)
-	add_child(keep_alive_timer)
+	_keep_alive_timer = Timer.new()
+	_keep_alive_timer.wait_time = 300.0
+	_keep_alive_timer.autostart = true
+	_keep_alive_timer.timeout.connect(_on_keep_alive_timeout)
+	add_child(_keep_alive_timer)
 
 func _common_cleanup() -> void:
 	# Free dock
-	if (dock == null): return
-	remove_control_from_docks(dock)
-	dock.free()
-	dock = null
+	if (_dock == null): return
+	remove_control_from_docks(_dock)
+	_dock.free()
+	_dock = null
 
 func _exit_tree() -> void:
 	_common_cleanup()
 	
 	# Disable export plugin
-	remove_export_plugin(export_plugin)
-	export_plugin = null
+	remove_export_plugin(_export_plugin)
+	_export_plugin = null
 
 func _disable_plugin() -> void:
 	# Clear settings
-	for setting in _SETTINGS_MAP:
+	for setting: Dictionary in _SETTINGS_MAP:
 		if (!ProjectSettings.has_setting(setting["name"])): continue
 		ProjectSettings.clear(setting["name"])
 	

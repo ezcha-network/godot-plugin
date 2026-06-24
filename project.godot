@@ -18,6 +18,29 @@ config/name="Ezcha Network"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.png"
 
+[autoload]
+
+Ezcha="*uid://b6odi12jokac"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/ezcha_network/plugin.cfg", "res://addons/mark_it/plugin.cfg", "res://addons/plugin_bundler/plugin.cfg")
+
+[ezcha_network]
+
+config/global/game_id="0L4n_lVRIT8L27s2r11hx"
+config/debug/print_request_errors=true
+
+[mark_it]
+
+config/project_path="res://addons/ezcha_network"
+config/export_path="res://docs.md"
+
+[plugin_bundler]
+
+config/plugin_path="res://addons/ezcha_network"
+config/license_path="res://LICENSE"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

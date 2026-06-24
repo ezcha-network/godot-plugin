@@ -3,7 +3,7 @@ extends Node
 class_name EzchaSingleton
 ## The class representing the "Ezcha" singleton.
 ##
-## This is where most of the functionality the plugin offers is accessed from.
+## This is where most of the plugin's functionality is accessed from.
 
 const _HOSTNAME: String = "https://ezcha.net"
 

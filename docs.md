@@ -2,7 +2,6 @@
 
 * [EzchaPlugin](#EzchaPlugin)
 * [EzchaClient](#EzchaClient)
-* [EzchaPlatformAdapterWeb](#EzchaPlatformAdapterWeb)
 * [EzchaSingleton](#EzchaSingleton)
 * [EzchaUtil](#EzchaUtil)
 * [EzchaWebAdapter](#EzchaWebAdapter)
@@ -38,8 +37,8 @@
 * [EzchaCaptchaResponse](#EzchaCaptchaResponse)
 * [EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)
 * [EzchaFriendsResponse](#EzchaFriendsResponse)
-* [EzchaGameResponse](#EzchaGameResponse)
 * [EzchaGameListResponse](#EzchaGameListResponse)
+* [EzchaGameResponse](#EzchaGameResponse)
 * [EzchaGeneralStatusResponse](#EzchaGeneralStatusResponse)
 * [EzchaGeneralTimeResponse](#EzchaGeneralTimeResponse)
 * [EzchaLeaderboardEntryListResponse](#EzchaLeaderboardEntryListResponse)
@@ -54,8 +53,8 @@
 * [EzchaTrophyListResponse](#EzchaTrophyListResponse)
 * [EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse)
 * [EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse)
-* [EzchaUserResponse](#EzchaUserResponse)
 * [EzchaUserListResponse](#EzchaUserListResponse)
+* [EzchaUserResponse](#EzchaUserResponse)
 * [EzchaUsersResponse](#EzchaUsersResponse)
 
 # Class Documentation
@@ -69,23 +68,7 @@ A class for internal use.
 
 ### Description
 
-You should never need to use this directly. The "EzchaSingleton" class is a good starting point. 
-
- Many of the values here are used for the dock within the editor and will not be available within an exported game.
-
-### Properties
-
-|Type|Name|Default|
-|-|-|-|
-|[EditorExportPlugin](https://docs.godotengine.org/en/4.6/classes/class_editorexportplugin.html)|export_plugin|null|
-|[Control](https://docs.godotengine.org/en/4.6/classes/class_control.html)|dock|null|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|dock_initialized|false|
-|[Timer](https://docs.godotengine.org/en/4.6/classes/class_timer.html)|keep_alive_timer|null|
-|[EzchaGame](#EzchaGame)|game|null|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|trophies_cached|false|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophy](#EzchaTrophy) ]|trophies|[]|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|leaderboards_cached|false|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboard](#EzchaLeaderboard) ]|leaderboards|[]|
+You should never need to use this directly. The "EzchaSingleton" class is a good starting point.  Many of the values here are used for the dock within the editor and will not be available within an exported game.
 
 <a name="EzchaClient"></a>
 ## EzchaClient
@@ -103,66 +86,66 @@ This should be accessed through the "Ezcha" singleton.
 |Type|Name|Default|
 |-|-|-|
 |[EzchaUser](#EzchaUser)|[user](#EzchaClient-property-user)|null|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ]|[trophies_obtained](#EzchaClient-property-trophies_obtained)|[]|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ]|[leaderboard_entries](#EzchaClient-property-leaderboard_entries)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)]|[trophies_obtained](#EzchaClient-property-trophies_obtained)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)]|[leaderboard_entries](#EzchaClient-property-leaderboard_entries)|[]|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[moderation_tools](#EzchaClient-property-moderation_tools)|false|
 
 ### Methods
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[authenticate](#EzchaClient-method-authenticate) ( )
-|[EzchaPlatformAdapter](#EzchaPlatformAdapter)|[get_adapter](#EzchaClient-method-get_adapter) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[supports_native_login](#EzchaClient-method-supports_native_login) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[request_login](#EzchaClient-method-request_login) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[request_logout](#EzchaClient-method-request_logout) ( )
-|void|[request_account_management](#EzchaClient-method-request_account_management) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_authenticated](#EzchaClient-method-is_authenticated) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_guest](#EzchaClient-method-is_guest) ( )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_session_token](#EzchaClient-method-get_session_token) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_trophy](#EzchaClient-method-has_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
-|[EzchaTrophyObtained](#EzchaTrophyObtained)|[get_trophy](#EzchaClient-method-get_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[grant_trophy](#EzchaClient-method-grant_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_score](#EzchaClient-method-has_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id )
-|[float](https://docs.godotengine.org/en/4.6/classes/class_float.html)|[get_score](#EzchaClient-method-get_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0 )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[update_score](#EzchaClient-method-update_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=EzchaLeaderboardsAPI.UpdateMode.SET )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_datastore](#EzchaClient-method-get_datastore) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[set_datastore](#EzchaClient-method-set_datastore) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaRelayServer](#EzchaRelayServer) ]|[order_relay_servers](#EzchaClient-method-order_relay_servers) ( )
-|[EzchaRelayServer](#EzchaRelayServer)|[determine_relay_server](#EzchaClient-method-determine_relay_server) ( )
-|[EzchaLobbyListResponse](#EzchaLobbyListResponse)|[get_relay_lobbies](#EzchaClient-method-get_relay_lobbies) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=-1 )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[authenticate](#EzchaClient-method-authenticate)()|
+|[EzchaPlatformAdapter](#EzchaPlatformAdapter)|[get_adapter](#EzchaClient-method-get_adapter)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[supports_native_login](#EzchaClient-method-supports_native_login)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[request_login](#EzchaClient-method-request_login)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[request_logout](#EzchaClient-method-request_logout)()|
+|void|[request_account_management](#EzchaClient-method-request_account_management)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_authenticated](#EzchaClient-method-is_authenticated)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_guest](#EzchaClient-method-is_guest)()|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_session_token](#EzchaClient-method-get_session_token)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_trophy](#EzchaClient-method-has_trophy)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true)|
+|[EzchaTrophyObtained](#EzchaTrophyObtained)|[get_trophy](#EzchaClient-method-get_trophy)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[grant_trophy](#EzchaClient-method-grant_trophy)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_score](#EzchaClient-method-has_score)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id)|
+|[float](https://docs.godotengine.org/en/4.6/classes/class_float.html)|[get_score](#EzchaClient-method-get_score)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[update_score](#EzchaClient-method-update_score)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=0)|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_datastore](#EzchaClient-method-get_datastore)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[set_datastore](#EzchaClient-method-set_datastore)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaRelayServer](#EzchaRelayServer)]|[order_relay_servers](#EzchaClient-method-order_relay_servers)()|
+|[EzchaRelayServer](#EzchaRelayServer)|[determine_relay_server](#EzchaClient-method-determine_relay_server)()|
+|[EzchaLobbyListResponse](#EzchaLobbyListResponse)|[get_relay_lobbies](#EzchaClient-method-get_relay_lobbies)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=-1)|
 
 ### Signals
 
-**authentication_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+**authentication_completed**()
 
 Emitted when the authentication process has completed.
 
-**login_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+**login_completed**()
 
 Emitted when the login flow has completed. (not support on web).
 
-**logout_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+**logout_completed**()
 
 Emitted when the user logs out. (not support on web).
 
-**session_expired** ( )
+**session_expired**()
 
 Emitted if the session has expired or is otherwise no longer valid.
 
-**trophy_grant_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful, [EzchaTrophy](#EzchaTrophy) trophy_data )
+**trophy_grant_completed**()
 
 Emitted when a trophy grant is queued from the grant_trophy function. trophy_data will be null if the grant could not be queued.
 
-**leaderboard_update_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+**leaderboard_update_completed**()
 
 Emitted when a leaderboard update is queued from the update_score function.
 
-**datastore_value_received** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+**datastore_value_received**()
 
 Emitted after a datastore value is requested and received.
 
-**datastore_value_posted** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+**datastore_value_posted**()
 
 Emitted after a datastore value update is posted.
 
@@ -174,12 +157,12 @@ Emitted after a datastore value update is posted.
 The user who is currently playing the game. Only available after authenticating.
 
 <a name="EzchaClient-property-trophies_obtained"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ] **trophies_obtained** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)] **trophies_obtained** = []
 
 The trophies that the currently authenticated user has obtained from this game.
 
 <a name="EzchaClient-property-leaderboard_entries"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ] **leaderboard_entries** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)] **leaderboard_entries** = []
 
 The leaderboard entries that the currently authenticated user has for this game.
 
@@ -191,204 +174,104 @@ If true the user should have access to any moderation tools.
 ### Method Descriptions
 
 <a name="EzchaClient-method-authenticate"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **authenticate** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **authenticate**()
 
-Authenticates and loads the information of the current player if available. This should be ran at the start of the game. The authentication_completed signal is emitted on completion. 
-
- (Async) Returns true if authentication was successful.
+Authenticates and loads the information of the current player if available. This should be ran at the start of the game. The authentication_completed signal is emitted on completion.  (Async) Returns true if authentication was successful.
 
 <a name="EzchaClient-method-get_adapter"></a>
-[EzchaPlatformAdapter](#EzchaPlatformAdapter) **get_adapter** ( )
+[EzchaPlatformAdapter](#EzchaPlatformAdapter) **get_adapter**()
 
 Returns the current platform adapter.
 
 <a name="EzchaClient-method-supports_native_login"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **supports_native_login** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **supports_native_login**()
 
 Returns true if the current platform allows for native login/logout.
 
 <a name="EzchaClient-method-request_login"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **request_login** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **request_login**()
 
-Requests the native login flow for platforms that support it. This can be ran at the user's request if automatic authentication fails. The authentication_completed signal is emitted on completion. 
-
- (Async) Returns true if authentication was successful.
+Requests the native login flow for platforms that support it. This can be ran at the user's request if automatic authentication fails. The authentication_completed signal is emitted on completion.  (Async) Returns true if authentication was successful.
 
 <a name="EzchaClient-method-request_logout"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **request_logout** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **request_logout**()
 
-Requests to logout the current user for platforms that support it. The logout_completed signal is emitted on completion. 
-
- (Async) Returns true if logout was successful.
+Requests to logout the current user for platforms that support it. The logout_completed signal is emitted on completion.  (Async) Returns true if logout was successful.
 
 <a name="EzchaClient-method-request_account_management"></a>
-void **request_account_management** ( )
+void **request_account_management**()
 
-Opens the account management page for platforms that support it. 
-
- (Async) Returns once the user closes the page.
+Opens the account management page for platforms that support it.  (Async) Returns once the user closes the page.
 
 <a name="EzchaClient-method-is_authenticated"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_authenticated** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_authenticated**()
 
 Returns true if the client has authenticated and user data is available.
 
 <a name="EzchaClient-method-is_guest"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_guest** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_guest**()
 
 Returns true if the user has a guest profile loaded from a relay lobby.
 
 <a name="EzchaClient-method-get_session_token"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_session_token** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_session_token**()
 
 Returns the player's session token if authenticated.
 
 <a name="EzchaClient-method-has_trophy"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_trophy**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true)
 
 Returns true if the currently authenticated player has the trophy specified.
 
 <a name="EzchaClient-method-get_trophy"></a>
-[EzchaTrophyObtained](#EzchaTrophyObtained) **get_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
+[EzchaTrophyObtained](#EzchaTrophyObtained) **get_trophy**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id)
 
 Returns the trophy if the player has obtained it, null otherwise.
 
 <a name="EzchaClient-method-grant_trophy"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **grant_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **grant_trophy**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id)
 
-Grants a trophy to the currently authenticated player. The trophy must have the "allow clients" option enabled. The trophy_grant_completed signal is emitted on completion. 
-
- (Async) Returns true if the trophy grant was queued.
+Grants a trophy to the currently authenticated player. The trophy must have the "allow clients" option enabled. The trophy_grant_completed signal is emitted on completion.  (Async) Returns true if the trophy grant was queued.
 
 <a name="EzchaClient-method-has_score"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_score** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_score**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id)
 
 Checks if the currently authenticated player has a score on a leaderboard.
 
 <a name="EzchaClient-method-get_score"></a>
-[float](https://docs.godotengine.org/en/4.6/classes/class_float.html) **get_score** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0 )
+[float](https://docs.godotengine.org/en/4.6/classes/class_float.html) **get_score**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0)
 
 Returns the currently authenticated player's score on a specific leaderboard.
 
 <a name="EzchaClient-method-update_score"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **update_score** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=EzchaLeaderboardsAPI.UpdateMode.SET )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **update_score**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=0)
 
-Updates a leaderboard entry belonging to the currently authenticated player. The leaderboard must have the "allow clients" option enabled. The leaderboard_update_completed signal is emitted on completion. 
-
- (Async) Returns true if the score update was queued.
+Updates a leaderboard entry belonging to the currently authenticated player. The leaderboard must have the "allow clients" option enabled. The leaderboard_update_completed signal is emitted on completion.  (Async) Returns true if the score update was queued.
 
 <a name="EzchaClient-method-get_datastore"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_datastore** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_datastore**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)
 
-Get a datastore value belonging to the currently authenticated player. The datastore_value_received signal is emitted when the value is received. 
-
- (Async) Returns a string value. The value will be empty if unset.
+Get a datastore value belonging to the currently authenticated player. The datastore_value_received signal is emitted when the value is received.  (Async) Returns a string value. The value will be empty if unset.
 
 <a name="EzchaClient-method-set_datastore"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **set_datastore** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **set_datastore**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)
 
-Update a datastore value belonging to the currently authenticated player. Limit of 5 keys per user, limit of 16384 characters per value. Set the value to an empty string to delete the key. The datastore_value_posted signal is emitted on completion. 
-
- (Async) Returns true if the value was successfully updated.
+Update a datastore value belonging to the currently authenticated player. Limit of 5 keys per user, limit of 16384 characters per value. Set the value to an empty string to delete the key. The datastore_value_posted signal is emitted on completion.  (Async) Returns true if the value was successfully updated.
 
 <a name="EzchaClient-method-order_relay_servers"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaRelayServer](#EzchaRelayServer) ] **order_relay_servers** ( )
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaRelayServer](#EzchaRelayServer)] **order_relay_servers**()
 
-Test relay servers and return them based on latency. 
-
- (Async) Returns an array of available servers, sorted from lowest to highest latency.
+Test relay servers and return them based on latency.  (Async) Returns an array of available servers, sorted from lowest to highest latency.
 
 <a name="EzchaClient-method-determine_relay_server"></a>
-[EzchaRelayServer](#EzchaRelayServer) **determine_relay_server** ( )
+[EzchaRelayServer](#EzchaRelayServer) **determine_relay_server**()
 
-Determines the ideal Ezcha Relay server for the user. 
-
- (Async) Returns a server if available, null otherwise.
+Determines the ideal Ezcha Relay server for the user.  (Async) Returns a server if available, null otherwise.
 
 <a name="EzchaClient-method-get_relay_lobbies"></a>
-[EzchaLobbyListResponse](#EzchaLobbyListResponse) **get_relay_lobbies** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=-1 )
+[EzchaLobbyListResponse](#EzchaLobbyListResponse) **get_relay_lobbies**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=-1)
 
-Fetches a list of open Ezcha Relay lobbies for the current game and version. 
-
- Returns an EzchaLobbyListResponse object.
-
-<a name="EzchaPlatformAdapterWeb"></a>
-## EzchaPlatformAdapterWeb
-
-**Inherits:** [EzchaPlatformAdapter](#EzchaPlatformAdapter)
-
-A class to handle web specific logic.
-
-### Methods
-
-|Returns|Name|
-|-|-|
-|void|[register_redirect](#EzchaPlatformAdapterWeb-method-register_redirect) ( )
-|void|[login_redirect](#EzchaPlatformAdapterWeb-method-login_redirect) ( )
-|void|[close_prompts](#EzchaPlatformAdapterWeb-method-close_prompts) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[avatar_prompt](#EzchaPlatformAdapterWeb-method-avatar_prompt) ( [Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[captcha_prompt](#EzchaPlatformAdapterWeb-method-captcha_prompt) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[interstitial_ad_prompt](#EzchaPlatformAdapterWeb-method-interstitial_ad_prompt) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[rewarded_ad_prompt](#EzchaPlatformAdapterWeb-method-rewarded_ad_prompt) ( )
-
-### Signals
-
-**avatar_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success )
-
-Emitted once the avatar prompt is completed.
-
-**captcha_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) response )
-
-Emitted once the captcha prompt is completed.
-
-**ad_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) rewarded )
-
-Emitted once the rewarded ad prompt is completed.
-
-### Method Descriptions
-
-<a name="EzchaPlatformAdapterWeb-method-register_redirect"></a>
-void **register_redirect** ( )
-
-Redirects to the register page and back.
-
-<a name="EzchaPlatformAdapterWeb-method-login_redirect"></a>
-void **login_redirect** ( )
-
-Redirects to the login page and back.
-
-<a name="EzchaPlatformAdapterWeb-method-close_prompts"></a>
-void **close_prompts** ( )
-
-Closes all web embed prompts.
-
-<a name="EzchaPlatformAdapterWeb-method-avatar_prompt"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **avatar_prompt** ( [Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar )
-
-Prompts the user to change their avatar. The provided image must be 256x256px. 
-
- (Async) Returns true if user accepts and the upload is successful.
-
-<a name="EzchaPlatformAdapterWeb-method-captcha_prompt"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **captcha_prompt** ( )
-
-Prompts the user to solve a captcha. The response must be validated via the API. 
-
- (Async) Returns the response if successful, otherwise an empty string.
-
-<a name="EzchaPlatformAdapterWeb-method-interstitial_ad_prompt"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **interstitial_ad_prompt** ( )
-
-Shows the user an interstitial video advertisment. 
-
- (Async) Returns the true if an advertisment was displayed.
-
-<a name="EzchaPlatformAdapterWeb-method-rewarded_ad_prompt"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **rewarded_ad_prompt** ( )
-
-Shows the user a rewarded video advertisment. 
-
- (Async) Returns the true if the player should be rewarded.
+Fetches a list of open Ezcha Relay lobbies for the current game and version.  Returns an EzchaLobbyListResponse object.
 
 <a name="EzchaSingleton"></a>
 ## EzchaSingleton
@@ -399,7 +282,7 @@ The class representing the "Ezcha" singleton.
 
 ### Description
 
-This is where most of the functionality the plugin offers is accessed from.
+This is where most of the plugin's functionality is accessed from.
 
 ### Properties
 
@@ -420,11 +303,11 @@ This is where most of the functionality the plugin offers is accessed from.
 
 |Returns|Name|
 |-|-|
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_game_id](#EzchaSingleton-method-get_game_id) ( )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_api_key](#EzchaSingleton-method-get_api_key) ( )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_signing_key](#EzchaSingleton-method-get_signing_key) ( )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_session_override](#EzchaSingleton-method-get_session_override) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[should_print_request_errors](#EzchaSingleton-method-should_print_request_errors) ( )
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_game_id](#EzchaSingleton-method-get_game_id)()|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_api_key](#EzchaSingleton-method-get_api_key)()|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_signing_key](#EzchaSingleton-method-get_signing_key)()|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_session_override](#EzchaSingleton-method-get_session_override)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[should_print_request_errors](#EzchaSingleton-method-should_print_request_errors)()|
 
 ### Property Descriptions
 
@@ -481,27 +364,27 @@ A wrapper for the users section of the API.
 ### Method Descriptions
 
 <a name="EzchaSingleton-method-get_game_id"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_game_id** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_game_id**()
 
 A helper to return the currently configured game identifier.
 
 <a name="EzchaSingleton-method-get_api_key"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_api_key** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_api_key**()
 
 A helper to return the currently configured API key.
 
 <a name="EzchaSingleton-method-get_signing_key"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_signing_key** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_signing_key**()
 
 A helper to return the currently configured signing key.
 
 <a name="EzchaSingleton-method-get_session_override"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_session_override** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_session_override**()
 
 A helper to return the currently configured session override.
 
 <a name="EzchaSingleton-method-should_print_request_errors"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **should_print_request_errors** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **should_print_request_errors**()
 
 A helper to return if request errors should be printed.
 
@@ -511,6 +394,31 @@ A helper to return if request errors should be printed.
 **Inherits:** [Object](https://docs.godotengine.org/en/4.6/classes/class_object.html)
 
 Common utilities used across the plugin.
+
+### Methods
+
+|Returns|Name|
+|-|-|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_game_version](#EzchaUtil-method-get_game_version)() *static*|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_start_argument](#EzchaUtil-method-get_start_argument)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key) *static*|
+|void|[unpack_data](#EzchaUtil-method-unpack_data)([Object](https://docs.godotengine.org/en/4.6/classes/class_object.html) target, [Dictionary](https://docs.godotengine.org/en/4.6/classes/class_dictionary.html) data) *static*|
+
+### Method Descriptions
+
+<a name="EzchaUtil-method-get_game_version"></a>
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_game_version**()
+
+Returns the version as defined in the project settings.
+
+<a name="EzchaUtil-method-get_start_argument"></a>
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_start_argument**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)
+
+Parse a start argument depending on the platform. Ezcha Network will pass the following URL query parameters as arguments: level, lobby, map, world
+
+<a name="EzchaUtil-method-unpack_data"></a>
+void **unpack_data**([Object](https://docs.godotengine.org/en/4.6/classes/class_object.html) target, [Dictionary](https://docs.godotengine.org/en/4.6/classes/class_dictionary.html) data)
+
+Unpacks values from a dictionary to a various object.
 
 <a name="EzchaWebAdapter"></a>
 ## EzchaWebAdapter
@@ -523,72 +431,64 @@ A class to handle web specific logic.
 
 |Returns|Name|
 |-|-|
-|void|[register_redirect](#EzchaWebAdapter-method-register_redirect) ( )
-|void|[login_redirect](#EzchaWebAdapter-method-login_redirect) ( )
-|void|[close_prompts](#EzchaWebAdapter-method-close_prompts) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[avatar_prompt](#EzchaWebAdapter-method-avatar_prompt) ( [Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[captcha_prompt](#EzchaWebAdapter-method-captcha_prompt) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[interstitial_ad_prompt](#EzchaWebAdapter-method-interstitial_ad_prompt) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[rewarded_ad_prompt](#EzchaWebAdapter-method-rewarded_ad_prompt) ( )
+|void|[register_redirect](#EzchaWebAdapter-method-register_redirect)()|
+|void|[login_redirect](#EzchaWebAdapter-method-login_redirect)()|
+|void|[close_prompts](#EzchaWebAdapter-method-close_prompts)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[avatar_prompt](#EzchaWebAdapter-method-avatar_prompt)([Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar)|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[captcha_prompt](#EzchaWebAdapter-method-captcha_prompt)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[interstitial_ad_prompt](#EzchaWebAdapter-method-interstitial_ad_prompt)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[rewarded_ad_prompt](#EzchaWebAdapter-method-rewarded_ad_prompt)()|
 
 ### Signals
 
-**avatar_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success )
+**avatar_prompt_completed**()
 
 Emitted once the avatar prompt is completed.
 
-**captcha_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) response )
+**captcha_prompt_completed**()
 
 Emitted once the captcha prompt is completed.
 
-**ad_prompt_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) rewarded )
+**ad_prompt_completed**()
 
 Emitted once the rewarded ad prompt is completed.
 
 ### Method Descriptions
 
 <a name="EzchaWebAdapter-method-register_redirect"></a>
-void **register_redirect** ( )
+void **register_redirect**()
 
 Redirects to the register page and back.
 
 <a name="EzchaWebAdapter-method-login_redirect"></a>
-void **login_redirect** ( )
+void **login_redirect**()
 
 Redirects to the login page and back.
 
 <a name="EzchaWebAdapter-method-close_prompts"></a>
-void **close_prompts** ( )
+void **close_prompts**()
 
 Closes all web embed prompts.
 
 <a name="EzchaWebAdapter-method-avatar_prompt"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **avatar_prompt** ( [Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **avatar_prompt**([Image](https://docs.godotengine.org/en/4.6/classes/class_image.html) avatar)
 
-Prompts the user to change their avatar. The provided image must be 256x256px. 
-
- (Async) Returns true if user accepts and the upload is successful.
+Prompts the user to change their avatar. The provided image must be 256x256px.  (Async) Returns true if user accepts and the upload is successful.
 
 <a name="EzchaWebAdapter-method-captcha_prompt"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **captcha_prompt** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **captcha_prompt**()
 
-Prompts the user to solve a captcha. The response must be validated via the API. 
-
- (Async) Returns the response if successful, otherwise an empty string.
+Prompts the user to solve a captcha. The response must be validated via the API.  (Async) Returns the response if successful, otherwise an empty string.
 
 <a name="EzchaWebAdapter-method-interstitial_ad_prompt"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **interstitial_ad_prompt** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **interstitial_ad_prompt**()
 
-Shows the user an interstitial video advertisment. 
-
- (Async) Returns the true if an advertisment was displayed.
+Shows the user an interstitial video advertisment.  (Async) Returns the true if an advertisment was displayed.
 
 <a name="EzchaWebAdapter-method-rewarded_ad_prompt"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **rewarded_ad_prompt** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **rewarded_ad_prompt**()
 
-Shows the user a rewarded video advertisment. 
-
- (Async) Returns the true if the player should be rewarded.
+Shows the user a rewarded video advertisment.  (Async) Returns the true if the player should be rewarded.
 
 <a name="EzchaDatastoresAPI"></a>
 ## EzchaDatastoresAPI
@@ -605,30 +505,30 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)|[get_client](#EzchaDatastoresAPI-method-get_client) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
-|[EzchaResponse](#EzchaResponse)|[post_client](#EzchaDatastoresAPI-method-post_client) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
-|[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)|[get_server](#EzchaDatastoresAPI-method-get_server) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key )
-|[EzchaResponse](#EzchaResponse)|[post_server](#EzchaDatastoresAPI-method-post_server) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+|[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)|[get_client](#EzchaDatastoresAPI-method-get_client)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token)|
+|[EzchaResponse](#EzchaResponse)|[post_client](#EzchaDatastoresAPI-method-post_client)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token)|
+|[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse)|[get_server](#EzchaDatastoresAPI-method-get_server)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)|
+|[EzchaResponse](#EzchaResponse)|[post_server](#EzchaDatastoresAPI-method-post_server)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)|
 
 ### Method Descriptions
 
 <a name="EzchaDatastoresAPI-method-get_client"></a>
-[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse) **get_client** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
+[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse) **get_client**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token)
 
 Requests the value of a client-side datastore from its key.
 
 <a name="EzchaDatastoresAPI-method-post_client"></a>
-[EzchaResponse](#EzchaResponse) **post_client** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
+[EzchaResponse](#EzchaResponse) **post_client**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token)
 
 Updates the value of a client-side datastore by its key.
 
 <a name="EzchaDatastoresAPI-method-get_server"></a>
-[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse) **get_server** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key )
+[EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse) **get_server**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)
 
 Requests the value of a server-side datastore for a player from its key.
 
 <a name="EzchaDatastoresAPI-method-post_server"></a>
-[EzchaResponse](#EzchaResponse) **post_server** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+[EzchaResponse](#EzchaResponse) **post_server**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)
 
 Updates the value of a server-side datastore for a player by its key.
 
@@ -647,48 +547,48 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaGameResponse](#EzchaGameResponse)|[get_from_id](#EzchaGamesAPI-method-get_from_id) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id )
-|[EzchaGameResponse](#EzchaGameResponse)|[get_from_slug](#EzchaGamesAPI-method-get_from_slug) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_slug )
-|[EzchaGameListResponse](#EzchaGameListResponse)|[get_many](#EzchaGamesAPI-method-get_many) ( [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_slugs=PackedStringArray() )
-|[EzchaGameResponse](#EzchaGameResponse)|[get_random](#EzchaGamesAPI-method-get_random) ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_exclusives=false )
-|[EzchaGameResponse](#EzchaGameResponse)|[get_game_of_the_day](#EzchaGamesAPI-method-get_game_of_the_day) ( )
-|[EzchaTrophyListResponse](#EzchaTrophyListResponse)|[get_trophies](#EzchaGamesAPI-method-get_trophies) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
-|[EzchaLeaderboardListResponse](#EzchaLeaderboardListResponse)|[get_leaderboards](#EzchaGamesAPI-method-get_leaderboards) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
+|[EzchaGameResponse](#EzchaGameResponse)|[get_from_id](#EzchaGamesAPI-method-get_from_id)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id)|
+|[EzchaGameResponse](#EzchaGameResponse)|[get_from_slug](#EzchaGamesAPI-method-get_from_slug)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_slug)|
+|[EzchaGameListResponse](#EzchaGameListResponse)|[get_many](#EzchaGamesAPI-method-get_many)([PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_slugs=null)|
+|[EzchaGameResponse](#EzchaGameResponse)|[get_random](#EzchaGamesAPI-method-get_random)([bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_exclusives=false)|
+|[EzchaGameResponse](#EzchaGameResponse)|[get_game_of_the_day](#EzchaGamesAPI-method-get_game_of_the_day)()|
+|[EzchaTrophyListResponse](#EzchaTrophyListResponse)|[get_trophies](#EzchaGamesAPI-method-get_trophies)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="")|
+|[EzchaLeaderboardListResponse](#EzchaLeaderboardListResponse)|[get_leaderboards](#EzchaGamesAPI-method-get_leaderboards)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="")|
 
 ### Method Descriptions
 
 <a name="EzchaGamesAPI-method-get_from_id"></a>
-[EzchaGameResponse](#EzchaGameResponse) **get_from_id** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id )
+[EzchaGameResponse](#EzchaGameResponse) **get_from_id**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id)
 
 Requests a game from its ID.
 
 <a name="EzchaGamesAPI-method-get_from_slug"></a>
-[EzchaGameResponse](#EzchaGameResponse) **get_from_slug** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_slug )
+[EzchaGameResponse](#EzchaGameResponse) **get_from_slug**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_slug)
 
 Requests a game from its slug.
 
 <a name="EzchaGamesAPI-method-get_many"></a>
-[EzchaGameListResponse](#EzchaGameListResponse) **get_many** ( [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_slugs=PackedStringArray() )
+[EzchaGameListResponse](#EzchaGameListResponse) **get_many**([PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) game_slugs=null)
 
 Requests several games at once.
 
 <a name="EzchaGamesAPI-method-get_random"></a>
-[EzchaGameResponse](#EzchaGameResponse) **get_random** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_exclusives=false )
+[EzchaGameResponse](#EzchaGameResponse) **get_random**([bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_exclusives=false)
 
 Requests a randomly chosen game.
 
 <a name="EzchaGamesAPI-method-get_game_of_the_day"></a>
-[EzchaGameResponse](#EzchaGameResponse) **get_game_of_the_day** ( )
+[EzchaGameResponse](#EzchaGameResponse) **get_game_of_the_day**()
 
 Requests the current game of the day.
 
 <a name="EzchaGamesAPI-method-get_trophies"></a>
-[EzchaTrophyListResponse](#EzchaTrophyListResponse) **get_trophies** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
+[EzchaTrophyListResponse](#EzchaTrophyListResponse) **get_trophies**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="")
 
 Requests the trophies belonging to a game. A session with sufficient permissions can be provided to include unlisted trophies, but is not required.
 
 <a name="EzchaGamesAPI-method-get_leaderboards"></a>
-[EzchaLeaderboardListResponse](#EzchaLeaderboardListResponse) **get_leaderboards** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
+[EzchaLeaderboardListResponse](#EzchaLeaderboardListResponse) **get_leaderboards**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="")
 
 Requests the leaderboards belonging to a game. A session with sufficient permissions can be provided to include unlisted leaderboards, but is not required.
 
@@ -707,24 +607,24 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaGeneralStatusResponse](#EzchaGeneralStatusResponse)|[get_status](#EzchaGeneralAPI-method-get_status) ( )
-|[EzchaGeneralTimeResponse](#EzchaGeneralTimeResponse)|[get_time](#EzchaGeneralAPI-method-get_time) ( )
-|[EzchaCaptchaResponse](#EzchaCaptchaResponse)|[post_captcha](#EzchaGeneralAPI-method-post_captcha) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) response )
+|[EzchaGeneralStatusResponse](#EzchaGeneralStatusResponse)|[get_status](#EzchaGeneralAPI-method-get_status)()|
+|[EzchaGeneralTimeResponse](#EzchaGeneralTimeResponse)|[get_time](#EzchaGeneralAPI-method-get_time)()|
+|[EzchaCaptchaResponse](#EzchaCaptchaResponse)|[post_captcha](#EzchaGeneralAPI-method-post_captcha)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) response)|
 
 ### Method Descriptions
 
 <a name="EzchaGeneralAPI-method-get_status"></a>
-[EzchaGeneralStatusResponse](#EzchaGeneralStatusResponse) **get_status** ( )
+[EzchaGeneralStatusResponse](#EzchaGeneralStatusResponse) **get_status**()
 
 Returns the current status of the API.
 
 <a name="EzchaGeneralAPI-method-get_time"></a>
-[EzchaGeneralTimeResponse](#EzchaGeneralTimeResponse) **get_time** ( )
+[EzchaGeneralTimeResponse](#EzchaGeneralTimeResponse) **get_time**()
 
 Returns the current time from API.
 
 <a name="EzchaGeneralAPI-method-post_captcha"></a>
-[EzchaCaptchaResponse](#EzchaCaptchaResponse) **post_captcha** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) response )
+[EzchaCaptchaResponse](#EzchaCaptchaResponse) **post_captcha**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) response)
 
 Validates a captcha response.
 
@@ -743,9 +643,9 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaLeaderboardEntryListResponse](#EzchaLeaderboardEntryListResponse)|[get_entries](#EzchaLeaderboardsAPI-method-get_entries) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) items_per_page=-1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
-|[EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse)|[post_entry_client](#EzchaLeaderboardsAPI-method-post_entry_client) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [UpdateMode](https://docs.godotengine.org/en/4.6/classes/class_updatemode.html) mode=UpdateMode.SET )
-|[EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse)|[post_entry_server](#EzchaLeaderboardsAPI-method-post_entry_server) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [UpdateMode](https://docs.godotengine.org/en/4.6/classes/class_updatemode.html) mode=UpdateMode.SET )
+|[EzchaLeaderboardEntryListResponse](#EzchaLeaderboardEntryListResponse)|[get_entries](#EzchaLeaderboardsAPI-method-get_entries)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) items_per_page=-1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="")|
+|[EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse)|[post_entry_client](#EzchaLeaderboardsAPI-method-post_entry_client)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=0)|
+|[EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse)|[post_entry_server](#EzchaLeaderboardsAPI-method-post_entry_server)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=0)|
 
 ### Enumerations
 
@@ -758,17 +658,17 @@ enum **UpdateMode**:
 ### Method Descriptions
 
 <a name="EzchaLeaderboardsAPI-method-get_entries"></a>
-[EzchaLeaderboardEntryListResponse](#EzchaLeaderboardEntryListResponse) **get_entries** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) items_per_page=-1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="" )
+[EzchaLeaderboardEntryListResponse](#EzchaLeaderboardEntryListResponse) **get_entries**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) items_per_page=-1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="")
 
 Returns a paginated list of entries for a specific leaderboard. A session token is only required when attempting to access an unlisted leaderboard.
 
 <a name="EzchaLeaderboardsAPI-method-post_entry_client"></a>
-[EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse) **post_entry_client** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [UpdateMode](https://docs.godotengine.org/en/4.6/classes/class_updatemode.html) mode=UpdateMode.SET )
+[EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse) **post_entry_client**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=0)
 
 Updates a score from a game client using a session token. Requires a signing key to be configured.
 
 <a name="EzchaLeaderboardsAPI-method-post_entry_server"></a>
-[EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse) **post_entry_server** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [UpdateMode](https://docs.godotengine.org/en/4.6/classes/class_updatemode.html) mode=UpdateMode.SET )
+[EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse) **post_entry_server**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=0)
 
 Updates a score from a game server using an API key. Requires an API key to be configured.
 
@@ -787,12 +687,12 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaNewsListResponse](#EzchaNewsListResponse)|[get_list](#EzchaNewsAPI-method-get_list) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) series="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="" )
+|[EzchaNewsListResponse](#EzchaNewsListResponse)|[get_list](#EzchaNewsAPI-method-get_list)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) series="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="")|
 
 ### Method Descriptions
 
 <a name="EzchaNewsAPI-method-get_list"></a>
-[EzchaNewsListResponse](#EzchaNewsListResponse) **get_list** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) series="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="" )
+[EzchaNewsListResponse](#EzchaNewsListResponse) **get_list**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) series="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="")
 
 Returns a paginated list of news posts based on the criteria provided.
 
@@ -811,24 +711,24 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaRelayServerListResponse](#EzchaRelayServerListResponse)|[get_servers](#EzchaRelayAPI-method-get_servers) ( )
-|[EzchaLobbyListResponse](#EzchaLobbyListResponse)|[get_lobbies](#EzchaRelayAPI-method-get_lobbies) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) version="", [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=-1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) region="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) server_id="" )
-|[EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse)|[resolve_lobby](#EzchaRelayAPI-method-resolve_lobby) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) join_code )
+|[EzchaRelayServerListResponse](#EzchaRelayServerListResponse)|[get_servers](#EzchaRelayAPI-method-get_servers)()|
+|[EzchaLobbyListResponse](#EzchaLobbyListResponse)|[get_lobbies](#EzchaRelayAPI-method-get_lobbies)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) version="", [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=-1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) region="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) server_id="")|
+|[EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse)|[resolve_lobby](#EzchaRelayAPI-method-resolve_lobby)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) join_code)|
 
 ### Method Descriptions
 
 <a name="EzchaRelayAPI-method-get_servers"></a>
-[EzchaRelayServerListResponse](#EzchaRelayServerListResponse) **get_servers** ( )
+[EzchaRelayServerListResponse](#EzchaRelayServerListResponse) **get_servers**()
 
 Returns a list of available relay servers.
 
 <a name="EzchaRelayAPI-method-get_lobbies"></a>
-[EzchaLobbyListResponse](#EzchaLobbyListResponse) **get_lobbies** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) version="", [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=-1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) region="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) server_id="" )
+[EzchaLobbyListResponse](#EzchaLobbyListResponse) **get_lobbies**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) version="", [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=-1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) region="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) server_id="")
 
 Returns a list of available public lobbies.
 
 <a name="EzchaRelayAPI-method-resolve_lobby"></a>
-[EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse) **resolve_lobby** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) join_code )
+[EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse) **resolve_lobby**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) join_code)
 
 Resolves a lobby from its join code.
 
@@ -847,12 +747,12 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaSessionValidationResponse](#EzchaSessionValidationResponse)|[post_validation](#EzchaSessionsAPI-method-post_validation) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id="" )
+|[EzchaSessionValidationResponse](#EzchaSessionValidationResponse)|[post_validation](#EzchaSessionsAPI-method-post_validation)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id="")|
 
 ### Method Descriptions
 
 <a name="EzchaSessionsAPI-method-post_validation"></a>
-[EzchaSessionValidationResponse](#EzchaSessionValidationResponse) **post_validation** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id="" )
+[EzchaSessionValidationResponse](#EzchaSessionValidationResponse) **post_validation**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id="")
 
 Validates a session token and returns user information related to the current game.
 
@@ -871,18 +771,18 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse)|[post_grant_client](#EzchaTrophiesAPI-method-post_grant_client) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
-|[EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse)|[post_grant_server](#EzchaTrophiesAPI-method-post_grant_server) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id )
+|[EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse)|[post_grant_client](#EzchaTrophiesAPI-method-post_grant_client)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token)|
+|[EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse)|[post_grant_server](#EzchaTrophiesAPI-method-post_grant_server)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id)|
 
 ### Method Descriptions
 
 <a name="EzchaTrophiesAPI-method-post_grant_client"></a>
-[EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse) **post_grant_client** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
+[EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse) **post_grant_client**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token)
 
 Grant a trophy from a game client using a session token. Requires a signing key to be configured.
 
 <a name="EzchaTrophiesAPI-method-post_grant_server"></a>
-[EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse) **post_grant_server** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id )
+[EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse) **post_grant_server**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id)
 
 Grant a trophy from a game server using an API key. Requires an API key to be configured.
 
@@ -901,42 +801,42 @@ This should be accessed through the "Ezcha" singleton.
 
 |Returns|Name|
 |-|-|
-|[EzchaUserResponse](#EzchaUserResponse)|[get_from_id](#EzchaUsersAPI-method-get_from_id) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id )
-|[EzchaUserResponse](#EzchaUserResponse)|[get_from_name](#EzchaUsersAPI-method-get_from_name) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) username )
-|[EzchaUsersResponse](#EzchaUsersResponse)|[get_many](#EzchaUsersAPI-method-get_many) ( [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) user_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) usernames=PackedStringArray() )
-|[EzchaUserListResponse](#EzchaUserListResponse)|[get_list](#EzchaUsersAPI-method-get_list) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="" )
-|[EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse)|[get_trophies](#EzchaUsersAPI-method-get_trophies) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id )
-|[EzchaFriendsResponse](#EzchaFriendsResponse)|[check_friends](#EzchaUsersAPI-method-check_friends) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_a, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_b )
+|[EzchaUserResponse](#EzchaUserResponse)|[get_from_id](#EzchaUsersAPI-method-get_from_id)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id)|
+|[EzchaUserResponse](#EzchaUserResponse)|[get_from_name](#EzchaUsersAPI-method-get_from_name)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) username)|
+|[EzchaUsersResponse](#EzchaUsersResponse)|[get_many](#EzchaUsersAPI-method-get_many)([PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) user_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) usernames=null)|
+|[EzchaUserListResponse](#EzchaUserListResponse)|[get_list](#EzchaUsersAPI-method-get_list)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="")|
+|[EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse)|[get_trophies](#EzchaUsersAPI-method-get_trophies)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id)|
+|[EzchaFriendsResponse](#EzchaFriendsResponse)|[check_friends](#EzchaUsersAPI-method-check_friends)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_a, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_b)|
 
 ### Method Descriptions
 
 <a name="EzchaUsersAPI-method-get_from_id"></a>
-[EzchaUserResponse](#EzchaUserResponse) **get_from_id** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id )
+[EzchaUserResponse](#EzchaUserResponse) **get_from_id**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id)
 
 Requests a user from their ID.
 
 <a name="EzchaUsersAPI-method-get_from_name"></a>
-[EzchaUserResponse](#EzchaUserResponse) **get_from_name** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) username )
+[EzchaUserResponse](#EzchaUserResponse) **get_from_name**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) username)
 
 Requests a user from their name.
 
 <a name="EzchaUsersAPI-method-get_many"></a>
-[EzchaUsersResponse](#EzchaUsersResponse) **get_many** ( [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) user_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) usernames=PackedStringArray() )
+[EzchaUsersResponse](#EzchaUsersResponse) **get_many**([PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) user_ids, [PackedStringArray](https://docs.godotengine.org/en/4.6/classes/class_packedstringarray.html) usernames=null)
 
 Requests several users at once.
 
 <a name="EzchaUsersAPI-method-get_list"></a>
-[EzchaUserListResponse](#EzchaUserListResponse) **get_list** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="" )
+[EzchaUserListResponse](#EzchaUserListResponse) **get_list**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) page=1, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) category="", [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) order="")
 
 Returns a paginated list of user based on the criteria provided.
 
 <a name="EzchaUsersAPI-method-get_trophies"></a>
-[EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse) **get_trophies** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id )
+[EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse) **get_trophies**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) game_id)
 
 Lists the trophies a user has obtained for the game specified
 
 <a name="EzchaUsersAPI-method-check_friends"></a>
-[EzchaFriendsResponse](#EzchaFriendsResponse) **check_friends** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_a, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_b )
+[EzchaFriendsResponse](#EzchaFriendsResponse) **check_friends**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_a, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) user_id_b)
 
 Check if two users are friends
 
@@ -944,6 +844,8 @@ Check if two users are friends
 ## EzchaAPI
 
 **Inherits:** [Object](https://docs.godotengine.org/en/4.6/classes/class_object.html)
+
+**Inherited By:** [EzchaDatastoresAPI](#EzchaDatastoresAPI), [EzchaGamesAPI](#EzchaGamesAPI), [EzchaGeneralAPI](#EzchaGeneralAPI), [EzchaLeaderboardsAPI](#EzchaLeaderboardsAPI), [EzchaNewsAPI](#EzchaNewsAPI), [EzchaRelayAPI](#EzchaRelayAPI), [EzchaSessionsAPI](#EzchaSessionsAPI), [EzchaTrophiesAPI](#EzchaTrophiesAPI), [EzchaUsersAPI](#EzchaUsersAPI)
 
 A base class for handling calls to the Ezcha Network API.
 
@@ -962,63 +864,63 @@ Tracks return values and emits a signal once all coroutines have completed. Prov
 
 |Returns|Name|
 |-|-|
-|[EzchaAsyncBatch](#EzchaAsyncBatch)|[add](#EzchaAsyncBatch-method-add) ( [Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) coroutine, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) =[] )
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count](#EzchaAsyncBatch-method-count) ( )
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count_pending](#EzchaAsyncBatch-method-count_pending) ( )
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count_completed](#EzchaAsyncBatch-method-count_completed) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_completed](#EzchaAsyncBatch-method-is_completed) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_processing](#EzchaAsyncBatch-method-is_processing) ( )
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) ]|[get_results](#EzchaAsyncBatch-method-get_results) ( )
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) ]|[watch](#EzchaAsyncBatch-method-watch) ( )
+|[EzchaAsyncBatch](#EzchaAsyncBatch)|[add](#EzchaAsyncBatch-method-add)([Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) coroutine, [Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) args=null)|
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count](#EzchaAsyncBatch-method-count)()|
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count_pending](#EzchaAsyncBatch-method-count_pending)()|
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[count_completed](#EzchaAsyncBatch-method-count_completed)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_completed](#EzchaAsyncBatch-method-is_completed)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_processing](#EzchaAsyncBatch-method-is_processing)()|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)|[get_results](#EzchaAsyncBatch-method-get_results)()|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)|[watch](#EzchaAsyncBatch-method-watch)()|
 
 ### Method Descriptions
 
 <a name="EzchaAsyncBatch-method-add"></a>
-[EzchaAsyncBatch](#EzchaAsyncBatch) **add** ( [Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) coroutine, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) =[] )
+[EzchaAsyncBatch](#EzchaAsyncBatch) **add**([Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) coroutine, [Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) args=null)
 
 Add a coroutine to the batch.
 
 <a name="EzchaAsyncBatch-method-count"></a>
-[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **count** ( )
+[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **count**()
 
 Returns how many coroutines have been added.
 
 <a name="EzchaAsyncBatch-method-count_pending"></a>
-[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **count_pending** ( )
+[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **count_pending**()
 
 Returns how many coroutines are still pending.
 
 <a name="EzchaAsyncBatch-method-count_completed"></a>
-[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **count_completed** ( )
+[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **count_completed**()
 
 Returns how many coroutines have been completed.
 
 <a name="EzchaAsyncBatch-method-is_completed"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_completed** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_completed**()
 
 Returns true if all coroutines have completed.
 
 <a name="EzchaAsyncBatch-method-is_processing"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_processing** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_processing**()
 
 Returns true if any coroutines are processing.
 
 <a name="EzchaAsyncBatch-method-get_results"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) ] **get_results** ( )
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) **get_results**()
 
 Returns the values returned from the coroutines. A value will be null if the coroutine is either pending or void. These will be in the same order as the corresponding coroutines were added.
 
 <a name="EzchaAsyncBatch-method-watch"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) ] **watch** ( )
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) **watch**()
 
-Starts and watches all coroutines, waiting until each one is completed. 
-
- (Async) Returns an array of coroutine results in the same order as they were added.
+Starts and watches all coroutines, waiting until each one is completed.  (Async) Returns an array of coroutine results in the same order as they were added.
 
 <a name="EzchaDto"></a>
 ## EzchaDto
 
 **Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
+
+**Inherited By:** [EzchaGame](#EzchaGame), [EzchaLeaderboard](#EzchaLeaderboard), [EzchaLeaderboardEntry](#EzchaLeaderboardEntry), [EzchaNewsPost](#EzchaNewsPost), [EzchaRelayLobby](#EzchaRelayLobby), [EzchaRelayServer](#EzchaRelayServer), [EzchaTrophy](#EzchaTrophy), [EzchaUser](#EzchaUser)
 
 A base class for handling data returned by the Ezcha Network API.
 
@@ -1027,10 +929,14 @@ A base class for handling data returned by the Ezcha Network API.
 
 **Inherits:** [MultiplayerSpawner](https://docs.godotengine.org/en/4.6/classes/class_multiplayerspawner.html)
 
+Extended MultiplayerSpawner that supports Ezcha Relay host migration. Works with other built-in multiplayer peers.
+
 <a name="EzchaPlatformAdapter"></a>
 ## EzchaPlatformAdapter
 
 **Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
+
+**Inherited By:** [EzchaWebAdapter](#EzchaWebAdapter)
 
 A class for handling platform specific logic.
 
@@ -1038,23 +944,23 @@ A class for handling platform specific logic.
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|supports_login ( )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|supports_login()|
 
 ### Signals
 
-**auth_flow_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token )
+**auth_flow_completed**()
 
 
 
-**login_flow_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token )
+**login_flow_completed**()
 
 
 
-**logout_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) success )
+**logout_completed**()
 
 
 
-**session_expired** ( )
+**session_expired**()
 
 
 
@@ -1069,78 +975,78 @@ A lobby based MultiplayerPeer implementation which uses Ezcha Relay for networki
 
 |Returns|Name|
 |-|-|
-|void|[resolve_lobby](#EzchaRelayMultiplayerPeer-method-resolve_lobby) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) join_code )
-|void|[join_lobby](#EzchaRelayMultiplayerPeer-method-join_lobby) ( [EzchaRelayLobby](#EzchaRelayLobby) lobby )
-|void|[create_lobby](#EzchaRelayMultiplayerPeer-method-create_lobby) ( [EzchaRelayServer](#EzchaRelayServer) server, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) players, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=0, [Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html) visibility=Visibility.PUBLIC, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) host_migration=false )
-|void|[kick](#EzchaRelayMultiplayerPeer-method-kick) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
-|void|[ban](#EzchaRelayMultiplayerPeer-method-ban) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_lobby_id](#EzchaRelayMultiplayerPeer-method-get_lobby_id) ( )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_join_code](#EzchaRelayMultiplayerPeer-method-get_join_code) ( )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_lobby_name](#EzchaRelayMultiplayerPeer-method-get_lobby_name) ( )
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[get_game_mode](#EzchaRelayMultiplayerPeer-method-get_game_mode) ( )
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[get_player_limit](#EzchaRelayMultiplayerPeer-method-get_player_limit) ( )
-|[Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html)|[get_visibility_mode](#EzchaRelayMultiplayerPeer-method-get_visibility_mode) ( )
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[get_host_id](#EzchaRelayMultiplayerPeer-method-get_host_id) ( )
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) ]|[get_peers](#EzchaRelayMultiplayerPeer-method-get_peers) ( )
-|[EzchaUser](#EzchaUser)|[get_user](#EzchaRelayMultiplayerPeer-method-get_user) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id )
-|[Operation](https://docs.godotengine.org/en/4.6/classes/class_operation.html)|[get_operation](#EzchaRelayMultiplayerPeer-method-get_operation) ( )
-|void|[set_lobby_name](#EzchaRelayMultiplayerPeer-method-set_lobby_name) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) new_name )
-|void|[set_game_mode](#EzchaRelayMultiplayerPeer-method-set_game_mode) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_mode )
-|void|[set_player_limit](#EzchaRelayMultiplayerPeer-method-set_player_limit) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_limit )
-|void|[set_visibility](#EzchaRelayMultiplayerPeer-method-set_visibility) ( [Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html) new_visibility )
-|void|[migrate_host](#EzchaRelayMultiplayerPeer-method-migrate_host) ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id )
-|void|[close_lobby](#EzchaRelayMultiplayerPeer-method-close_lobby) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[in_lobby](#EzchaRelayMultiplayerPeer-method-in_lobby) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_host](#EzchaRelayMultiplayerPeer-method-is_host) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[can_modify_lobby](#EzchaRelayMultiplayerPeer-method-can_modify_lobby) ( )
+|void|[resolve_lobby](#EzchaRelayMultiplayerPeer-method-resolve_lobby)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) join_code)|
+|void|[join_lobby](#EzchaRelayMultiplayerPeer-method-join_lobby)([EzchaRelayLobby](#EzchaRelayLobby) lobby)|
+|void|[create_lobby](#EzchaRelayMultiplayerPeer-method-create_lobby)([EzchaRelayServer](#EzchaRelayServer) server, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) players, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=0, [EzchaRelayMultiplayerPeer.Visibility](#EzchaRelayMultiplayerPeer) visibility=0, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) host_migration=false)|
+|void|[kick](#EzchaRelayMultiplayerPeer-method-kick)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="")|
+|void|[ban](#EzchaRelayMultiplayerPeer-method-ban)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="")|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_lobby_id](#EzchaRelayMultiplayerPeer-method-get_lobby_id)()|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_join_code](#EzchaRelayMultiplayerPeer-method-get_join_code)()|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_lobby_name](#EzchaRelayMultiplayerPeer-method-get_lobby_name)()|
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[get_game_mode](#EzchaRelayMultiplayerPeer-method-get_game_mode)()|
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[get_player_limit](#EzchaRelayMultiplayerPeer-method-get_player_limit)()|
+|[EzchaRelayMultiplayerPeer.Visibility](#EzchaRelayMultiplayerPeer)|[get_visibility_mode](#EzchaRelayMultiplayerPeer-method-get_visibility_mode)()|
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[get_host_id](#EzchaRelayMultiplayerPeer-method-get_host_id)()|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)]|[get_peers](#EzchaRelayMultiplayerPeer-method-get_peers)()|
+|[EzchaUser](#EzchaUser)|[get_user](#EzchaRelayMultiplayerPeer-method-get_user)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id)|
+|[EzchaRelayMultiplayerPeer.Operation](#EzchaRelayMultiplayerPeer)|[get_operation](#EzchaRelayMultiplayerPeer-method-get_operation)()|
+|void|[set_lobby_name](#EzchaRelayMultiplayerPeer-method-set_lobby_name)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) new_name)|
+|void|[set_game_mode](#EzchaRelayMultiplayerPeer-method-set_game_mode)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_mode)|
+|void|[set_player_limit](#EzchaRelayMultiplayerPeer-method-set_player_limit)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_limit)|
+|void|[set_visibility](#EzchaRelayMultiplayerPeer-method-set_visibility)([EzchaRelayMultiplayerPeer.Visibility](#EzchaRelayMultiplayerPeer) new_visibility)|
+|void|[migrate_host](#EzchaRelayMultiplayerPeer-method-migrate_host)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id)|
+|void|[close_lobby](#EzchaRelayMultiplayerPeer-method-close_lobby)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="")|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[in_lobby](#EzchaRelayMultiplayerPeer-method-in_lobby)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_host](#EzchaRelayMultiplayerPeer-method-is_host)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[can_modify_lobby](#EzchaRelayMultiplayerPeer-method-can_modify_lobby)()|
 
 ### Signals
 
-**lobby_connected** ( )
+**lobby_connected**()
 
 Emitted after connecting to a lobby.
 
-**lobby_created** ( )
+**lobby_created**()
 
 Emitted after creating a new lobby.
 
-**lobby_joined** ( )
+**lobby_joined**()
 
 Emitted after joining an existing lobby.
 
-**user_connected** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [EzchaUser](#EzchaUser) user )
+**user_connected**()
 
 Emitted when a peer joins the lobby. Mirrors peer_connected but includes user data and emits upon lobby creation.
 
-**user_disconnected** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [EzchaUser](#EzchaUser) user )
+**user_disconnected**()
 
 Emitted when a peer leaves the lobby. Mirrors peer_disconnected but includes user data.
 
-**name_changed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) new_name )
+**name_changed**()
 
 Emitted when the name of the lobby changes.
 
-**game_mode_changed** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_mode )
+**game_mode_changed**()
 
 Emitted when the current game mode changes.
 
-**player_limit_changed** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_limit )
+**player_limit_changed**()
 
 Emitted when the player limit changes.
 
-**visibility_changed** ( [Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html) new_visibility )
+**visibility_changed**()
 
 Emitted when visibility of the lobby changes.
 
-**host_migrated** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) old_host_id, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_host_id )
+**host_migrated**()
 
 Emitted when the lobby migrates hosts to a new peer.
 
-**error** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) code, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message )
+**error**()
 
 Emitted when an error occurs during relay operations.
 
-**kicked** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message )
+**kicked**()
 
 Emitted when kicked from the lobby.
 
@@ -1184,122 +1090,122 @@ enum **Operation**:
 ### Method Descriptions
 
 <a name="EzchaRelayMultiplayerPeer-method-resolve_lobby"></a>
-void **resolve_lobby** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) join_code )
+void **resolve_lobby**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) join_code)
 
 Resolve a join code, connect to the relay server, and then join the lobby. Do not call this function with `await`.
 
 <a name="EzchaRelayMultiplayerPeer-method-join_lobby"></a>
-void **join_lobby** ( [EzchaRelayLobby](#EzchaRelayLobby) lobby )
+void **join_lobby**([EzchaRelayLobby](#EzchaRelayLobby) lobby)
 
 Connect to a relay server and join a lobby. Do not call this function with `await`.
 
 <a name="EzchaRelayMultiplayerPeer-method-create_lobby"></a>
-void **create_lobby** ( [EzchaRelayServer](#EzchaRelayServer) server, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) players, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=0, [Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html) visibility=Visibility.PUBLIC, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) host_migration=false )
+void **create_lobby**([EzchaRelayServer](#EzchaRelayServer) server, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) name, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) players, [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) game_mode=0, [EzchaRelayMultiplayerPeer.Visibility](#EzchaRelayMultiplayerPeer) visibility=0, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) host_migration=false)
 
 Request a new lobby from the relay server. Hosting requires the user to be authenticated. Do not call this function with `await`.
 
 <a name="EzchaRelayMultiplayerPeer-method-kick"></a>
-void **kick** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
+void **kick**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="")
 
 Kick another player from the lobby. (host/moderator only)
 
 <a name="EzchaRelayMultiplayerPeer-method-ban"></a>
-void **ban** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
+void **ban**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="")
 
 Ban another player from the lobby. (host/moderator only)
 
 <a name="EzchaRelayMultiplayerPeer-method-get_lobby_id"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_lobby_id** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_lobby_id**()
 
 Returns the UUID of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_join_code"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_join_code** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_join_code**()
 
-Returns the UUID of the lobby.
+Returns the join code of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_lobby_name"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_lobby_name** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_lobby_name**()
 
 Returns the name of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_game_mode"></a>
-[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **get_game_mode** ( )
+[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **get_game_mode**()
 
 Returns the game mode of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_player_limit"></a>
-[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **get_player_limit** ( )
+[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **get_player_limit**()
 
 Returns the player limit of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_visibility_mode"></a>
-[Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html) **get_visibility_mode** ( )
+[EzchaRelayMultiplayerPeer.Visibility](#EzchaRelayMultiplayerPeer) **get_visibility_mode**()
 
 Returns the visibility mode of the lobby.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_host_id"></a>
-[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **get_host_id** ( )
+[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **get_host_id**()
 
 Returns the peer ID of the current host.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_peers"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) ] **get_peers** ( )
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)] **get_peers**()
 
 Returns a list of connected peer IDs.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_user"></a>
-[EzchaUser](#EzchaUser) **get_user** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id )
+[EzchaUser](#EzchaUser) **get_user**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id)
 
 Returns locally cached user data for a given peer ID. Prefer to use this over relaying information from the host.
 
 <a name="EzchaRelayMultiplayerPeer-method-get_operation"></a>
-[Operation](https://docs.godotengine.org/en/4.6/classes/class_operation.html) **get_operation** ( )
+[EzchaRelayMultiplayerPeer.Operation](#EzchaRelayMultiplayerPeer) **get_operation**()
 
 Returns what the current pending operation is.
 
 <a name="EzchaRelayMultiplayerPeer-method-set_lobby_name"></a>
-void **set_lobby_name** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) new_name )
+void **set_lobby_name**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) new_name)
 
 Change the name of the lobby. (host/moderator only, requires migration to be enabled)
 
 <a name="EzchaRelayMultiplayerPeer-method-set_game_mode"></a>
-void **set_game_mode** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_mode )
+void **set_game_mode**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_mode)
 
 Change the game mode of the lobby. (host/moderator only, requires migration to be enabled)
 
 <a name="EzchaRelayMultiplayerPeer-method-set_player_limit"></a>
-void **set_player_limit** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_limit )
+void **set_player_limit**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) new_limit)
 
-Change the game mode of the lobby. (host/moderator only, requires migration to be enabled)
+Change the player limit of the lobby. (host/moderator only, requires migration to be enabled)
 
 <a name="EzchaRelayMultiplayerPeer-method-set_visibility"></a>
-void **set_visibility** ( [Visibility](https://docs.godotengine.org/en/4.6/classes/class_visibility.html) new_visibility )
+void **set_visibility**([EzchaRelayMultiplayerPeer.Visibility](#EzchaRelayMultiplayerPeer) new_visibility)
 
 Change the visibility of the lobby. (host/moderator only, requires migration to be enabled)
 
 <a name="EzchaRelayMultiplayerPeer-method-migrate_host"></a>
-void **migrate_host** ( [int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id )
+void **migrate_host**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) peer_id)
 
 Manually migrate host to another peer. (host/moderator only, requires migration to be enabled)
 
 <a name="EzchaRelayMultiplayerPeer-method-close_lobby"></a>
-void **close_lobby** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="" )
+void **close_lobby**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) message="")
 
 Close the lobby and kick all players. (host/moderator only)
 
 <a name="EzchaRelayMultiplayerPeer-method-in_lobby"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **in_lobby** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **in_lobby**()
 
 Returns true if currently connected to a lobby
 
 <a name="EzchaRelayMultiplayerPeer-method-is_host"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_host** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_host**()
 
 Returns if the current peer is the host.
 
 <a name="EzchaRelayMultiplayerPeer-method-can_modify_lobby"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **can_modify_lobby** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **can_modify_lobby**()
 
 Returns if the current peer can modify the lobby.
 
@@ -1320,7 +1226,7 @@ Stores Godot-specific metadata (transfer mode, channel) extracted from payload. 
 |-|-|-|
 |[PackedByteArray](https://docs.godotengine.org/en/4.6/classes/class_packedbytearray.html)|data|PackedByteArray()|
 |[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|from|-1|
-|[MultiplayerPeer.TransferMode](https://docs.godotengine.org/en/4.6/classes/class_multiplayerpeer.html)|transfer_mode|MultiplayerPeer.TransferMode.TRANSFER_MODE_RELIABLE|
+|[MultiplayerPeer.TransferMode](https://docs.godotengine.org/en/4.6/classes/class_multiplayerpeer.html)|transfer_mode|2|
 |[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|channel|0|
 
 <a name="EzchaRequestBuilder"></a>
@@ -1334,72 +1240,72 @@ A class for building and making requests to the Ezcha Network API.
 
 |Returns|Name|
 |-|-|
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_hostname](#EzchaRequestBuilder-method-set_hostname) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_endpoint](#EzchaRequestBuilder-method-set_endpoint) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_method](#EzchaRequestBuilder-method-set_method) ( [HTTPClient.Method](https://docs.godotengine.org/en/4.6/classes/class_httpclient.html) value )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_authentication](#EzchaRequestBuilder-method-set_authentication) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_signing_key](#EzchaRequestBuilder-method-set_signing_key) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_parse_response](#EzchaRequestBuilder-method-set_parse_response) ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) enabled )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_response_object](#EzchaRequestBuilder-method-set_response_object) ( [EzchaResponse](#EzchaResponse) obj )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_timeout](#EzchaRequestBuilder-method-set_timeout) ( [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) time )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[add_query_parameter](#EzchaRequestBuilder-method-add_query_parameter) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value )
-|[EzchaRequestBuilder](#EzchaRequestBuilder)|[add_body_data](#EzchaRequestBuilder-method-add_body_data) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value )
-|[EzchaResponse](#EzchaResponse)|[fetch](#EzchaRequestBuilder-method-fetch) ( )
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_hostname](#EzchaRequestBuilder-method-set_hostname)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_endpoint](#EzchaRequestBuilder-method-set_endpoint)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_method](#EzchaRequestBuilder-method-set_method)([HTTPClient.Method](https://docs.godotengine.org/en/4.6/classes/class_httpclient.html) value)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_authentication](#EzchaRequestBuilder-method-set_authentication)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_signing_key](#EzchaRequestBuilder-method-set_signing_key)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_parse_response](#EzchaRequestBuilder-method-set_parse_response)([bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) enabled)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_response_object](#EzchaRequestBuilder-method-set_response_object)([EzchaResponse](#EzchaResponse) obj)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[set_timeout](#EzchaRequestBuilder-method-set_timeout)([float](https://docs.godotengine.org/en/4.6/classes/class_float.html) time)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[add_query_parameter](#EzchaRequestBuilder-method-add_query_parameter)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value)|
+|[EzchaRequestBuilder](#EzchaRequestBuilder)|[add_body_data](#EzchaRequestBuilder-method-add_body_data)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value)|
+|[EzchaResponse](#EzchaResponse)|[fetch](#EzchaRequestBuilder-method-fetch)()|
 
 ### Method Descriptions
 
 <a name="EzchaRequestBuilder-method-set_hostname"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **set_hostname** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **set_hostname**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)
 
 Sets the target hostname.
 
 <a name="EzchaRequestBuilder-method-set_endpoint"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **set_endpoint** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **set_endpoint**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)
 
 Sets the target endpoint.
 
 <a name="EzchaRequestBuilder-method-set_method"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **set_method** ( [HTTPClient.Method](https://docs.godotengine.org/en/4.6/classes/class_httpclient.html) value )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **set_method**([HTTPClient.Method](https://docs.godotengine.org/en/4.6/classes/class_httpclient.html) value)
 
 Sets the method to be used.
 
 <a name="EzchaRequestBuilder-method-set_authentication"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **set_authentication** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **set_authentication**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token)
 
 Sets the authentication header for the request.
 
 <a name="EzchaRequestBuilder-method-set_signing_key"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **set_signing_key** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **set_signing_key**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)
 
 Enables request signing and defines the signing key to use. Requires authentication to be set to a session token.
 
 <a name="EzchaRequestBuilder-method-set_parse_response"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **set_parse_response** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) enabled )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **set_parse_response**([bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) enabled)
 
 Enable/disable response parsing for performance.
 
 <a name="EzchaRequestBuilder-method-set_response_object"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **set_response_object** ( [EzchaResponse](#EzchaResponse) obj )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **set_response_object**([EzchaResponse](#EzchaResponse) obj)
 
 Set the response object.
 
 <a name="EzchaRequestBuilder-method-set_timeout"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **set_timeout** ( [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) time )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **set_timeout**([float](https://docs.godotengine.org/en/4.6/classes/class_float.html) time)
 
 Set the request timeout. Defaults to 10 seconds.
 
 <a name="EzchaRequestBuilder-method-add_query_parameter"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **add_query_parameter** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **add_query_parameter**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value)
 
 Adds a parameter to the query string. The value should either be a string or an array of strings.
 
 <a name="EzchaRequestBuilder-method-add_body_data"></a>
-[EzchaRequestBuilder](#EzchaRequestBuilder) **add_body_data** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value )
+[EzchaRequestBuilder](#EzchaRequestBuilder) **add_body_data**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value)
 
 Adds a value to the body data.
 
 <a name="EzchaRequestBuilder-method-fetch"></a>
-[EzchaResponse](#EzchaResponse) **fetch** ( )
+[EzchaResponse](#EzchaResponse) **fetch**()
 
 Makes the request.
 
@@ -1408,48 +1314,50 @@ Makes the request.
 
 **Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
 
+**Inherited By:** [EzchaCaptchaResponse](#EzchaCaptchaResponse), [EzchaDatastoreValueResponse](#EzchaDatastoreValueResponse), [EzchaFriendsResponse](#EzchaFriendsResponse), [EzchaGameListResponse](#EzchaGameListResponse), [EzchaGameResponse](#EzchaGameResponse), [EzchaGeneralStatusResponse](#EzchaGeneralStatusResponse), [EzchaGeneralTimeResponse](#EzchaGeneralTimeResponse), [EzchaLeaderboardListResponse](#EzchaLeaderboardListResponse), [EzchaLeaderboardQueuedResponse](#EzchaLeaderboardQueuedResponse), [EzchaPaginatedResponse](#EzchaPaginatedResponse), [EzchaRelayLobbyResponse](#EzchaRelayLobbyResponse), [EzchaRelayServerListResponse](#EzchaRelayServerListResponse), [EzchaSessionValidationResponse](#EzchaSessionValidationResponse), [EzchaTrophyListResponse](#EzchaTrophyListResponse), [EzchaTrophyObtainedListResponse](#EzchaTrophyObtainedListResponse), [EzchaTrophyQueuedResponse](#EzchaTrophyQueuedResponse), [EzchaUserResponse](#EzchaUserResponse), [EzchaUsersResponse](#EzchaUsersResponse)
+
 The base class for handling Ezcha Network API responses.
 
 ### Methods
 
 |Returns|Name|
 |-|-|
-|[EzchaResponse](#EzchaResponse)|[async](#EzchaResponse-method-async) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_successful](#EzchaResponse-method-is_successful) ( )
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[get_status](#EzchaResponse-method-get_status) ( )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_error](#EzchaResponse-method-get_error) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_pending](#EzchaResponse-method-is_pending) ( )
+|[EzchaResponse](#EzchaResponse)|[async](#EzchaResponse-method-async)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_successful](#EzchaResponse-method-is_successful)()|
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[get_status](#EzchaResponse-method-get_status)()|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_error](#EzchaResponse-method-get_error)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_pending](#EzchaResponse-method-is_pending)()|
 
 ### Signals
 
-**completed** ( )
+**completed**()
 
 Emitted once the response has been received and processed or upon failure.
 
 ### Method Descriptions
 
 <a name="EzchaResponse-method-async"></a>
-[EzchaResponse](#EzchaResponse) **async** ( )
+[EzchaResponse](#EzchaResponse) **async**()
 
 (Async) Wait for the request to be completed.
 
 <a name="EzchaResponse-method-is_successful"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_successful** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_successful**()
 
 Returns if the response is okay and is not an error.
 
 <a name="EzchaResponse-method-get_status"></a>
-[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **get_status** ( )
+[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **get_status**()
 
 Returns the status code.
 
 <a name="EzchaResponse-method-get_error"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_error** ( )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_error**()
 
 Returns the error message if available.
 
 <a name="EzchaResponse-method-is_pending"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_pending** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_pending**()
 
 Returns if the response is pending or not.
 
@@ -1462,51 +1370,51 @@ A helper class for managing players on dedicated servers.
 
 ### Description
 
-You shouldn't use this client-side or when making a singleplayer/relay based game. In those cases you should rely on Ezcha.client instead.
+You shouldn't use this client-side or when making a singleplayer/relay based game. In those cases you should use Ezcha.client instead.
 
 ### Properties
 
 |Type|Name|Default|
 |-|-|-|
 |[EzchaUser](#EzchaUser)|[user](#EzchaServerPlayer-property-user)|null|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ]|[trophies_obtained](#EzchaServerPlayer-property-trophies_obtained)|[]|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ]|[leaderboard_entries](#EzchaServerPlayer-property-leaderboard_entries)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)]|[trophies_obtained](#EzchaServerPlayer-property-trophies_obtained)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)]|[leaderboard_entries](#EzchaServerPlayer-property-leaderboard_entries)|[]|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[moderation_tools](#EzchaServerPlayer-property-moderation_tools)|false|
 
 ### Methods
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[authenticate](#EzchaServerPlayer-method-authenticate) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_authenticated](#EzchaServerPlayer-method-is_authenticated) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_trophy](#EzchaServerPlayer-method-has_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
-|[EzchaTrophyObtained](#EzchaTrophyObtained)|[get_trophy](#EzchaServerPlayer-method-get_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[grant_trophy](#EzchaServerPlayer-method-grant_trophy) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_score](#EzchaServerPlayer-method-has_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id )
-|[float](https://docs.godotengine.org/en/4.6/classes/class_float.html)|[get_score](#EzchaServerPlayer-method-get_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0 )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[update_score](#EzchaServerPlayer-method-update_score) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=EzchaLeaderboardsAPI.UpdateMode.SET )
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_datastore](#EzchaServerPlayer-method-get_datastore) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[set_datastore](#EzchaServerPlayer-method-set_datastore) ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[authenticate](#EzchaServerPlayer-method-authenticate)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_authenticated](#EzchaServerPlayer-method-is_authenticated)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_trophy](#EzchaServerPlayer-method-has_trophy)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true)|
+|[EzchaTrophyObtained](#EzchaTrophyObtained)|[get_trophy](#EzchaServerPlayer-method-get_trophy)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[grant_trophy](#EzchaServerPlayer-method-grant_trophy)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[has_score](#EzchaServerPlayer-method-has_score)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id)|
+|[float](https://docs.godotengine.org/en/4.6/classes/class_float.html)|[get_score](#EzchaServerPlayer-method-get_score)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[update_score](#EzchaServerPlayer-method-update_score)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=0)|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_datastore](#EzchaServerPlayer-method-get_datastore)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[set_datastore](#EzchaServerPlayer-method-set_datastore)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)|
 
 ### Signals
 
-**authentication_completed** ( [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+**authentication_completed**()
 
 Emitted once a session token has been authenticated.
 
-**trophy_grant_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful, [EzchaTrophy](#EzchaTrophy) trophy_data )
+**trophy_grant_completed**()
 
 Emitted when a trophy grant is queued from the grant_trophy function. trophy_data will be null if the grant could not be queued.
 
-**leaderboard_update_completed** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+**leaderboard_update_completed**()
 
 Emitted when a leaderboard update is queued from the update_score function.
 
-**datastore_value_received** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+**datastore_value_received**()
 
 Emitted after a datastore value is requested and received
 
-**datastore_value_posted** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) successful )
+**datastore_value_posted**()
 
 Emitted after a datastore value update is posted.
 
@@ -1518,12 +1426,12 @@ Emitted after a datastore value update is posted.
 The user data of the player. Only available after authenticating.
 
 <a name="EzchaServerPlayer-property-trophies_obtained"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ] **trophies_obtained** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)] **trophies_obtained** = []
 
 The trophies that the user has obtained from this game.
 
 <a name="EzchaServerPlayer-property-leaderboard_entries"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ] **leaderboard_entries** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)] **leaderboard_entries** = []
 
 The leaderboard entries that the currently authenticated user has for this game.
 
@@ -1535,66 +1443,54 @@ If true the user should have access to any moderation tools.
 ### Method Descriptions
 
 <a name="EzchaServerPlayer-method-authenticate"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **authenticate** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **authenticate**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) session_token)
 
-Authenticates a session token and loads player information. 
-
- (Async) Returns true if authentication was successful. 
-
- The authentication_completed signal is emitted on completion.
+Authenticates a session token and loads player information.  (Async) Returns true if authentication was successful.  The authentication_completed signal is emitted on completion.
 
 <a name="EzchaServerPlayer-method-is_authenticated"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_authenticated** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_authenticated**()
 
 Returns true if the player has authenticated and user data is available.
 
 <a name="EzchaServerPlayer-method-has_trophy"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_trophy**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id, [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) include_pending=true)
 
 Returns true if the player has the trophy specified.
 
 <a name="EzchaServerPlayer-method-get_trophy"></a>
-[EzchaTrophyObtained](#EzchaTrophyObtained) **get_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
+[EzchaTrophyObtained](#EzchaTrophyObtained) **get_trophy**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id)
 
 Returns the trophy if the player has obtained it, null otherwise.
 
 <a name="EzchaServerPlayer-method-grant_trophy"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **grant_trophy** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **grant_trophy**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) trophy_id)
 
-Grants a trophy to the currently authenticated user. 
-
- (Async) Returns true if the trophy grant was queued.
+Grants a trophy to the currently authenticated user.  (Async) Returns true if the trophy grant was queued.
 
 <a name="EzchaServerPlayer-method-has_score"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_score** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **has_score**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id)
 
 Checks if the player has a score on a leaderboard.
 
 <a name="EzchaServerPlayer-method-get_score"></a>
-[float](https://docs.godotengine.org/en/4.6/classes/class_float.html) **get_score** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0 )
+[float](https://docs.godotengine.org/en/4.6/classes/class_float.html) **get_score**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) defaults_to=0.0)
 
 Returns the players's score on a specific leaderboard.
 
 <a name="EzchaServerPlayer-method-update_score"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **update_score** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=EzchaLeaderboardsAPI.UpdateMode.SET )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **update_score**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) leaderboard_id, [float](https://docs.godotengine.org/en/4.6/classes/class_float.html) score, [EzchaLeaderboardsAPI.UpdateMode](#EzchaLeaderboardsAPI) mode=0)
 
-Updates a leaderboard entry belonging to the player. 
-
- (Async) Returns true if the score update was queued.
+Updates a leaderboard entry belonging to the player.  (Async) Returns true if the score update was queued.
 
 <a name="EzchaServerPlayer-method-get_datastore"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_datastore** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key )
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_datastore**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key)
 
-Get a datastore value belonging to the currently authenticated player. The datastore_value_received signal is emitted when the value is received. 
-
- (Async) Returns a string value. The value will be empty if deleted or not yet set.
+Get a datastore value belonging to the currently authenticated player. The datastore_value_received signal is emitted when the value is received.  (Async) Returns a string value. The value will be empty if deleted or not yet set.
 
 <a name="EzchaServerPlayer-method-set_datastore"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **set_datastore** ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **set_datastore**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)
 
-Update a datastore value belonging to the currently authenticated player. Limit of 5 keys per user, limit of 16384 characters per value. Set the value to an empty string to delete the key. The datastore_value_posted signal is emitted on completion. 
-
- (Async) Returns true if the value was successfully updated.
+Update a datastore value belonging to the currently authenticated player. Limit of 5 keys per user, limit of 16384 characters per value. Set the value to an empty string to delete the key. The datastore_value_posted signal is emitted on completion.  (Async) Returns true if the value was successfully updated.
 
 <a name="EzchaWebTexture"></a>
 ## EzchaWebTexture
@@ -1603,27 +1499,52 @@ Update a datastore value belonging to the currently authenticated player. Limit 
 
 A helper texture resource that loads an image from the internet.
 
+### Properties
+
+|Type|Name|Default|
+|-|-|-|
+|[Texture2D](https://docs.godotengine.org/en/4.6/classes/class_texture2d.html)|[placeholder](#EzchaWebTexture-property-placeholder)|null|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[assume_type](#EzchaWebTexture-property-assume_type)|""|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[generate_mipmaps](#EzchaWebTexture-property-generate_mipmaps)|true|
+
 ### Methods
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_successful](#EzchaWebTexture-method-is_successful) ( )
-|void|fetch ( [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) url )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_successful](#EzchaWebTexture-method-is_successful)()|
+|void|fetch([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) url)|
 
 ### Signals
 
-**loaded** ( )
+**loaded**()
 
 Emitted when the image is downloaded and ready to be displayed.
 
-**error** ( )
+**error**()
 
 Emitted if the image could not be loaded.
+
+### Property Descriptions
+
+<a name="EzchaWebTexture-property-placeholder"></a>
+[Texture2D](https://docs.godotengine.org/en/4.6/classes/class_texture2d.html) **placeholder** = null
+
+The placeholder image to display while the target image is being requested.
+
+<a name="EzchaWebTexture-property-assume_type"></a>
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **assume_type** = ""
+
+If the image type cannot be determined it will set it to this value.
+
+<a name="EzchaWebTexture-property-generate_mipmaps"></a>
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **generate_mipmaps** = true
+
+Generate mipmaps for the downloaded image.
 
 ### Method Descriptions
 
 <a name="EzchaWebTexture-method-is_successful"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_successful** ( )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **is_successful**()
 
 Returns true if the image has been downloaded and parsed.
 
@@ -1653,7 +1574,7 @@ Returns true if the image has been downloaded and parsed.
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaGame-method-equals) ( [EzchaGame](#EzchaGame) other )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaGame-method-equals)([EzchaGame](#EzchaGame) other)|
 
 ### Property Descriptions
 
@@ -1720,7 +1641,7 @@ The timestamp for when the game was published on other platforms before Ezcha. N
 ### Method Descriptions
 
 <a name="EzchaGame-method-equals"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaGame](#EzchaGame) other )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals**([EzchaGame](#EzchaGame) other)
 
 Check if two instances represent the same game. Data can vary if requested at different times.
 
@@ -1746,7 +1667,7 @@ Check if two instances represent the same game. Data can vary if requested at di
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaLeaderboard-method-equals) ( [EzchaLeaderboard](#EzchaLeaderboard) other )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaLeaderboard-method-equals)([EzchaLeaderboard](#EzchaLeaderboard) other)|
 
 ### Property Descriptions
 
@@ -1793,7 +1714,7 @@ The timestamp of when the leaderboard was created.
 ### Method Descriptions
 
 <a name="EzchaLeaderboard-method-equals"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaLeaderboard](#EzchaLeaderboard) other )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals**([EzchaLeaderboard](#EzchaLeaderboard) other)
 
 Check if two instances represent the same leaderboard. Data can vary if requested at different times.
 
@@ -1869,7 +1790,7 @@ The timestamp of when this entry was last updated.
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaNewsPost-method-equals) ( [EzchaNewsPost](#EzchaNewsPost) other )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaNewsPost-method-equals)([EzchaNewsPost](#EzchaNewsPost) other)|
 
 ### Property Descriptions
 
@@ -1926,7 +1847,7 @@ The URL of the news post's featured image. Not all news posts will have this.
 ### Method Descriptions
 
 <a name="EzchaNewsPost-method-equals"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaNewsPost](#EzchaNewsPost) other )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals**([EzchaNewsPost](#EzchaNewsPost) other)
 
 Check if two instances represent the same news post. Data can vary if requested at different times.
 
@@ -1954,7 +1875,7 @@ Check if two instances represent the same news post. Data can vary if requested 
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaRelayLobby-method-equals) ( [EzchaRelayLobby](#EzchaRelayLobby) other )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaRelayLobby-method-equals)([EzchaRelayLobby](#EzchaRelayLobby) other)|
 
 ### Property Descriptions
 
@@ -2011,7 +1932,7 @@ The server which the lobby is hosted on.
 ### Method Descriptions
 
 <a name="EzchaRelayLobby-method-equals"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaRelayLobby](#EzchaRelayLobby) other )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals**([EzchaRelayLobby](#EzchaRelayLobby) other)
 
 Check if two instances represent the same lobby. Data can vary if requested at different times.
 
@@ -2036,8 +1957,8 @@ Check if two instances represent the same lobby. Data can vary if requested at d
 
 |Returns|Name|
 |-|-|
-|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[ping](#EzchaRelayServer-method-ping) ( )
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaRelayServer-method-equals) ( [EzchaRelayServer](#EzchaRelayServer) other )
+|[int](https://docs.godotengine.org/en/4.6/classes/class_int.html)|[ping](#EzchaRelayServer-method-ping)()|
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaRelayServer-method-equals)([EzchaRelayServer](#EzchaRelayServer) other)|
 
 ### Property Descriptions
 
@@ -2079,12 +2000,12 @@ The cached player count.
 ### Method Descriptions
 
 <a name="EzchaRelayServer-method-ping"></a>
-[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **ping** ( )
+[int](https://docs.godotengine.org/en/4.6/classes/class_int.html) **ping**()
 
 Attempt to ping the server. (Async) Returns the time spent in milliseconds or -1 if failed.
 
 <a name="EzchaRelayServer-method-equals"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaRelayServer](#EzchaRelayServer) other )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals**([EzchaRelayServer](#EzchaRelayServer) other)
 
 Check if two instances represent the same server. Data can vary if requested at different times.
 
@@ -2092,6 +2013,8 @@ Check if two instances represent the same server. Data can vary if requested at 
 ## EzchaTrophy
 
 **Inherits:** [EzchaDto](#EzchaDto)
+
+**Inherited By:** [EzchaTrophyObtained](#EzchaTrophyObtained)
 
 ### Properties
 
@@ -2109,7 +2032,7 @@ Check if two instances represent the same server. Data can vary if requested at 
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaTrophy-method-equals) ( [EzchaTrophy](#EzchaTrophy) other )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaTrophy-method-equals)([EzchaTrophy](#EzchaTrophy) other)|
 
 ### Property Descriptions
 
@@ -2151,7 +2074,7 @@ The URL for the trophy's icon image. This will be a png file.
 ### Method Descriptions
 
 <a name="EzchaTrophy-method-equals"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaTrophy](#EzchaTrophy) other )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals**([EzchaTrophy](#EzchaTrophy) other)
 
 Check if two instances represent the same trophy. Data can vary if requested at different times.
 
@@ -2199,7 +2122,7 @@ The timestamp for when the user obtained the trophy.
 
 |Returns|Name|
 |-|-|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaUser-method-equals) ( [EzchaUser](#EzchaUser) other )
+|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[equals](#EzchaUser-method-equals)([EzchaUser](#EzchaUser) other)|
 
 ### Property Descriptions
 
@@ -2266,7 +2189,7 @@ The URL for the user's avatar/profile picture. This will be a png file.
 ### Method Descriptions
 
 <a name="EzchaUser-method-equals"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals** ( [EzchaUser](#EzchaUser) other )
+[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **equals**([EzchaUser](#EzchaUser) other)
 
 Check if two instances represent the same user. Data can vary if requested at different times.
 
@@ -2295,7 +2218,7 @@ Returns true if the captcha response was valid.
 
 **Inherits:** [EzchaResponse](#EzchaResponse)
 
-A paginated response from the API.
+A response from the API containing a datastore value.
 
 ### Properties
 
@@ -2330,6 +2253,26 @@ A response from the API that returns whether or not two users are friends.
 
 Returns true if the two users are friends.
 
+<a name="EzchaGameListResponse"></a>
+## EzchaGameListResponse
+
+**Inherits:** [EzchaResponse](#EzchaResponse)
+
+A response from the API containing a list of games.
+
+### Properties
+
+|Type|Name|Default|
+|-|-|-|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaGame](#EzchaGame)]|[games](#EzchaGameListResponse-property-games)|[]|
+
+### Property Descriptions
+
+<a name="EzchaGameListResponse-property-games"></a>
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaGame](#EzchaGame)] **games** = []
+
+The list of games returned by the API request.
+
 <a name="EzchaGameResponse"></a>
 ## EzchaGameResponse
 
@@ -2349,26 +2292,6 @@ A response from the API containing a single game.
 [EzchaGame](#EzchaGame) **game** = null
 
 The game returned by the API request.
-
-<a name="EzchaGameListResponse"></a>
-## EzchaGameListResponse
-
-**Inherits:** [EzchaResponse](#EzchaResponse)
-
-A response from the API containing a list of games.
-
-### Properties
-
-|Type|Name|Default|
-|-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaGame](#EzchaGame) ]|[games](#EzchaGameListResponse-property-games)|[]|
-
-### Property Descriptions
-
-<a name="EzchaGameListResponse-property-games"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaGame](#EzchaGame) ] **games** = []
-
-The list of games returned by the API request.
 
 <a name="EzchaGeneralStatusResponse"></a>
 ## EzchaGeneralStatusResponse
@@ -2421,20 +2344,20 @@ The server's current time as a unix epoch measured in milliseconds.
 
 **Inherits:** [EzchaPaginatedResponse](#EzchaPaginatedResponse)
 
-A response from the API containing a paginated list of leaderboards.
+A response from the API containing a paginated list of leaderboard entries.
 
 ### Properties
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ]|[entries](#EzchaLeaderboardEntryListResponse-property-entries)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)]|[entries](#EzchaLeaderboardEntryListResponse-property-entries)|[]|
 
 ### Property Descriptions
 
 <a name="EzchaLeaderboardEntryListResponse-property-entries"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ] **entries** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)] **entries** = []
 
-The list of leaderboards returned by the API request.
+The list of leaderboard entries returned by the API request.
 
 <a name="EzchaLeaderboardListResponse"></a>
 ## EzchaLeaderboardListResponse
@@ -2447,12 +2370,12 @@ A response from the API containing a list of leaderboards.
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboard](#EzchaLeaderboard) ]|[leaderboards](#EzchaLeaderboardListResponse-property-leaderboards)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboard](#EzchaLeaderboard)]|[leaderboards](#EzchaLeaderboardListResponse-property-leaderboards)|[]|
 
 ### Property Descriptions
 
 <a name="EzchaLeaderboardListResponse-property-leaderboards"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboard](#EzchaLeaderboard) ] **leaderboards** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboard](#EzchaLeaderboard)] **leaderboards** = []
 
 The list of leaderboards returned by the API request.
 
@@ -2481,18 +2404,18 @@ Returns true if an update has been queued.
 
 **Inherits:** [EzchaPaginatedResponse](#EzchaPaginatedResponse)
 
-A response from the relay API containing a list of games.
+A response from the relay API containing a list of lobbies.
 
 ### Properties
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaRelayLobby](#EzchaRelayLobby) ]|[lobbies](#EzchaLobbyListResponse-property-lobbies)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaRelayLobby](#EzchaRelayLobby)]|[lobbies](#EzchaLobbyListResponse-property-lobbies)|[]|
 
 ### Property Descriptions
 
 <a name="EzchaLobbyListResponse-property-lobbies"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaRelayLobby](#EzchaRelayLobby) ] **lobbies** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaRelayLobby](#EzchaRelayLobby)] **lobbies** = []
 
 The list of lobbies returned by the API request.
 
@@ -2501,18 +2424,18 @@ The list of lobbies returned by the API request.
 
 **Inherits:** [EzchaPaginatedResponse](#EzchaPaginatedResponse)
 
-A response from the API containing a paginated list of leaderboards.
+A response from the API containing a paginated list of news posts.
 
 ### Properties
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaNewsPost](#EzchaNewsPost) ]|[posts](#EzchaNewsListResponse-property-posts)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaNewsPost](#EzchaNewsPost)]|[posts](#EzchaNewsListResponse-property-posts)|[]|
 
 ### Property Descriptions
 
 <a name="EzchaNewsListResponse-property-posts"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaNewsPost](#EzchaNewsPost) ] **posts** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaNewsPost](#EzchaNewsPost)] **posts** = []
 
 The list of news posts returned by the API request.
 
@@ -2520,6 +2443,8 @@ The list of news posts returned by the API request.
 ## EzchaPaginatedResponse
 
 **Inherits:** [EzchaResponse](#EzchaResponse)
+
+**Inherited By:** [EzchaLeaderboardEntryListResponse](#EzchaLeaderboardEntryListResponse), [EzchaLobbyListResponse](#EzchaLobbyListResponse), [EzchaNewsListResponse](#EzchaNewsListResponse), [EzchaUserListResponse](#EzchaUserListResponse)
 
 A paginated response from the API.
 
@@ -2559,7 +2484,7 @@ The total number of results returned.
 
 **Inherits:** [EzchaResponse](#EzchaResponse)
 
-A response from the API containing a single game.
+A response from the API containing a single relay lobby.
 
 ### Properties
 
@@ -2585,18 +2510,18 @@ A response from the API containing a list of available relay servers.
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaRelayServer](#EzchaRelayServer) ]|[servers](#EzchaRelayServerListResponse-property-servers)|[]|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) ]|[countries](#EzchaRelayServerListResponse-property-countries)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaRelayServer](#EzchaRelayServer)]|[servers](#EzchaRelayServerListResponse-property-servers)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)]|[countries](#EzchaRelayServerListResponse-property-countries)|[]|
 
 ### Property Descriptions
 
 <a name="EzchaRelayServerListResponse-property-servers"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaRelayServer](#EzchaRelayServer) ] **servers** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaRelayServer](#EzchaRelayServer)] **servers** = []
 
 The list of relay servers returned by the API request.
 
 <a name="EzchaRelayServerListResponse-property-countries"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) ] **countries** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)] **countries** = []
 
 The country codes of available relay servers.
 
@@ -2612,8 +2537,8 @@ A response from the API containing the information related to a validated sessio
 |Type|Name|Default|
 |-|-|-|
 |[EzchaUser](#EzchaUser)|[user](#EzchaSessionValidationResponse-property-user)|null|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ]|[trophies_obtained](#EzchaSessionValidationResponse-property-trophies_obtained)|[]|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ]|[leaderboard_entries](#EzchaSessionValidationResponse-property-leaderboard_entries)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)]|[trophies_obtained](#EzchaSessionValidationResponse-property-trophies_obtained)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)]|[leaderboard_entries](#EzchaSessionValidationResponse-property-leaderboard_entries)|[]|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[moderation_tools](#EzchaSessionValidationResponse-property-moderation_tools)|false|
 
 ### Property Descriptions
@@ -2624,12 +2549,12 @@ A response from the API containing the information related to a validated sessio
 The user associated with the session.
 
 <a name="EzchaSessionValidationResponse-property-trophies_obtained"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ] **trophies_obtained** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)] **trophies_obtained** = []
 
 The trophies that the user has obtained from this game.
 
 <a name="EzchaSessionValidationResponse-property-leaderboard_entries"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaLeaderboardEntry](#EzchaLeaderboardEntry) ] **leaderboard_entries** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)] **leaderboard_entries** = []
 
 The leaderboard entries the user has for this game.
 
@@ -2649,12 +2574,12 @@ A response from the API containing a list of trophies.
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophy](#EzchaTrophy) ]|[trophies](#EzchaTrophyListResponse-property-trophies)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophy](#EzchaTrophy)]|[trophies](#EzchaTrophyListResponse-property-trophies)|[]|
 
 ### Property Descriptions
 
 <a name="EzchaTrophyListResponse-property-trophies"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophy](#EzchaTrophy) ] **trophies** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophy](#EzchaTrophy)] **trophies** = []
 
 The list of trophies returned by the API request.
 
@@ -2669,12 +2594,12 @@ A response from the API containing a list of trophies.
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ]|[trophies](#EzchaTrophyObtainedListResponse-property-trophies)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)]|[trophies](#EzchaTrophyObtainedListResponse-property-trophies)|[]|
 
 ### Property Descriptions
 
 <a name="EzchaTrophyObtainedListResponse-property-trophies"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaTrophyObtained](#EzchaTrophyObtained) ] **trophies** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)] **trophies** = []
 
 The list of trophies returned by the API request.
 
@@ -2704,6 +2629,26 @@ Returns true if the grant has been queued.
 
 The data of the trophy queued to be granted.
 
+<a name="EzchaUserListResponse"></a>
+## EzchaUserListResponse
+
+**Inherits:** [EzchaPaginatedResponse](#EzchaPaginatedResponse)
+
+A response from the API containing a paginated list of users.
+
+### Properties
+
+|Type|Name|Default|
+|-|-|-|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaUser](#EzchaUser)]|[users](#EzchaUserListResponse-property-users)|[]|
+
+### Property Descriptions
+
+<a name="EzchaUserListResponse-property-users"></a>
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaUser](#EzchaUser)] **users** = []
+
+The list of users returned by the API request.
+
 <a name="EzchaUserResponse"></a>
 ## EzchaUserResponse
 
@@ -2724,26 +2669,6 @@ A response from the API containing a single user.
 
 The user returned by the API request.
 
-<a name="EzchaUserListResponse"></a>
-## EzchaUserListResponse
-
-**Inherits:** [EzchaPaginatedResponse](#EzchaPaginatedResponse)
-
-A response from the API containing a paginated list of users.
-
-### Properties
-
-|Type|Name|Default|
-|-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaUser](#EzchaUser) ]|[users](#EzchaUserListResponse-property-users)|[]|
-
-### Property Descriptions
-
-<a name="EzchaUserListResponse-property-users"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaUser](#EzchaUser) ] **users** = []
-
-The list of users returned by the API request.
-
 <a name="EzchaUsersResponse"></a>
 ## EzchaUsersResponse
 
@@ -2755,11 +2680,11 @@ A response from the API containing multiple users.
 
 |Type|Name|Default|
 |-|-|-|
-|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaUser](#EzchaUser) ]|[users](#EzchaUsersResponse-property-users)|[]|
+|[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaUser](#EzchaUser)]|[users](#EzchaUsersResponse-property-users)|[]|
 
 ### Property Descriptions
 
 <a name="EzchaUsersResponse-property-users"></a>
-[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html) [ [EzchaUser](#EzchaUser) ] **users** = []
+[Array](https://docs.godotengine.org/en/4.6/classes/class_array.html)[[EzchaUser](#EzchaUser)] **users** = []
 
 The users returned by the API request.

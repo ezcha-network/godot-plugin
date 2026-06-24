@@ -1,6 +1,6 @@
 extends EzchaPaginatedResponse
 class_name EzchaNewsListResponse
-## A response from the API containing a paginated list of leaderboards.
+## A response from the API containing a paginated list of news posts.
 
 func _get_array_type_map() -> Dictionary:
 	return {

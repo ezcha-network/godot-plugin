@@ -13,7 +13,7 @@ extends "res://addons/ezcha_network/dock/menu.gd"
 var update_game: bool = false
 var clear_cache: bool = false
 
-func _opened():
+func _opened() -> void:
 	update_game = false
 	clear_cache = false
 	$Contents/Global/GameIdEdit.text = _ezcha.get_game_id()
@@ -23,22 +23,22 @@ func _opened():
 	$Contents/Debug/PrintRequestErrorsCheckButton.button_pressed = _ezcha.should_print_request_errors()
 	unlock_inputs()
 
-func lock_inputs():
+func lock_inputs() -> void:
 	for i in inputs:
 		if (i is LineEdit): i.editable = false
 		elif (i is Button): i.disabled = true
 
-func unlock_inputs():
+func unlock_inputs() -> void:
 	for i in inputs:
 		if (i is LineEdit): i.editable = true
 		elif (i is Button): i.disabled = false
 
-func show_error(err_text: String):
+func show_error(err_text: String) -> void:
 	error_label.text = err_text
 	error_label.visible = true
 	set_deferred("scroll_vertical", 999999999) # idk
 
-func hide_error():
+func hide_error() -> void:
 	error_label.visible = false
 
 func _on_game_id_edit_text_changed(text: String) -> void:
@@ -56,7 +56,7 @@ func _on_session_override_edit_text_changed(text: String) -> void:
 	ProjectSettings.set_setting("ezcha_network/config/debug/session_override", text)
 	clear_cache = true
 
-func _on_print_request_errors_checkbox_toggled(toggled: bool):
+func _on_print_request_errors_checkbox_toggled(toggled: bool) -> void:
 	ProjectSettings.set_setting("ezcha_network/config/debug/print_request_errors", toggled)
 
 func _on_done_pressed() -> void:
@@ -70,21 +70,20 @@ func _on_done_pressed() -> void:
 	
 	# Clear cache if needed
 	if (clear_cache):
-		dock.plugin.trophies_cached = false
-		dock.plugin.trophies.clear()
-		dock.plugin.leaderboards_cached = false
-		dock.plugin.leaderboards.clear()
+		dock.plugin._trophies_cached = false
+		dock.plugin._trophies.clear()
+		dock.plugin._leaderboards_cached = false
+		dock.plugin._leaderboards.clear()
 	
 	# Update game data if needed
 	if (!update_game):
 		ProjectSettings.save()
 		dock.show_menu(dock.menu_main)
 		return
-	var resp: EzchaGameResponse = _ezcha.games.get_from_id(game_id)
-	await resp.completed
+	var resp: EzchaGameResponse = await _ezcha.games.get_from_id(game_id).async()
 	if (resp.is_successful()):
 		ProjectSettings.save()
-		dock.plugin.game = resp.game
+		dock.plugin._game = resp.game
 		dock.show_menu(dock.menu_main)
 		return
 	

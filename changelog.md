@@ -1,8 +1,25 @@
+# Version 2.5.3
+
+This update mainly improves the plugin development pipeline but also brings some small,
+general improvements.
+
+- Added the [GD Mark It](https://github.com/ezcha-network/gd-mark-it) plugin to the repo to replace the previous NodeJS script
+- Added the [GD Plugin Bundler](https://github.com/ezcha-network/gd-plugin-bundler) plugin to the repo to make packaging the plugin quicker
+- Properly deleted the old "ezcha_platform_adapter_web.gd" script conflicting with the rename.
+- Improved settings handling
+- Added missing typings
+- Made the definitions under the `EzchaPlugin` class private
+	- This is technically breaking but you shouldn't be using them anyways
+- Updated the dock menu requests to use the new `.async()` syntax
+- Fixed copy and paste errors in doc comments across the entire project
+
+---
+
 # Version 2.5.2
 
 This version implements the new partial guest support for Ezcha Relay, along with various
 other improvements. Joining a lobby as a guest will now simulate authentication as a temporary user,
-allowing you to get user data like you normally would. To enabled guests developers must toggle the
+allowing you to get user data like you normally would. To enable guests developers must toggle the
 new option in the developer panel under the "API" tab. Users can now also be banned from lobbies.
 
 - Access errors now print to the output
