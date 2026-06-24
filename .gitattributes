@@ -1,7 +1,9 @@
 # Normalize line endings for all files that Git considers text files.
 * text=auto eol=lf
 
-# Only include the addons folder when downloading from the Asset Library.
-/**        export-ignore
-/addons    !export-ignore
-/addons/** !export-ignore
+# Only include the Ezcha plugin when downloading from the Asset Library.
+/**                       export-ignore
+/addons                   !export-ignore
+/addons/**                export-ignore
+/addons/ezcha_network     !export-ignore
+/addons/ezcha_network/**  !export-ignore
