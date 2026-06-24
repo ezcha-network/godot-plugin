@@ -1,49 +1,53 @@
 # Ezcha Network for Godot 4
 
+[![Get this plugin on the Godot Asset Store](https://cdn.ezcha.net/static/git-badge/godot-asset-store.svg)](https://store.godotengine.org/asset/ezcha/network/)
+
+This plugin enables developers to quickly and easily add online multiplayer, lobbies, trophies, leaderboards, cloud saves, and more to their games. These features are all free and powered by Ezcha Network, a small (but quickly growing) indie games platform. The API is first class, all handwritten to work best with how Godot and your project already function. Here at Ezcha LLC we love Godot and naturally use this plugin in our own original games. This allows us to ensure a high-quality developer experience, as we want one too!
+
 [Looking for the Godot 3 version?](https://github.com/ezcha-network/godot-plugin/tree/godot-3.x)
 
-This repository contains the official Ezcha Network plugin for the [Godot game engine](https://godotengine.org/).
-It allows developers to integrate the [Ezcha Network](https://ezcha.net/) online platform and its features into
-their games with relative ease.
+![A gif showcasing a trophy being granted.](https://ezchacdn.com/ezcha3/user-img/4630c25a-12ba-420a-93b5-e27ffa27ff24)
 
-![Browsing through the "Ezcha" menu that the plugin provides](https://github.com/ezcha-network/godot-plugin/assets/15235673/ce7b24e4-d997-4089-a0c8-1c081145a517)
+## Links & Resources
 
-## Supported Features
+* [Apply now (it's quick!)](https://ezcha.net/developer)
+* [More information](https://ezcha.net/news/8-26-24-call-for-developers)
+* [Getting started guide](https://ezcha.net/news/11-30-25-godot-engine-ezcha-network)
+* [Documentation](docs.md)
 
-This plugin supports the following Ezcha Network features:
+## Features
 
-- Authentication
-- Users/profiles
-- Ezcha Relay (easy online multiplayer/lobbies)
-- Trophies
-- Leaderboards
-- Datastores (simple text based cloud saves)
-- News
-- General (time, captcha, etc)
+Here is a list of all the features and services provided by Ezcha Network.
 
-## Developer Applications
+* Hosting
+    * Web embeds
+    * Traditional downloads
+* Accounts
+* Authentication
+* Trophies
+* Leaderboards
+* Multiplayer relay
+    * Built-in lobby system and list
+    * Seamlessly integrates with Godot's high-level system
+    * Three current server locations
+        * Colorado (US)
+        * Quebec (CA)
+        * Switzerland (EU)
+    * (Dedicated servers can be used as well)
+* Cloud saves
+* Statistics
+* General API (time, captchas, etc)
+* Basic anti-cheat
+    * Signed client-side requests
+    * Replay attacks are blocked
+    * Specific trophies and leaderboards can be locked to server updates only
+* Real-time notifications for trophy grants and leaderboard updates
 
-To fully use this plugin and access all of the platform's features you must first become an approved
-developer. This can be done by submitting a quick one-time application, which mostly asks about the game
-you intend on publishing first. Read [this news post](https://ezcha.net/news/8-26-24-call-for-developers)
-for more information or [apply now](https://ezcha.net/developer/apply).
+## User Interface
 
-## Setup
+Along with the actual game features/services, the plugin provides a convenient user interface as well. Here the developer can configure their game, view its trophies/leaderboards, and quickly navigate to its developer panel on the site. It also includes useful links to the developer forums and plugin documentation.
 
-1. Create a game listing on Ezcha Network.
-2. Copy the game ID from its developer panel, found under the "API" tab.
-3. Add the plugin to the `/addons` directory of your project or install
-it from the [asset library](https://godotengine.org/asset-library/asset/4528).
-4. Enable the "Ezcha Network" plugin in the project settings.
-5. Find the new "Ezcha" menu below the inspector.
-6. Use the menu to configure your game's ID.
-
-For a more complete guide on how to prepare a game listing and to use this plugin please
-refer to [this news post](https://ezcha.net/news/11-30-25-godot-engine-ezcha-network).
-
-## Documentation
-
-Full documentation/reference for the plugin can be viewed [here](docs.md).
+![Browsing through the "Ezcha" menu that the plugin adds](https://ezchacdn.com/ezcha3/user-img/835466af-a981-472c-af4e-0450b7292bf0)
 
 ## Usage
 
