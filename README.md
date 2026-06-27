@@ -2,7 +2,7 @@
 
 [![Get this plugin on the Godot Asset Store](https://cdn.ezcha.net/static/git-badge/godot-asset-store.svg)](https://store.godotengine.org/asset/ezcha/network/)
 
-This plugin enables developers to quickly and easily add online multiplayer, lobbies, trophies, leaderboards, cloud saves, and more to their games. These features are all free and powered by Ezcha Network, a small (but quickly growing) indie games platform. The API is first-class and completely handwritten to work best with how Godot and your project already functions. Here at Ezcha LLC we love Godot and naturally use this plugin in our own original games. This allows us to ensure a high-quality developer experience, as we want one too!
+This plugin enables developers to quickly and easily add online multiplayer, lobbies, trophies, leaderboards, cloud saves, and more to their games. These features are all free and powered by Ezcha Network, a small (but quickly growing) indie games platform. The API is first-class and completely handwritten to work seamlessly with how Godot and your project already function. Here at Ezcha LLC we love Godot and naturally use this plugin in our own original games. This allows us to ensure a high-quality developer experience, as we want one too!
 
 [Looking for the Godot 3 version?](https://github.com/ezcha-network/godot-plugin/tree/godot-3.x)
 
@@ -13,19 +13,27 @@ This plugin enables developers to quickly and easily add online multiplayer, lob
 - [Apply now (it's quick!)](https://ezcha.net/developer)
 - [More information](https://ezcha.net/news/8-26-24-call-for-developers)
 - [Getting started guide](https://ezcha.net/news/11-30-25-godot-engine-ezcha-network)
-- [Documentation](docs.md)
+- [Online documentation](docs.md)
 
-## Features
+## Features & Services
 
 Here is a list of all the features and services provided by Ezcha Network.
 
+- Cross-platform
+	- Mobile support releasing to the public soon
+	- Players take their progress with them across devices
+	- The plugin adapts to the platform (write once, run everywhere!)
 - Hosting
-    - Web embeds
+    - Web embeds (with mobile compatibility)
     - Traditional downloads
-- Accounts
-- Authentication
+- Accounts & authentication
+	- Supports login/register with Apple & Google
 - Trophies
+	- Can be categorized
+	- Includes experience points which players can collect to level up
 - Leaderboards
+	- Highly customizable
+	- Supports elapsed times
 - Multiplayer relay
     - Built-in lobby system and list
 	- Seamlessly integrates with Godot's high-level system
@@ -33,9 +41,9 @@ Here is a list of all the features and services provided by Ezcha Network.
 		- Colorado (US)
 		- Quebec (CA)
 		- Switzerland (EU)
-	- (Dedicated servers can be used as well)
+	- (You can host your own dedicated servers as well)
 - Cloud saves
-- Statistics
+- Player statistics
 - General API (time, captchas, etc)
 - Basic anti-cheat
 	- Signed client-side requests
@@ -43,13 +51,15 @@ Here is a list of all the features and services provided by Ezcha Network.
 	- Specific trophies and leaderboards can be locked to server updates only
 - Real-time notifications for trophy grants and leaderboard updates
 
-## User Interface
+## Workflow
+
+### User Interface
 
 The plugin provides a convenient user interface. The developer can use it to configure their game, view its trophies/leaderboards, and to quickly navigate to its developer panel on the website. It also includes useful links to the developer forums and plugin documentation.
 
 ![A gif showing the user browsing through the "Ezcha" dock that the plugin adds.](https://ezchacdn.com/ezcha3/user-img/835466af-a981-472c-af4e-0450b7292bf0)
 
-## Upload From Godot
+### Upload From Godot
 
 The plugin also allows developers to quickly upload their games directly from the editor. It adds a new "Ezcha Network" export platform which automatically builds the game for web, prepares it into a bundle, uploads that the site, and waits for it all to be processed.
 
