@@ -39,8 +39,12 @@ var _obtained_trophy_ids: PackedStringArray = PackedStringArray()
 var _pending_trophy_ids: PackedStringArray = PackedStringArray()
 var _authenticated: bool = false
 
+# Lifecycle
+
 func _init() -> void:
-	_ezcha = Engine.get_main_loop().root.get_node("Ezcha")
+	_ezcha = EzchaSingleton._get_instance()
+
+# Interface
 
 ## Authenticates a session token and loads player information.
 ##
@@ -49,7 +53,9 @@ func _init() -> void:
 ## The authentication_completed signal is emitted on completion.
 func authenticate(session_token: String) -> bool:
 	if (_authenticated): return true
-	var response: EzchaSessionValidationResponse = await _ezcha.sessions.post_validation(session_token, _ezcha.get_game_id()).async()
+	var response: EzchaSessionValidationResponse = await _ezcha.sessions.post_validation(
+		session_token, _ezcha.get_game_id()
+	).async()
 	if (!response.is_successful()):
 		authentication_completed.emit(false)
 		return false
@@ -83,16 +89,18 @@ func get_trophy(trophy_id: String) -> EzchaTrophyObtained:
 ## (Async) Returns true if the trophy grant was queued.
 func grant_trophy(trophy_id: String) -> bool:
 	if (!_authenticated):
-		printerr("EzchaServerPlayer: User must be authenticated before granting trophies.")
+		printerr(EzchaOpts._PRINT_PREFIX + "User must be authenticated before granting trophies.")
 		return false
 	if (user.guest):
-		printerr("EzchaServerPlayer: Guests cannot be granted trophies.")
+		printerr(EzchaOpts._PRINT_PREFIX + "Guests cannot be granted trophies.")
 		return false
 	if (has_trophy(trophy_id, true)):
-		printerr("EzchaServerPlayer: User has already obtained this trophy.")
+		printerr(EzchaOpts._PRINT_PREFIX + "User has already obtained this trophy.")
 		return false
 	_pending_trophy_ids.append(trophy_id)
-	var response: EzchaTrophyQueuedResponse = await _ezcha.trophies.post_grant_server(trophy_id, user.id).async()
+	var response: EzchaTrophyQueuedResponse = await _ezcha.trophies.post_grant_server(
+		trophy_id, user.id
+	).async()
 	var idx: int = _pending_trophy_ids.find(trophy_id)
 	if (idx > -1): _pending_trophy_ids.remove_at(idx)
 	if (!response.is_successful() || !response.queued):
@@ -120,12 +128,14 @@ func get_score(leaderboard_id: String, defaults_to: float = 0.0) -> float:
 ## (Async) Returns true if the score update was queued.
 func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsAPI.UpdateMode = EzchaLeaderboardsAPI.UpdateMode.SET) -> bool:
 	if (!_authenticated):
-		printerr("EzchaServerPlayer: User must be authenticated before tracking scores.")
+		printerr(EzchaOpts._PRINT_PREFIX + "User must be authenticated before tracking scores.")
 		return false
 	if (user.guest):
-		printerr("EzchaServerPlayer: Guests cannot track scores.")
+		printerr(EzchaOpts._PRINT_PREFIX + "Guests cannot track scores.")
 		return false
-	var response: EzchaLeaderboardQueuedResponse = await _ezcha.leaderboards.post_entry_server(leaderboard_id, user.id, score, mode).async()
+	var response: EzchaLeaderboardQueuedResponse = await _ezcha.leaderboards.post_entry_server(
+		leaderboard_id, user.id, score, mode
+	).async()
 	if (!response.is_successful() || !response.queued):
 		leaderboard_update_completed.emit(leaderboard_id, false)
 		return false
@@ -138,12 +148,16 @@ func update_score(leaderboard_id: String, score: float, mode: EzchaLeaderboardsA
 ## (Async) Returns a string value. The value will be empty if deleted or not yet set.
 func get_datastore(key: String) -> String:
 	if (!_authenticated):
-		printerr("EzchaServerPlayer: User must be authenticated before accessing datastores.")
+		printerr(
+			EzchaOpts._PRINT_PREFIX + "User must be authenticated before accessing datastores."
+		)
 		return ""
 	if (user.guest):
-		printerr("EzchaServerPlayer: Guests cannot access datastores.")
+		printerr(EzchaOpts._PRINT_PREFIX + "Guests cannot access datastores.")
 		return ""
-	var response: EzchaDatastoreValueResponse = await _ezcha.datastores.get_server(user.id, key).async()
+	var response: EzchaDatastoreValueResponse = await _ezcha.datastores.get_server(
+		user.id, key
+	).async()
 	if (!response.is_successful()):
 		datastore_value_received.emit(key, "")
 		return ""
@@ -158,10 +172,12 @@ func get_datastore(key: String) -> String:
 ## (Async) Returns true if the value was successfully updated.
 func set_datastore(key: String, value: String) -> bool:
 	if (!_authenticated):
-		printerr("EzchaServerPlayer: User must be authenticated before accessing datastores.")
+		printerr(
+			EzchaOpts._PRINT_PREFIX + "User must be authenticated before accessing datastores."
+		)
 		return false
 	if (user.guest):
-		printerr("EzchaServerPlayer: Guests cannot access datastores.")
+		printerr(EzchaOpts._PRINT_PREFIX + "Guests cannot access datastores.")
 		return false
 	var response: EzchaResponse = await _ezcha.datastores.post_server(user.id, key, value).async()
 	if (!response.is_successful()):

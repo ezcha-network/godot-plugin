@@ -20,11 +20,15 @@ var _session_response_timer: SceneTreeTimer = null
 var _window_ref: JavaScriptObject = null
 var _window_event_ref: JavaScriptObject = null
 
+# Lifecycle
+
 func _init(singleton: EzchaSingleton) -> void:
 	super(singleton)
 	_window_event_ref = JavaScriptBridge.create_callback(_on_window_message_event)
 	_window_ref = JavaScriptBridge.get_interface("window")
 	_window_ref.addEventListener("message", _window_event_ref)
+
+# Adapter
 
 func _start_auth_flow() -> void:
 	if (_requesting_session_token): return
@@ -67,6 +71,8 @@ func _on_window_message_event(args: Array) -> void:
 			if (!_audio_was_muted): AudioServer.set_bus_mute(0, false)
 			ad_prompt_completed.emit(!data.error, data.rewarded)
 			_in_prompt = false
+
+# Interface
 
 ## Redirects to the register page and back.
 func register_redirect() -> void:

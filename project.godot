@@ -15,12 +15,19 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="Ezcha Network"
+config/version="1.0.0"
+run/main_scene="uid://bd56p7u8nqc4y"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.png"
 
 [autoload]
 
 Ezcha="*uid://b6odi12jokac"
+
+[display]
+
+window/size/viewport_width=800
+window/size/viewport_height=600
 
 [editor_plugins]
 
@@ -29,7 +36,7 @@ enabled=PackedStringArray("res://addons/ezcha_network/plugin.cfg", "res://addons
 [ezcha_network]
 
 config/global/game_id="0L4n_lVRIT8L27s2r11hx"
-config/debug/print_request_errors=true
+config/client/signing_key="Ex6s9Ezn1GXcb4R0bbwb55Xw.NlxF1Hkn8Pj8dtT5yTBdYaiE"
 
 [mark_it]
 

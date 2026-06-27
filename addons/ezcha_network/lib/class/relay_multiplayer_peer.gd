@@ -142,7 +142,7 @@ var _mock_status: ConnectionStatus = CONNECTION_DISCONNECTED
 # Lifecycle
 
 func _init() -> void:
-	_ezcha = Engine.get_main_loop().root.get_node("Ezcha")
+	_ezcha = EzchaSingleton._get_instance()
 
 # Main interface
 
@@ -384,7 +384,7 @@ func close_lobby(message: String = "") -> void:
 	if (message_len > 0): packet.append_array(message_bytes)
 	_ws.send(packet)
 
-# Public helper functions
+# Interface
 
 ## Returns true if currently connected to a lobby
 func in_lobby() -> bool:
@@ -398,7 +398,7 @@ func is_host() -> bool:
 func can_modify_lobby() -> bool:
 	return (is_host() || (_ezcha.client.is_authenticated() && _ezcha.client.moderation_tools))
 
-# Miscellaneous helper functions
+# Miscellaneous helpers
 
 func _to_local_id_unmasked(server_id: int) -> int:
 	return server_id + _GODOT_ID_OFFSET
@@ -434,7 +434,7 @@ func _append_string(packet: PackedByteArray, value: String) -> void:
 	packet.encode_u8(offset, bytes.size())
 	packet.append_array(bytes)
 
-# Networking helper functions
+# Networking helpers
 
 # Used BEFORE connection to relay server has opened.
 func _handle_connection_failed() -> void:

@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://bd56p7u8nqc4y"]
+
+[ext_resource type="Script" uid="uid://dk6dqygm7i486" path="res://examples/0_authentication/authentication.gd" id="1_s8qgl"]
+
+[node name="Authentication" type="Control" unique_id=549990819]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s8qgl")
+
+[node name="Center" type="CenterContainer" parent="." unique_id=141419908]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AuthMessage" type="Label" parent="Center" unique_id=1539793925]
+layout_mode = 2
+text = "Authenticating..."
+horizontal_alignment = 1
+
+[node name="Examples" type="PanelContainer" parent="Center" unique_id=2022194024]
+visible = false
+layout_mode = 2
+
+[node name="Contents" type="VBoxContainer" parent="Center/Examples" unique_id=133856487]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Center/Examples/Contents" unique_id=1383510407]
+layout_mode = 2
+text = "Examples"
+horizontal_alignment = 1
+text_overrun_behavior = 5
+
+[node name="List" type="ItemList" parent="Center/Examples/Contents" unique_id=4915373]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+
+[node name="View" type="Button" parent="Center/Examples/Contents" unique_id=1549993720]
+layout_mode = 2
+disabled = true
+text = "View"
+
+[connection signal="item_activated" from="Center/Examples/Contents/List" to="." method="_on_examples_item_activated"]
+[connection signal="item_selected" from="Center/Examples/Contents/List" to="." method="_on_examples_item_selected"]
+[connection signal="pressed" from="Center/Examples/Contents/View" to="." method="_on_view_pressed"]

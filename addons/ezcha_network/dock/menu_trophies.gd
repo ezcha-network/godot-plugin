@@ -1,16 +1,15 @@
 @tool
 extends "res://addons/ezcha_network/dock/menu.gd"
 
-const TROPHY_ICON: EzchaWebTexture = preload("res://addons/ezcha_network/dock/resources/trophy_icon.tres")
-
 @onready var list: ItemList = $Contents/List
 @onready var info_split: HBoxContainer = $Contents/InfoSplit
+@onready var icon: TextureRect = $Contents/InfoSplit/Icon
 @onready var description_label: Label = $Contents/InfoSplit/Description
 @onready var copy_btn: Button = $Contents/Actions/Copy
 
 func _opened() -> void:
-	if (!dock.plugin._trophies_cached):
-		dock.plugin._trophies_cached = true
+	if (!plugin._trophies_cached):
+		plugin._trophies_cached = true
 		refresh_trophies()
 		return
 	render_list()
@@ -22,30 +21,30 @@ func reset() -> void:
 
 func render_list() -> void:
 	reset()
-	for trophy: EzchaTrophy in dock.plugin._trophies:
+	for trophy: EzchaTrophy in plugin._trophies:
 		var idx: int = list.add_item(trophy.name)
 		list.set_item_tooltip(idx, trophy.id)
 
 func refresh_trophies() -> void:
 	reset()
-	var resp: EzchaTrophyListResponse = await _ezcha.games.get_trophies(
-		dock.plugin._game.id, _ezcha.get_session_override()
+	var resp: EzchaTrophyListResponse = await ezcha.games.get_trophies(
+		plugin._game.id, EzchaOpts._get_test_session()
 	).async()
 	if (!resp.is_successful()): return
-	dock.plugin._trophies = resp.trophies
+	plugin._trophies = resp.trophies
 	render_list()
 
 func _on_list_item_selected(index: int) -> void:
-	var trophy: EzchaTrophy = dock.plugin._trophies[index]
+	var trophy: EzchaTrophy = plugin._trophies[index]
 	copy_btn.disabled = false
 	info_split.visible = true
 	description_label.text = trophy.description
-	TROPHY_ICON.fetch(trophy.icon_url)
+	icon.texture.url = trophy.icon_url
 
 func _on_copy_pressed() -> void:
 	if (!list.is_anything_selected()): return
 	var index: int = list.get_selected_items()[0]
-	DisplayServer.clipboard_set(dock.plugin._trophies[index].id)
+	DisplayServer.clipboard_set(plugin._trophies[index].id)
 
 func _on_refresh_pressed() -> void:
 	refresh_trophies()

@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://cf0brenwkf56v"]
+
+[ext_resource type="Script" uid="uid://bgx58glcxj01a" path="res://examples/4_datastores/datastores.gd" id="1_06ium"]
+
+[node name="Datastores" type="Control" unique_id=619484605]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_06ium")
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1642014798]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=1259223470]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel" unique_id=1401406697]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Center/Panel/VBox" unique_id=1059309650]
+layout_mode = 2
+text = "Datastores"
+horizontal_alignment = 1
+
+[node name="TextEdit" type="TextEdit" parent="Center/Panel/VBox" unique_id=1496945834]
+layout_mode = 2
+size_flags_vertical = 3
+editable = false
+
+[node name="HBox" type="HBoxContainer" parent="Center/Panel/VBox" unique_id=1624146226]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Center/Panel/VBox/HBox" unique_id=428324053]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Back"
+
+[node name="Save" type="Button" parent="Center/Panel/VBox/HBox" unique_id=892892810]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Save"
+
+[connection signal="pressed" from="Center/Panel/VBox/HBox/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Center/Panel/VBox/HBox/Save" to="." method="_on_save_pressed"]

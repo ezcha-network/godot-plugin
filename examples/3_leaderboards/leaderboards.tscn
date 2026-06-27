@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://c0ciy6xlkceis"]
+
+[ext_resource type="Script" uid="uid://chh8mmvlxr7yx" path="res://examples/3_leaderboards/leaderboards.gd" id="1_74w7t"]
+
+[node name="Leaderboards" type="Control" unique_id=1373167195]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_74w7t")
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1625200917]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBox" type="HBoxContainer" parent="Center" unique_id=1375496252]
+layout_mode = 2
+
+[node name="Browse" type="PanelContainer" parent="Center/HBox" unique_id=1604292260]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/HBox/Browse" unique_id=896404295]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Center/HBox/Browse/VBox" unique_id=280801944]
+layout_mode = 2
+text = "Leaderboards"
+horizontal_alignment = 1
+
+[node name="List" type="ItemList" parent="Center/HBox/Browse/VBox" unique_id=686283792]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBox" type="HBoxContainer" parent="Center/HBox/Browse/VBox" unique_id=1298330145]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Center/HBox/Browse/VBox/HBox" unique_id=236372526]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Back"
+
+[node name="Info" type="PanelContainer" parent="Center/HBox" unique_id=669804330]
+custom_minimum_size = Vector2(384, 256)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/HBox/Info" unique_id=845078228]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Center/HBox/Info/VBox" unique_id=652098811]
+layout_mode = 2
+text = "Leaderboard"
+horizontal_alignment = 1
+
+[node name="Tree" type="Tree" parent="Center/HBox/Info/VBox" unique_id=827803790]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 3
+column_titles_visible = true
+allow_search = false
+hide_root = true
+
+[node name="HBox" type="HBoxContainer" parent="Center/HBox/Info/VBox" unique_id=1444826675]
+layout_mode = 2
+
+[node name="Score" type="SpinBox" parent="Center/HBox/Info/VBox/HBox" unique_id=1389122293]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 9999.0
+step = 0.1
+
+[node name="Submit" type="Button" parent="Center/HBox/Info/VBox/HBox" unique_id=905136558]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Submit"
+
+[connection signal="item_selected" from="Center/HBox/Browse/VBox/List" to="." method="_on_list_item_selected"]
+[connection signal="pressed" from="Center/HBox/Browse/VBox/HBox/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Center/HBox/Info/VBox/HBox/Submit" to="." method="_on_submit_pressed"]

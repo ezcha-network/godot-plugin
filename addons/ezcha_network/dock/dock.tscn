@@ -1,229 +1,329 @@
-[gd_scene load_steps=13 format=3 uid="uid://cwhvgs0v53tx4"]
+[gd_scene format=3 uid="uid://cwhvgs0v53tx4"]
 
 [ext_resource type="Script" uid="uid://dedvdmlhpuvjy" path="res://addons/ezcha_network/dock/dock.gd" id="1_v242n"]
 [ext_resource type="Script" uid="uid://ruftohplhqw3" path="res://addons/ezcha_network/dock/menu_main.gd" id="2_kc2sx"]
-[ext_resource type="PackedScene" uid="uid://c5u0v62yxkne3" path="res://addons/ezcha_network/dock/components/label_header.tscn" id="3_xmfk7"]
 [ext_resource type="Script" uid="uid://cdxqa4w7vs7nf" path="res://addons/ezcha_network/dock/menu_information.gd" id="4_k5lf1"]
-[ext_resource type="Texture2D" uid="uid://71ggon0dbiyo" path="res://addons/ezcha_network/dock/resources/game_banner.tres" id="5_edus7"]
+[ext_resource type="Script" uid="uid://c6i7kahsji6g" path="res://addons/ezcha_network/lib/class/web_texture.gd" id="4_mxyce"]
 [ext_resource type="Script" uid="uid://ha3px1aosh2g" path="res://addons/ezcha_network/dock/menu_trophies.gd" id="6_dsg6q"]
-[ext_resource type="Texture2D" uid="uid://bogl81i0au0qw" path="res://addons/ezcha_network/dock/resources/trophy_icon.tres" id="7_adxmr"]
 [ext_resource type="Script" uid="uid://b7lvekk8j4x8t" path="res://addons/ezcha_network/dock/menu_leaderboards.gd" id="8_3h55y"]
 [ext_resource type="Script" uid="uid://bd876ebdbj6pt" path="res://addons/ezcha_network/dock/menu_configuration.gd" id="9_frqre"]
-[ext_resource type="PackedScene" uid="uid://cll3c37a0bybq" path="res://addons/ezcha_network/dock/components/label_category.tscn" id="10_a8s4i"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mo3fn"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
+[sub_resource type="FontVariation" id="FontVariation_c7t8v"]
+variation_embolden = 0.5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jn6d4"]
-content_margin_left = 0.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yp41c"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.6, 0.6, 0.6, 0.1254902)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yp41c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7t8v"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.09019608, 0.09019608, 0.09019608, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="FontVariation" id="FontVariation_yp41c"]
+variation_embolden = 0.5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_c7t8v"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tsp3f"]
 content_margin_top = 4.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[node name="Ezcha" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_38125"]
+bg_color = Color(0.41568628, 1, 0.4862745, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u3041"]
+content_margin_top = 6.0
+bg_color = Color(0, 0, 0, 0.7490196)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Theme" id="Theme_yp41c"]
+DockCategoryLabel/base_type = &"Label"
+DockCategoryLabel/colors/font_color = Color(0.8039216, 0.8039216, 0.8039216, 1)
+DockCategoryLabel/fonts/font = SubResource("FontVariation_c7t8v")
+DockCategoryLabel/styles/normal = SubResource("StyleBoxFlat_yp41c")
+DockEmptyPanel/base_type = &"PanelContainer"
+DockEmptyPanel/styles/panel = SubResource("StyleBoxEmpty_yp41c")
+DockErrorLabel/base_type = &"Label"
+DockErrorLabel/colors/font_color = Color(1, 0, 0, 1)
+DockErrorLabel/styles/normal = SubResource("StyleBoxFlat_c7t8v")
+DockHeaderLabel/base_type = &"Label"
+DockHeaderLabel/colors/font_color = Color(1, 1, 1, 0.5019608)
+DockHeaderLabel/fonts/font = SubResource("FontVariation_yp41c")
+DockHeaderLabel/styles/normal = SubResource("StyleBoxEmpty_c7t8v")
+DockProgressBar/base_type = &"ProgressBar"
+DockProgressBar/styles/background = SubResource("StyleBoxFlat_tsp3f")
+DockProgressBar/styles/fill = SubResource("StyleBoxFlat_38125")
+DockProgressPanel/base_type = &"PanelContainer"
+DockProgressPanel/styles/panel = SubResource("StyleBoxFlat_u3041")
+
+[sub_resource type="Gradient" id="Gradient_mxyce"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0.501961)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_c7t8v"]
+gradient = SubResource("Gradient_mxyce")
+width = 1280
+height = 720
+
+[sub_resource type="Texture2D" id="Texture2D_c7t8v"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_mxyce")
+placeholder = SubResource("GradientTexture2D_c7t8v")
+assume_type = "png"
+metadata/_custom_type_script = "uid://c6i7kahsji6g"
+
+[sub_resource type="Gradient" id="Gradient_4p63q"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0.501961)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mxyce"]
+gradient = SubResource("Gradient_4p63q")
+width = 48
+height = 48
+
+[sub_resource type="Texture2D" id="Texture2D_yp41c"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_mxyce")
+placeholder = SubResource("GradientTexture2D_mxyce")
+assume_type = "png"
+metadata/_custom_type_script = "uid://c6i7kahsji6g"
+
+[node name="Ezcha" type="Control" unique_id=1725788310]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -812.0
-offset_bottom = -310.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = SubResource("Theme_yp41c")
 script = ExtResource("1_v242n")
 
-[node name="Main" type="ScrollContainer" parent="."]
-visible = false
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1969798038]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Menu" type="PanelContainer" parent="VBox" unique_id=1931056967]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"DockEmptyPanel"
+
+[node name="Main" type="ScrollContainer" parent="VBox/Menu" unique_id=1515692664]
+visible = false
+layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("2_kc2sx")
 
-[node name="Contents" type="VBoxContainer" parent="Main"]
+[node name="Contents" type="VBoxContainer" parent="VBox/Menu/Main" unique_id=737122059]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Game" type="PanelContainer" parent="Main/Contents"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_mo3fn")
-
-[node name="List" type="VBoxContainer" parent="Main/Contents/Game"]
+[node name="Game" type="VBoxContainer" parent="VBox/Menu/Main/Contents" unique_id=1492083902]
 layout_mode = 2
 
-[node name="LabelHeader" parent="Main/Contents/Game/List" instance=ExtResource("3_xmfk7")]
+[node name="Header" type="Label" parent="VBox/Menu/Main/Contents/Game" unique_id=931420379]
 layout_mode = 2
+theme_type_variation = &"DockHeaderLabel"
 text = "Game"
+horizontal_alignment = 1
+text_overrun_behavior = 5
 
-[node name="Info" type="Button" parent="Main/Contents/Game/List"]
+[node name="Info" type="Button" parent="VBox/Menu/Main/Contents/Game" unique_id=1177753855]
 layout_mode = 2
 text = "Information"
 text_overrun_behavior = 3
 
-[node name="Trophies" type="Button" parent="Main/Contents/Game/List"]
+[node name="Trophies" type="Button" parent="VBox/Menu/Main/Contents/Game" unique_id=2032610720]
 layout_mode = 2
 text = "Trophies"
 text_overrun_behavior = 3
 
-[node name="Leaderboards" type="Button" parent="Main/Contents/Game/List"]
+[node name="Leaderboards" type="Button" parent="VBox/Menu/Main/Contents/Game" unique_id=51047211]
 layout_mode = 2
 text = "Leaderboards"
 text_overrun_behavior = 3
 
-[node name="DevPanel" type="Button" parent="Main/Contents/Game/List"]
+[node name="DevPanel" type="Button" parent="VBox/Menu/Main/Contents/Game" unique_id=693640038]
 layout_mode = 2
 text = "Developer Panel"
 text_overrun_behavior = 3
 
-[node name="Plugin" type="PanelContainer" parent="Main/Contents"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_jn6d4")
-
-[node name="List" type="VBoxContainer" parent="Main/Contents/Plugin"]
+[node name="Plugin" type="VBoxContainer" parent="VBox/Menu/Main/Contents" unique_id=1180660201]
 layout_mode = 2
 
-[node name="LabelHeader" parent="Main/Contents/Plugin/List" instance=ExtResource("3_xmfk7")]
+[node name="Header" type="Label" parent="VBox/Menu/Main/Contents/Plugin" unique_id=1969422597]
 layout_mode = 2
+theme_type_variation = &"DockHeaderLabel"
 text = "Plugin"
+horizontal_alignment = 1
+text_overrun_behavior = 5
 
-[node name="Configuration" type="Button" parent="Main/Contents/Plugin/List"]
+[node name="Configuration" type="Button" parent="VBox/Menu/Main/Contents/Plugin" unique_id=633458353]
 layout_mode = 2
 text = "Configuration"
 text_overrun_behavior = 3
 
-[node name="Docs" type="Button" parent="Main/Contents/Plugin/List"]
+[node name="Docs" type="Button" parent="VBox/Menu/Main/Contents/Plugin" unique_id=40064058]
 layout_mode = 2
 text = "Documentation"
 text_overrun_behavior = 3
 
-[node name="Repo" type="Button" parent="Main/Contents/Plugin/List"]
+[node name="Repo" type="Button" parent="VBox/Menu/Main/Contents/Plugin" unique_id=615489898]
 layout_mode = 2
 text = "Repository"
 text_overrun_behavior = 3
 
-[node name="Help" type="PanelContainer" parent="Main/Contents"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_jn6d4")
-
-[node name="List" type="VBoxContainer" parent="Main/Contents/Help"]
+[node name="Help" type="VBoxContainer" parent="VBox/Menu/Main/Contents" unique_id=1097080824]
 layout_mode = 2
 
-[node name="LabelHeader" parent="Main/Contents/Help/List" instance=ExtResource("3_xmfk7")]
+[node name="Header" type="Label" parent="VBox/Menu/Main/Contents/Help" unique_id=591048968]
 layout_mode = 2
+theme_type_variation = &"DockHeaderLabel"
 text = "Help"
+horizontal_alignment = 1
+text_overrun_behavior = 5
 
-[node name="Forums" type="Button" parent="Main/Contents/Help/List"]
+[node name="Forums" type="Button" parent="VBox/Menu/Main/Contents/Help" unique_id=1695736644]
 layout_mode = 2
 text = "Developer Forums"
 text_overrun_behavior = 3
 
-[node name="Information" type="ScrollContainer" parent="."]
+[node name="Information" type="ScrollContainer" parent="VBox/Menu" unique_id=1410714772]
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("4_k5lf1")
 
-[node name="Contents" type="VBoxContainer" parent="Information"]
+[node name="Contents" type="VBoxContainer" parent="VBox/Menu/Information" unique_id=13690396]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Banner" type="TextureRect" parent="Information/Contents"]
+[node name="Header" type="Label" parent="VBox/Menu/Information/Contents" unique_id=383078459]
+layout_mode = 2
+theme_type_variation = &"DockHeaderLabel"
+text = "Information"
+horizontal_alignment = 1
+text_overrun_behavior = 5
+
+[node name="Banner" type="TextureRect" parent="VBox/Menu/Information/Contents" unique_id=909375585]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-texture = ExtResource("5_edus7")
+texture = SubResource("Texture2D_c7t8v")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="InfoGrid" type="GridContainer" parent="Information/Contents"]
+[node name="InfoGrid" type="GridContainer" parent="VBox/Menu/Information/Contents" unique_id=1490832567]
 layout_mode = 2
 columns = 2
 
-[node name="IdLabel" type="Label" parent="Information/Contents/InfoGrid"]
+[node name="IdLabel" type="Label" parent="VBox/Menu/Information/Contents/InfoGrid" unique_id=1721040703]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "ID"
 text_overrun_behavior = 3
 
-[node name="IdValue" type="Label" parent="Information/Contents/InfoGrid"]
+[node name="IdValue" type="Label" parent="VBox/Menu/Information/Contents/InfoGrid" unique_id=1045096867]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 2
 size_flags_horizontal = 3
 text_overrun_behavior = 3
 
-[node name="NameLabel" type="Label" parent="Information/Contents/InfoGrid"]
+[node name="NameLabel" type="Label" parent="VBox/Menu/Information/Contents/InfoGrid" unique_id=1691096195]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Name"
 text_overrun_behavior = 3
 
-[node name="NameValue" type="Label" parent="Information/Contents/InfoGrid"]
+[node name="NameValue" type="Label" parent="VBox/Menu/Information/Contents/InfoGrid" unique_id=1058367439]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 2
 size_flags_horizontal = 3
 text_overrun_behavior = 3
 
-[node name="VersionLabel" type="Label" parent="Information/Contents/InfoGrid"]
+[node name="VersionLabel" type="Label" parent="VBox/Menu/Information/Contents/InfoGrid" unique_id=794199754]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Version"
 text_overrun_behavior = 3
 
-[node name="VersionValue" type="Label" parent="Information/Contents/InfoGrid"]
+[node name="VersionValue" type="Label" parent="VBox/Menu/Information/Contents/InfoGrid" unique_id=264527554]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 2
 size_flags_horizontal = 3
 text_overrun_behavior = 3
 
-[node name="Back" type="Button" parent="Information/Contents"]
+[node name="Back" type="Button" parent="VBox/Menu/Information/Contents" unique_id=1308798382]
 layout_mode = 2
 text = "Back"
 
-[node name="Trophies" type="ScrollContainer" parent="."]
+[node name="Trophies" type="ScrollContainer" parent="VBox/Menu" unique_id=580957901]
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("6_dsg6q")
 
-[node name="Contents" type="VBoxContainer" parent="Trophies"]
+[node name="Contents" type="VBoxContainer" parent="VBox/Menu/Trophies" unique_id=1370876392]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="LabelHeader" parent="Trophies/Contents" instance=ExtResource("3_xmfk7")]
+[node name="Header" type="Label" parent="VBox/Menu/Trophies/Contents" unique_id=842224375]
 layout_mode = 2
+theme_type_variation = &"DockHeaderLabel"
 text = "Trophies"
+horizontal_alignment = 1
+text_overrun_behavior = 5
 
-[node name="List" type="ItemList" parent="Trophies/Contents"]
+[node name="List" type="ItemList" parent="VBox/Menu/Trophies/Contents" unique_id=640502850]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="InfoSplit" type="HBoxContainer" parent="Trophies/Contents"]
+[node name="InfoSplit" type="HBoxContainer" parent="VBox/Menu/Trophies/Contents" unique_id=547401128]
 layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="Trophies/Contents/InfoSplit"]
+[node name="Icon" type="TextureRect" parent="VBox/Menu/Trophies/Contents/InfoSplit" unique_id=445950652]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
-texture = ExtResource("7_adxmr")
+texture = SubResource("Texture2D_yp41c")
 expand_mode = 1
 
-[node name="Description" type="Label" parent="Trophies/Contents/InfoSplit"]
+[node name="Description" type="Label" parent="VBox/Menu/Trophies/Contents/InfoSplit" unique_id=112546043]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -232,206 +332,224 @@ vertical_alignment = 1
 autowrap_mode = 3
 text_overrun_behavior = 3
 
-[node name="Actions" type="HBoxContainer" parent="Trophies/Contents"]
+[node name="Actions" type="HBoxContainer" parent="VBox/Menu/Trophies/Contents" unique_id=294317845]
 layout_mode = 2
 
-[node name="Copy" type="Button" parent="Trophies/Contents/Actions"]
+[node name="Copy" type="Button" parent="VBox/Menu/Trophies/Contents/Actions" unique_id=848033788]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Copy ID"
 
-[node name="Refresh" type="Button" parent="Trophies/Contents/Actions"]
+[node name="Refresh" type="Button" parent="VBox/Menu/Trophies/Contents/Actions" unique_id=47564472]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Refresh"
 
-[node name="Back" type="Button" parent="Trophies/Contents/Actions"]
+[node name="Back" type="Button" parent="VBox/Menu/Trophies/Contents/Actions" unique_id=1584980716]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Back"
 
-[node name="Leaderboards" type="ScrollContainer" parent="."]
+[node name="Leaderboards" type="ScrollContainer" parent="VBox/Menu" unique_id=190649632]
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("8_3h55y")
 
-[node name="Contents" type="VBoxContainer" parent="Leaderboards"]
+[node name="Contents" type="VBoxContainer" parent="VBox/Menu/Leaderboards" unique_id=1681950337]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="LabelHeader" parent="Leaderboards/Contents" instance=ExtResource("3_xmfk7")]
+[node name="Header" type="Label" parent="VBox/Menu/Leaderboards/Contents" unique_id=693428484]
 layout_mode = 2
+theme_type_variation = &"DockHeaderLabel"
 text = "Leaderboards"
+horizontal_alignment = 1
+text_overrun_behavior = 5
 
-[node name="List" type="ItemList" parent="Leaderboards/Contents"]
+[node name="List" type="ItemList" parent="VBox/Menu/Leaderboards/Contents" unique_id=1648234849]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Actions" type="HBoxContainer" parent="Leaderboards/Contents"]
+[node name="Actions" type="HBoxContainer" parent="VBox/Menu/Leaderboards/Contents" unique_id=1854315721]
 layout_mode = 2
 
-[node name="Copy" type="Button" parent="Leaderboards/Contents/Actions"]
+[node name="Copy" type="Button" parent="VBox/Menu/Leaderboards/Contents/Actions" unique_id=1403733593]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Copy ID"
 
-[node name="Refresh" type="Button" parent="Leaderboards/Contents/Actions"]
+[node name="Refresh" type="Button" parent="VBox/Menu/Leaderboards/Contents/Actions" unique_id=396018333]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Refresh"
 
-[node name="Back" type="Button" parent="Leaderboards/Contents/Actions"]
+[node name="Back" type="Button" parent="VBox/Menu/Leaderboards/Contents/Actions" unique_id=1253101167]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Back"
 
-[node name="Configuration" type="ScrollContainer" parent="."]
+[node name="Configuration" type="ScrollContainer" parent="VBox/Menu" unique_id=1171207869]
 visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("9_frqre")
 
-[node name="Contents" type="VBoxContainer" parent="Configuration"]
+[node name="Contents" type="VBoxContainer" parent="VBox/Menu/Configuration" unique_id=920275751]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LabelHeader" parent="Configuration/Contents" instance=ExtResource("3_xmfk7")]
+[node name="HeaderLabel" type="Label" parent="VBox/Menu/Configuration/Contents" unique_id=1420035460]
 layout_mode = 2
+theme_type_variation = &"DockHeaderLabel"
 text = "Configuration"
+horizontal_alignment = 1
+text_overrun_behavior = 5
 
-[node name="GlobalLabel" parent="Configuration/Contents" instance=ExtResource("10_a8s4i")]
+[node name="ProjectLabel" type="Label" parent="VBox/Menu/Configuration/Contents" unique_id=153600943]
 layout_mode = 2
-text = "Global"
+theme_type_variation = &"DockCategoryLabel"
+text = "Project"
+horizontal_alignment = 1
+text_overrun_behavior = 5
 
-[node name="Global" type="GridContainer" parent="Configuration/Contents"]
+[node name="Project" type="GridContainer" parent="VBox/Menu/Configuration/Contents" unique_id=1072922978]
 layout_mode = 2
 columns = 2
 
-[node name="GameIdLabel" type="Label" parent="Configuration/Contents/Global"]
+[node name="GameIdLabel" type="Label" parent="VBox/Menu/Configuration/Contents/Project" unique_id=467438796]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Game ID"
 text = "Game ID*"
 text_overrun_behavior = 3
 
-[node name="GameIdEdit" type="LineEdit" parent="Configuration/Contents/Global"]
+[node name="GameIdEdit" type="LineEdit" parent="VBox/Menu/Configuration/Contents/Project" unique_id=231238702]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ClientLabel" parent="Configuration/Contents" instance=ExtResource("10_a8s4i")]
-layout_mode = 2
-text = "Client"
-
-[node name="Client" type="GridContainer" parent="Configuration/Contents"]
-layout_mode = 2
-columns = 2
-
-[node name="SigningKeyLabel" type="Label" parent="Configuration/Contents/Client"]
+[node name="SigningKeyLabel" type="Label" parent="VBox/Menu/Configuration/Contents/Project" unique_id=221491545]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Signing Key"
 text = "Signing Key"
 text_overrun_behavior = 3
 
-[node name="SigningKeyEdit" type="LineEdit" parent="Configuration/Contents/Client"]
+[node name="SigningKeyEdit" type="LineEdit" parent="VBox/Menu/Configuration/Contents/Project" unique_id=388271684]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ServerLabel" parent="Configuration/Contents" instance=ExtResource("10_a8s4i")]
-layout_mode = 2
-text = "Server"
-
-[node name="Server" type="GridContainer" parent="Configuration/Contents"]
-layout_mode = 2
-columns = 2
-
-[node name="ApiKeyLabel" type="Label" parent="Configuration/Contents/Server"]
+[node name="ApiKeyLabel" type="Label" parent="VBox/Menu/Configuration/Contents/Project" unique_id=1426622874]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "API Key"
 text = "API Key"
 text_overrun_behavior = 3
 
-[node name="ApiKeyEdit" type="LineEdit" parent="Configuration/Contents/Server"]
+[node name="ApiKeyEdit" type="LineEdit" parent="VBox/Menu/Configuration/Contents/Project" unique_id=124302635]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DebugLabel" parent="Configuration/Contents" instance=ExtResource("10_a8s4i")]
+[node name="DevelopmentLabel" type="Label" parent="VBox/Menu/Configuration/Contents" unique_id=809184715]
 layout_mode = 2
-text = "Debug"
+theme_type_variation = &"DockCategoryLabel"
+text = "Development"
+horizontal_alignment = 1
+text_overrun_behavior = 5
 
-[node name="Debug" type="GridContainer" parent="Configuration/Contents"]
+[node name="Development" type="GridContainer" parent="VBox/Menu/Configuration/Contents" unique_id=1581160566]
 layout_mode = 2
 columns = 2
 
-[node name="SessionOverrideLabel" type="Label" parent="Configuration/Contents/Debug"]
+[node name="TestSessionLabel" type="Label" parent="VBox/Menu/Configuration/Contents/Development" unique_id=977611884]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Session Override"
-text = "Session Override"
+text = "Test Session"
 text_overrun_behavior = 3
 
-[node name="SessionOverrideEdit" type="LineEdit" parent="Configuration/Contents/Debug"]
+[node name="TestSessionEdit" type="LineEdit" parent="VBox/Menu/Configuration/Contents/Development" unique_id=1277715440]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PrintRequestErrorsLabel" type="Label" parent="Configuration/Contents/Debug"]
+[node name="BuildKeyLabel" type="Label" parent="VBox/Menu/Configuration/Contents/Development" unique_id=1344225161]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Session Override"
+text = "Build Key"
+text_overrun_behavior = 3
+
+[node name="BuildKeyEdit" type="LineEdit" parent="VBox/Menu/Configuration/Contents/Development" unique_id=1096680578]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PrintRequestErrorsLabel" type="Label" parent="VBox/Menu/Configuration/Contents/Development" unique_id=452786854]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Print Request Errors"
 text = "Print Request Errors"
 text_overrun_behavior = 3
 
-[node name="PrintRequestErrorsCheckButton" type="CheckButton" parent="Configuration/Contents/Debug"]
+[node name="PrintRequestErrorsCheckButton" type="CheckButton" parent="VBox/Menu/Configuration/Contents/Development" unique_id=1454938667]
 layout_mode = 2
 text = "On"
 
-[node name="Done" type="Button" parent="Configuration/Contents"]
+[node name="Done" type="Button" parent="VBox/Menu/Configuration/Contents" unique_id=575402832]
 layout_mode = 2
 text = "Done"
 
-[node name="ErrorLabel" type="Label" parent="Configuration/Contents"]
+[node name="ErrorLabel" type="Label" parent="VBox/Menu/Configuration/Contents" unique_id=434212849]
 visible = false
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 1
-theme_override_constants/shadow_offset_y = 1
+theme_type_variation = &"DockErrorLabel"
+text = "Error!"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[connection signal="pressed" from="Main/Contents/Game/List/Info" to="Main" method="_on_info_pressed"]
-[connection signal="pressed" from="Main/Contents/Game/List/Trophies" to="Main" method="_on_trophies_pressed"]
-[connection signal="pressed" from="Main/Contents/Game/List/Leaderboards" to="Main" method="_on_leaderboards_pressed"]
-[connection signal="pressed" from="Main/Contents/Game/List/DevPanel" to="Main" method="_on_dev_panel_pressed"]
-[connection signal="pressed" from="Main/Contents/Plugin/List/Configuration" to="Main" method="_on_configuration_pressed"]
-[connection signal="pressed" from="Main/Contents/Plugin/List/Docs" to="Main" method="_on_docs_pressed"]
-[connection signal="pressed" from="Main/Contents/Plugin/List/Repo" to="Main" method="_on_repo_pressed"]
-[connection signal="pressed" from="Main/Contents/Help/List/Forums" to="Main" method="_on_forums_pressed"]
-[connection signal="pressed" from="Information/Contents/Back" to="Information" method="_on_back_pressed"]
-[connection signal="item_selected" from="Trophies/Contents/List" to="Trophies" method="_on_list_item_selected"]
-[connection signal="pressed" from="Trophies/Contents/Actions/Copy" to="Trophies" method="_on_copy_pressed"]
-[connection signal="pressed" from="Trophies/Contents/Actions/Refresh" to="Trophies" method="_on_refresh_pressed"]
-[connection signal="pressed" from="Trophies/Contents/Actions/Back" to="Trophies" method="_on_back_pressed"]
-[connection signal="item_selected" from="Leaderboards/Contents/List" to="Leaderboards" method="_on_list_item_selected"]
-[connection signal="pressed" from="Leaderboards/Contents/Actions/Copy" to="Leaderboards" method="_on_copy_pressed"]
-[connection signal="pressed" from="Leaderboards/Contents/Actions/Refresh" to="Leaderboards" method="_on_refresh_pressed"]
-[connection signal="pressed" from="Leaderboards/Contents/Actions/Back" to="Leaderboards" method="_on_back_pressed"]
-[connection signal="text_changed" from="Configuration/Contents/Global/GameIdEdit" to="Configuration" method="_on_game_id_edit_text_changed"]
-[connection signal="text_changed" from="Configuration/Contents/Client/SigningKeyEdit" to="Configuration" method="_on_signing_key_edit_text_changed"]
-[connection signal="text_changed" from="Configuration/Contents/Server/ApiKeyEdit" to="Configuration" method="_on_api_key_edit_text_changed"]
-[connection signal="text_changed" from="Configuration/Contents/Debug/SessionOverrideEdit" to="Configuration" method="_on_session_override_edit_text_changed"]
-[connection signal="toggled" from="Configuration/Contents/Debug/PrintRequestErrorsCheckButton" to="Configuration" method="_on_print_request_errors_checkbox_toggled"]
-[connection signal="pressed" from="Configuration/Contents/Done" to="Configuration" method="_on_done_pressed"]
+[node name="Bundle" type="PanelContainer" parent="VBox" unique_id=1638479669]
+visible = false
+layout_mode = 2
+theme_type_variation = &"DockProgressPanel"
+
+[node name="VBox" type="VBoxContainer" parent="VBox/Bundle" unique_id=569739192]
+layout_mode = 2
+
+[node name="Status" type="Label" parent="VBox/Bundle/VBox" unique_id=1578699525]
+layout_mode = 2
+theme_type_variation = &"DockHeaderLabel"
+text = "Uploading..."
+horizontal_alignment = 1
+text_overrun_behavior = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="VBox/Bundle/VBox" unique_id=381246758]
+layout_mode = 2
+theme_type_variation = &"DockProgressBar"
+max_value = 1.0
+value = 0.25
+show_percentage = false
+
+[connection signal="pressed" from="VBox/Menu/Main/Contents/Game/Info" to="VBox/Menu/Main" method="_on_info_pressed"]
+[connection signal="pressed" from="VBox/Menu/Main/Contents/Game/Trophies" to="VBox/Menu/Main" method="_on_trophies_pressed"]
+[connection signal="pressed" from="VBox/Menu/Main/Contents/Game/Leaderboards" to="VBox/Menu/Main" method="_on_leaderboards_pressed"]
+[connection signal="pressed" from="VBox/Menu/Main/Contents/Game/DevPanel" to="VBox/Menu/Main" method="_on_dev_panel_pressed"]
+[connection signal="pressed" from="VBox/Menu/Main/Contents/Plugin/Configuration" to="VBox/Menu/Main" method="_on_configuration_pressed"]
+[connection signal="pressed" from="VBox/Menu/Main/Contents/Plugin/Docs" to="VBox/Menu/Main" method="_on_docs_pressed"]
+[connection signal="pressed" from="VBox/Menu/Main/Contents/Plugin/Repo" to="VBox/Menu/Main" method="_on_repo_pressed"]
+[connection signal="pressed" from="VBox/Menu/Main/Contents/Help/Forums" to="VBox/Menu/Main" method="_on_forums_pressed"]
+[connection signal="pressed" from="VBox/Menu/Information/Contents/Back" to="VBox/Menu/Information" method="_on_back_pressed"]
+[connection signal="item_selected" from="VBox/Menu/Trophies/Contents/List" to="VBox/Menu/Trophies" method="_on_list_item_selected"]
+[connection signal="pressed" from="VBox/Menu/Trophies/Contents/Actions/Copy" to="VBox/Menu/Trophies" method="_on_copy_pressed"]
+[connection signal="pressed" from="VBox/Menu/Trophies/Contents/Actions/Refresh" to="VBox/Menu/Trophies" method="_on_refresh_pressed"]
+[connection signal="pressed" from="VBox/Menu/Trophies/Contents/Actions/Back" to="VBox/Menu/Trophies" method="_on_back_pressed"]
+[connection signal="item_selected" from="VBox/Menu/Leaderboards/Contents/List" to="VBox/Menu/Leaderboards" method="_on_list_item_selected"]
+[connection signal="pressed" from="VBox/Menu/Leaderboards/Contents/Actions/Copy" to="VBox/Menu/Leaderboards" method="_on_copy_pressed"]
+[connection signal="pressed" from="VBox/Menu/Leaderboards/Contents/Actions/Refresh" to="VBox/Menu/Leaderboards" method="_on_refresh_pressed"]
+[connection signal="pressed" from="VBox/Menu/Leaderboards/Contents/Actions/Back" to="VBox/Menu/Leaderboards" method="_on_back_pressed"]
+[connection signal="text_changed" from="VBox/Menu/Configuration/Contents/Project/GameIdEdit" to="VBox/Menu/Configuration" method="_on_game_id_edit_text_changed"]
+[connection signal="text_changed" from="VBox/Menu/Configuration/Contents/Project/SigningKeyEdit" to="VBox/Menu/Configuration" method="_on_signing_key_edit_text_changed"]
+[connection signal="text_changed" from="VBox/Menu/Configuration/Contents/Project/ApiKeyEdit" to="VBox/Menu/Configuration" method="_on_api_key_edit_text_changed"]
+[connection signal="text_changed" from="VBox/Menu/Configuration/Contents/Development/TestSessionEdit" to="VBox/Menu/Configuration" method="_on_test_session_edit_text_changed"]
+[connection signal="text_changed" from="VBox/Menu/Configuration/Contents/Development/BuildKeyEdit" to="VBox/Menu/Configuration" method="_on_build_key_edit_text_changed"]
+[connection signal="toggled" from="VBox/Menu/Configuration/Contents/Development/PrintRequestErrorsCheckButton" to="VBox/Menu/Configuration" method="_on_print_request_errors_checkbox_toggled"]
+[connection signal="pressed" from="VBox/Menu/Configuration/Contents/Done" to="VBox/Menu/Configuration" method="_on_done_pressed"]

@@ -9,6 +9,8 @@ var _pending: bool = true
 var _status_code: int = -1
 var _error_msg: String = ""
 
+# Interface
+
 ## (Async) Wait for the request to be completed.
 func async() -> EzchaResponse:
 	if (_pending): await completed

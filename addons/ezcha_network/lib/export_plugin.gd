@@ -1,13 +1,10 @@
 @tool
 extends EditorExportPlugin
 
-const FEATURE_EXCLUDE_API_KEY: String = "ezcha_exclude_api_key"
-const FEATURE_EXCLUDE_SIGNING_KEY: String = "ezcha_exclude_signing_key"
-const SETTING_SESSION_OVERRIDE: String = "ezcha_network/config/debug/session_override"
-const SETTING_API_KEY: String = "ezcha_network/config/server/api_key"
-const SETTING_SIGNING_KEY: String = "ezcha_network/config/client/signing_key"
+const _FEATURE_EXCLUDE_API_KEY: String = "ezcha_exclude_api_key"
+const _FEATURE_EXCLUDE_SIGNING_KEY: String = "ezcha_exclude_signing_key"
 
-var restore_opts: Dictionary[String, String] = {}
+var _restore_settings: Dictionary[EzchaOpts._Setting, Variant] = {}
 
 func _get_name() -> String:
 	return "Ezcha Network"
@@ -16,24 +13,25 @@ func _supports_platform(_platform: EditorExportPlatform) -> bool:
 	return true
 
 func _export_begin(features: PackedStringArray, is_debug: bool, _path: String, _flags: int) -> void:
-	var backup_opts: PackedStringArray = []
-	if (!is_debug):
-		backup_opts.append(SETTING_SESSION_OVERRIDE)
-	if (features.has(FEATURE_EXCLUDE_API_KEY)):
-		backup_opts.append(SETTING_API_KEY)
-	if (features.has(FEATURE_EXCLUDE_SIGNING_KEY)):
-		backup_opts.append(SETTING_SIGNING_KEY)
-	if (backup_opts.is_empty()): return
-	for opt: String in backup_opts:
-		if (!ProjectSettings.has_setting(opt)): continue
-		restore_opts[opt] = ProjectSettings.get_setting(opt, "")
-		ProjectSettings.clear(opt)
+	_restore_settings.clear()
+	
+	# Exclude secrets from builds that request it
+	if (features.has(_FEATURE_EXCLUDE_API_KEY)):
+		_restore_settings[EzchaOpts._Setting.API_KEY] = \
+			EzchaOpts._get_setting(EzchaOpts._Setting.API_KEY)
+	if (features.has(_FEATURE_EXCLUDE_SIGNING_KEY)):
+		_restore_settings[EzchaOpts._Setting.SIGNING_KEY] = \
+			EzchaOpts._get_setting(EzchaOpts._Setting.SIGNING_KEY)
+	
+	if (_restore_settings.is_empty()): return
+	for setting: EzchaOpts._Setting in _restore_settings.keys():
+		EzchaOpts._clear_setting(setting)
 	ProjectSettings.save()
 
 func _export_end() -> void:
-	if (restore_opts.is_empty()): return
-	for opt_key: String in restore_opts.keys():
-		ProjectSettings.set_setting(opt_key, restore_opts[opt_key])
-		ProjectSettings.set_initial_value(opt_key, "")
-	restore_opts.clear()
+	# Restore excluded settings
+	if (_restore_settings.is_empty()): return
+	for setting: EzchaOpts._Setting in _restore_settings.keys():
+		EzchaOpts._restore_setting(setting, _restore_settings[setting])
+	_restore_settings.clear()
 	ProjectSettings.save()

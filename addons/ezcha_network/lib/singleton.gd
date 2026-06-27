@@ -7,6 +7,10 @@ class_name EzchaSingleton
 
 const _HOSTNAME: String = "https://ezcha.net"
 
+static var _instance: EzchaSingleton = null
+
+# API instances
+
 ## A helper class to simplify Ezcha Network API integration within game clients.
 var client: EzchaClient = EzchaClient.new(self)
 
@@ -37,24 +41,29 @@ var trophies: EzchaTrophiesAPI = EzchaTrophiesAPI.new(self)
 ## A wrapper for the users section of the API.
 var users: EzchaUsersAPI = EzchaUsersAPI.new(self)
 
+# Lifecycle
+
+func _enter_tree() -> void:
+	if (_instance == null): _instance = self
+
+func _exit_tree() -> void:
+	if (_instance == self): _instance = null
+
+# Interface
+
 ## A helper to return the currently configured game identifier.
 func get_game_id() -> String:
-	return ProjectSettings.get_setting("ezcha_network/config/global/game_id", "")
+	return EzchaOpts._get_setting(EzchaOpts._Setting.GAME_ID)
 
 ## A helper to return the currently configured API key.
 func get_api_key() -> String:
-	return ProjectSettings.get_setting("ezcha_network/config/server/api_key", "")
+	return EzchaOpts._get_setting(EzchaOpts._Setting.API_KEY)
 
 ## A helper to return the currently configured signing key.
 func get_signing_key() -> String:
-	return ProjectSettings.get_setting("ezcha_network/config/client/signing_key", "")
+	return EzchaOpts._get_setting(EzchaOpts._Setting.SIGNING_KEY)
 
-## A helper to return the currently configured session override.
-func get_session_override() -> String:
-	if (!Engine.is_editor_hint() && !OS.is_debug_build()): return ""
-	return ProjectSettings.get_setting("ezcha_network/config/debug/session_override", "")
+# Internal helpers
 
-## A helper to return if request errors should be printed.
-func should_print_request_errors() -> bool:
-	if (!Engine.is_editor_hint() && !OS.is_debug_build()): return false
-	return ProjectSettings.get_setting("ezcha_network/config/debug/print_request_errors", false)
+static func _get_instance() -> EzchaSingleton:
+	return _instance

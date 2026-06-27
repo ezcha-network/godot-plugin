@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://deb77bml2tio0"]
+
+[ext_resource type="Script" uid="uid://c4kj4ve8r0mdx" path="res://examples/2_trophies/trophies.gd" id="1_ugdh8"]
+[ext_resource type="Script" uid="uid://c6i7kahsji6g" path="res://addons/ezcha_network/lib/class/web_texture.gd" id="2_1ukky"]
+[ext_resource type="Texture2D" uid="uid://buhqpi3wdbsgb" path="res://examples/2_trophies/placeholder.png" id="2_31xoq"]
+
+[sub_resource type="Texture2D" id="Texture2D_31xoq"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("2_1ukky")
+placeholder = ExtResource("2_31xoq")
+assume_type = "png"
+metadata/_custom_type_script = "uid://c6i7kahsji6g"
+
+[node name="Trophies" type="Control" unique_id=927020496]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ugdh8")
+
+[node name="Center" type="CenterContainer" parent="." unique_id=838481548]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBox" type="HBoxContainer" parent="Center" unique_id=13843244]
+layout_mode = 2
+
+[node name="Browse" type="PanelContainer" parent="Center/HBox" unique_id=1025260960]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/HBox/Browse" unique_id=1477433351]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="Center/HBox/Browse/VBox" unique_id=1699016580]
+layout_mode = 2
+text = "Trophies"
+horizontal_alignment = 1
+
+[node name="List" type="ItemList" parent="Center/HBox/Browse/VBox" unique_id=1607286640]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBox" type="HBoxContainer" parent="Center/HBox/Browse/VBox" unique_id=1151550653]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Center/HBox/Browse/VBox/HBox" unique_id=1489713761]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Back"
+
+[node name="Info" type="PanelContainer" parent="Center/HBox" unique_id=1651226733]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center/HBox/Info" unique_id=1939028975]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Center/HBox/Info/VBox" unique_id=555051991]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="Center/HBox/Info/VBox/HBoxContainer" unique_id=1311441357]
+layout_mode = 2
+texture = SubResource("Texture2D_31xoq")
+expand_mode = 3
+
+[node name="VBox" type="VBoxContainer" parent="Center/HBox/Info/VBox/HBoxContainer" unique_id=265121645]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Center/HBox/Info/VBox/HBoxContainer/VBox" unique_id=1404160458]
+layout_mode = 2
+text = "Info"
+
+[node name="Experience" type="Label" parent="Center/HBox/Info/VBox/HBoxContainer/VBox" unique_id=802284216]
+modulate = Color(1, 1, 1, 0.49803922)
+layout_mode = 2
+text = "0 experience"
+
+[node name="Description" type="TextEdit" parent="Center/HBox/Info/VBox" unique_id=721362356]
+layout_mode = 2
+size_flags_vertical = 3
+editable = false
+wrap_mode = 1
+
+[node name="HBox" type="HBoxContainer" parent="Center/HBox/Info/VBox" unique_id=500956745]
+layout_mode = 2
+
+[node name="Grant" type="Button" parent="Center/HBox/Info/VBox/HBox" unique_id=1125487294]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Grant"
+
+[connection signal="item_selected" from="Center/HBox/Browse/VBox/List" to="." method="_on_list_item_selected"]
+[connection signal="pressed" from="Center/HBox/Browse/VBox/HBox/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Center/HBox/Info/VBox/HBox/Grant" to="." method="_on_grant_pressed"]

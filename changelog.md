@@ -1,3 +1,30 @@
+# Version 2.6.0
+
+- Builds can now be uploaded directly to the site from the editor
+	- The plugin now adds a new "Ezcha Network" export target
+	- The selected save location is discarded, all work is done in a temp directory
+	- When used it will automatically build, bundle and upload the game
+	- Allows the embed configuration to be set from the export preset
+- Added the `EzchaUploader` class
+	- Handles file upload streams over HTTPS
+	- Uses multipart/form-data encoding
+- `EzchaWebTexture` improvements
+	- No longer duplicates the data of the placeholder texture
+	- Replaced the `fetch` function with an exported `url` variable
+- Updated dock UI
+	- Reorganized the plugin config menu
+	- Renamed the "session override" field to "test session" for clarity
+	- Cleaner styling
+	- Added an export progress widget
+- General `EzchaRequestBuilder` improvements
+- `EzchaTrophyQueuedResponse` now uses `TrophyObtained` for its `trophy` field instead of `Trophy`
+- Centralized settings, config and misc parameters in `EzchaOpts`
+- Added local developer config file
+	- Automatically gets added to .gitignore when created
+- Moved session override to local config file
+- Added new a build key config option
+- Improved documentation standardization and consistency
+
 # Version 2.5.3
 
 This update mainly improves the plugin development pipeline but also brings some small,

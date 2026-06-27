@@ -8,13 +8,15 @@ var _method: HTTPClient.Method = HTTPClient.METHOD_GET
 var _hostname: String = "api.ezcha.net"
 var _endpoint: String = ""
 var _auth_token: String = ""
-var _query_parameters: Dictionary = {}
-var _body_data: Dictionary = {}
+var _query_parameters: Dictionary[String, Variant] = {}
+var _body_data: Dictionary[String, Variant] = {}
 var _signing_key: String = ""
 var _parse_response: bool = true
 var _http_req: HTTPRequest = null
 var _response_object: EzchaResponse = null
 var _timeout: float = 10.0
+
+# Interface
 
 ## Sets the target hostname.
 func set_hostname(value: String) -> EzchaRequestBuilder:
@@ -70,20 +72,6 @@ func add_body_data(key: String, value: Variant) -> EzchaRequestBuilder:
 	_body_data[key] = value
 	return self
 
-func _stringify_values(value: Variant, progress: PackedStringArray = PackedStringArray()) -> PackedStringArray:
-	match typeof(value):
-		TYPE_ARRAY:
-			for item in value:
-				progress.append_array(_stringify_values(item))
-		TYPE_DICTIONARY:
-			for key in value.keys():
-				progress.append_array(_stringify_values(value[key]))
-		TYPE_STRING:
-			progress.append(value)
-		_:
-			progress.append(str(value))
-	return progress
-
 ## Makes the request.
 func fetch() -> EzchaResponse:
 	# Generate headers
@@ -115,17 +103,11 @@ func fetch() -> EzchaResponse:
 		var parts: PackedStringArray = PackedStringArray()
 		for key: String in _query_parameters.keys():
 			var value: Variant = _query_parameters[key]
-			match typeof(value):
-				TYPE_STRING:
-					parts.append("%s=%s" % [key.uri_encode(), value.uri_encode()])
-				TYPE_ARRAY:
-					for item in value:
-						parts.append("%s=%s" % [key.uri_encode(), str(item).uri_encode()])
-				TYPE_PACKED_STRING_ARRAY:
-					for item in value:
-						parts.append("%s=%s" % [key.uri_encode(), item.uri_encode()])
-				_:
-					parts.append("%s=%s" % [key.uri_encode(), str(value).uri_encode()])
+			if (value is Array || value is PackedStringArray):
+				for item: Variant in value:
+					parts.append("%s=%s" % [key.uri_encode(), str(item).uri_encode()])
+				continue
+			parts.append("%s=%s" % [key.uri_encode(), str(value).uri_encode()])
 		query_str = "?" + "&".join(parts)
 	
 	# Prepare body
@@ -142,7 +124,7 @@ func fetch() -> EzchaResponse:
 	reference()
 	
 	# Prepare the request node
-	var _ezcha: EzchaSingleton = Engine.get_main_loop().root.get_node("Ezcha")
+	var _ezcha: EzchaSingleton = EzchaSingleton._get_instance()
 	_http_req = HTTPRequest.new()
 	_http_req.timeout = _timeout
 	_http_req.use_threads = (OS.get_name() != "Web")
@@ -153,6 +135,22 @@ func fetch() -> EzchaResponse:
 	var final_url: String = "https://%s%s%s" % [_hostname, _endpoint, query_str]
 	_http_req.request.call_deferred(final_url, headers, _method, body_str)
 	return _response_object
+
+# Internal helpers
+
+func _stringify_values(value: Variant, progress: PackedStringArray = PackedStringArray()) -> PackedStringArray:
+	match typeof(value):
+		TYPE_ARRAY:
+			for item: Variant in value:
+				progress.append_array(_stringify_values(item))
+		TYPE_DICTIONARY:
+			for key: Variant in value.keys():
+				progress.append_array(_stringify_values(value[key]))
+		TYPE_STRING:
+			progress.append(value)
+		_:
+			progress.append(str(value))
+	return progress
 
 func _all_done() -> void:
 	if (_response_object != null):
@@ -167,44 +165,31 @@ func _on_request_completed(_result: int, response_code: int, headers: PackedStri
 	if (_response_object == null): return _all_done()
 	_response_object._status_code = response_code
 	
-	# Check if JSON response
+	# Determine if JSON response
 	var body_str: String = body.get_string_from_utf8()
-	var is_json: bool = false
-	if (_parse_response):
-		if (OS.get_name() == "Web"):
-			# Lazy check since headers are inaccessible
-			is_json = (body_str.begins_with("{") && body_str.ends_with("}"))
-		else:
-			# Check for content-type header
-			for header: String in headers:
-				if (!header.to_lower().contains("content-type: application/json")): continue
-				is_json = true
-				break
+	var likely_json: bool = (body_str.find("{") != -1 && body_str.rfind("}") != -1)
 	
 	# Parse response
 	var json: Variant = null
-	if (is_json):
+	if (likely_json):
 		json = JSON.parse_string(body_str)
-		if (json == null):
-			printerr("[Ezcha Network] Failed to parse JSON response.")
-		else:
-			EzchaUtil.unpack_data(_response_object, json)
-		
-	# Handle errors
-	if (!_response_object.is_successful()):
-		var _ezcha: EzchaSingleton = Engine.get_main_loop().root.get_node("Ezcha")
-		if (_ezcha.should_print_request_errors()):
-			if (json != null && json.has("message")):
-				printerr("[Ezcha Network] API error.\nEndpoint: %s\nStatus code: %s\nMessage: %s" % [
-					_endpoint,
-					str(response_code),
-					json["message"]
-				])
-			else:
-				printerr("[Ezcha Network] API error.\nEndpoint: %s\nStatus code: %s" % [
-					_endpoint,
-					str(response_code)
-				])
-		return _all_done()
+		if (json == null): printerr(EzchaOpts._PRINT_PREFIX + "Failed to parse JSON response.")
+		else: EzchaUtil.unpack_data(_response_object, json)
 	
+	# Handle errors
+	if (_response_object.is_successful()): return _all_done()
+	if (!EzchaOpts._should_print_request_errors()): return _all_done()
+	if (json != null && json.has("message")):
+		printerr(
+			EzchaOpts._PRINT_PREFIX + "API error.\nEndpoint: %s\nStatus code: %s\nMessage: %s" % [
+				_endpoint,
+				str(response_code),
+				json["message"]
+			]
+		)
+	else:
+		printerr(EzchaOpts._PRINT_PREFIX + "API error.\nEndpoint: %s\nStatus code: %s" % [
+			_endpoint,
+			str(response_code)
+		])
 	_all_done()

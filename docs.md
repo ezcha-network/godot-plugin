@@ -2,6 +2,7 @@
 
 * [EzchaPlugin](#EzchaPlugin)
 * [EzchaClient](#EzchaClient)
+* [EzchaOpts](#EzchaOpts)
 * [EzchaSingleton](#EzchaSingleton)
 * [EzchaUtil](#EzchaUtil)
 * [EzchaWebAdapter](#EzchaWebAdapter)
@@ -24,6 +25,7 @@
 * [EzchaRequestBuilder](#EzchaRequestBuilder)
 * [EzchaResponse](#EzchaResponse)
 * [EzchaServerPlayer](#EzchaServerPlayer)
+* [EzchaUploader](#EzchaUploader)
 * [EzchaWebTexture](#EzchaWebTexture)
 * [EzchaGame](#EzchaGame)
 * [EzchaLeaderboard](#EzchaLeaderboard)
@@ -68,7 +70,7 @@ A class for internal use.
 
 ### Description
 
-You should never need to use this directly. The "EzchaSingleton" class is a good starting point.  Many of the values here are used for the dock within the editor and will not be available within an exported game.
+You should never need to use this directly. The "EzchaSingleton" class is a good starting point.
 
 <a name="EzchaClient"></a>
 ## EzchaClient
@@ -273,6 +275,17 @@ Determines the ideal Ezcha Relay server for the user.  (Async) Returns a server 
 
 Fetches a list of open Ezcha Relay lobbies for the current game and version.  Returns an EzchaLobbyListResponse object.
 
+<a name="EzchaOpts"></a>
+## EzchaOpts
+
+**Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
+
+A class for internal use.
+
+### Description
+
+You should never need to use this directly.
+
 <a name="EzchaSingleton"></a>
 ## EzchaSingleton
 
@@ -306,8 +319,6 @@ This is where most of the plugin's functionality is accessed from.
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_game_id](#EzchaSingleton-method-get_game_id)()|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_api_key](#EzchaSingleton-method-get_api_key)()|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_signing_key](#EzchaSingleton-method-get_signing_key)()|
-|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[get_session_override](#EzchaSingleton-method-get_session_override)()|
-|[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[should_print_request_errors](#EzchaSingleton-method-should_print_request_errors)()|
 
 ### Property Descriptions
 
@@ -377,16 +388,6 @@ A helper to return the currently configured API key.
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_signing_key**()
 
 A helper to return the currently configured signing key.
-
-<a name="EzchaSingleton-method-get_session_override"></a>
-[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **get_session_override**()
-
-A helper to return the currently configured session override.
-
-<a name="EzchaSingleton-method-should_print_request_errors"></a>
-[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **should_print_request_errors**()
-
-A helper to return if request errors should be printed.
 
 <a name="EzchaUtil"></a>
 ## EzchaUtil
@@ -938,7 +939,11 @@ Extended MultiplayerSpawner that supports Ezcha Relay host migration. Works with
 
 **Inherited By:** [EzchaWebAdapter](#EzchaWebAdapter)
 
-A class for handling platform specific logic.
+A class for internal use.
+
+### Description
+
+Handles platform specific logic.
 
 ### Methods
 
@@ -1214,11 +1219,11 @@ Returns if the current peer can modify the lobby.
 
 **Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
 
-The class representing a relay packet received via Ezcha Relay.
+A class for internal use.
 
 ### Description
 
-Stores Godot-specific metadata (transfer mode, channel) extracted from payload. Internal use only.
+A class representing a packet received via Ezcha Relay. Stores engine metadata extracted from payload.
 
 ### Properties
 
@@ -1492,10 +1497,90 @@ Get a datastore value belonging to the currently authenticated player. The datas
 
 Update a datastore value belonging to the currently authenticated player. Limit of 5 keys per user, limit of 16384 characters per value. Set the value to an empty string to delete the key. The datastore_value_posted signal is emitted on completion.  (Async) Returns true if the value was successfully updated.
 
+<a name="EzchaUploader"></a>
+## EzchaUploader
+
+**Inherits:** [RefCounted](https://docs.godotengine.org/en/4.6/classes/class_refcounted.html)
+
+A class that manages a file upload stream over HTTPS.
+
+### Methods
+
+|Returns|Name|
+|-|-|
+|[EzchaUploader](#EzchaUploader)|[set_hostname](#EzchaUploader-method-set_hostname)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)|
+|[EzchaUploader](#EzchaUploader)|[set_port](#EzchaUploader-method-set_port)([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) value)|
+|[EzchaUploader](#EzchaUploader)|[set_endpoint](#EzchaUploader-method-set_endpoint)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)|
+|[EzchaUploader](#EzchaUploader)|[set_authentication](#EzchaUploader-method-set_authentication)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token)|
+|[EzchaUploader](#EzchaUploader)|[add_file](#EzchaUploader-method-add_file)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) field, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) type, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) path)|
+|[EzchaUploader](#EzchaUploader)|[set_timeout](#EzchaUploader-method-set_timeout)([float](https://docs.godotengine.org/en/4.6/classes/class_float.html) time)|
+|[EzchaUploader](#EzchaUploader)|[add_progress_callback](#EzchaUploader-method-add_progress_callback)([Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) cb)|
+|[EzchaUploader](#EzchaUploader)|[set_response_object](#EzchaUploader-method-set_response_object)([EzchaResponse](#EzchaResponse) obj)|
+|[EzchaUploader](#EzchaUploader)|[add_query_parameter](#EzchaUploader-method-add_query_parameter)([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value)|
+|[EzchaResponse](#EzchaResponse)|[start](#EzchaUploader-method-start)()|
+
+### Signals
+
+**progress**()
+
+Emitted as the upload progresses.
+
+### Method Descriptions
+
+<a name="EzchaUploader-method-set_hostname"></a>
+[EzchaUploader](#EzchaUploader) **set_hostname**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)
+
+Sets the target hostname.
+
+<a name="EzchaUploader-method-set_port"></a>
+[EzchaUploader](#EzchaUploader) **set_port**([int](https://docs.godotengine.org/en/4.6/classes/class_int.html) value)
+
+Sets the target port.
+
+<a name="EzchaUploader-method-set_endpoint"></a>
+[EzchaUploader](#EzchaUploader) **set_endpoint**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) value)
+
+Sets the target endpoint.
+
+<a name="EzchaUploader-method-set_authentication"></a>
+[EzchaUploader](#EzchaUploader) **set_authentication**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) token)
+
+Sets the authentication header.
+
+<a name="EzchaUploader-method-add_file"></a>
+[EzchaUploader](#EzchaUploader) **add_file**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) field, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) type, [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) path)
+
+Adds a file to the upload.
+
+<a name="EzchaUploader-method-set_timeout"></a>
+[EzchaUploader](#EzchaUploader) **set_timeout**([float](https://docs.godotengine.org/en/4.6/classes/class_float.html) time)
+
+Sets the upload timeout.
+
+<a name="EzchaUploader-method-add_progress_callback"></a>
+[EzchaUploader](#EzchaUploader) **add_progress_callback**([Callable](https://docs.godotengine.org/en/4.6/classes/class_callable.html) cb)
+
+Adds a callback function to be called when the upload progresses.
+
+<a name="EzchaUploader-method-set_response_object"></a>
+[EzchaUploader](#EzchaUploader) **set_response_object**([EzchaResponse](#EzchaResponse) obj)
+
+Set the response object.
+
+<a name="EzchaUploader-method-add_query_parameter"></a>
+[EzchaUploader](#EzchaUploader) **add_query_parameter**([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) key, [Variant](https://docs.godotengine.org/en/4.6/classes/class_variant.html) value)
+
+Adds a parameter to the query string.
+
+<a name="EzchaUploader-method-start"></a>
+[EzchaResponse](#EzchaResponse) **start**()
+
+Starts the upload and returns the response object to await.
+
 <a name="EzchaWebTexture"></a>
 ## EzchaWebTexture
 
-**Inherits:** [ImageTexture](https://docs.godotengine.org/en/4.6/classes/class_imagetexture.html)
+**Inherits:** [Texture2D](https://docs.godotengine.org/en/4.6/classes/class_texture2d.html)
 
 A helper texture resource that loads an image from the internet.
 
@@ -1503,6 +1588,7 @@ A helper texture resource that loads an image from the internet.
 
 |Type|Name|Default|
 |-|-|-|
+|[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[url](#EzchaWebTexture-property-url)|""|
 |[Texture2D](https://docs.godotengine.org/en/4.6/classes/class_texture2d.html)|[placeholder](#EzchaWebTexture-property-placeholder)|null|
 |[String](https://docs.godotengine.org/en/4.6/classes/class_string.html)|[assume_type](#EzchaWebTexture-property-assume_type)|""|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[generate_mipmaps](#EzchaWebTexture-property-generate_mipmaps)|true|
@@ -1512,7 +1598,6 @@ A helper texture resource that loads an image from the internet.
 |Returns|Name|
 |-|-|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[is_successful](#EzchaWebTexture-method-is_successful)()|
-|void|fetch([String](https://docs.godotengine.org/en/4.6/classes/class_string.html) url)|
 
 ### Signals
 
@@ -1526,10 +1611,15 @@ Emitted if the image could not be loaded.
 
 ### Property Descriptions
 
+<a name="EzchaWebTexture-property-url"></a>
+[String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **url** = ""
+
+The URL to download the image from.
+
 <a name="EzchaWebTexture-property-placeholder"></a>
 [Texture2D](https://docs.godotengine.org/en/4.6/classes/class_texture2d.html) **placeholder** = null
 
-The placeholder image to display while the target image is being requested.
+The placeholder image to display before/while the URL is downloaded.
 
 <a name="EzchaWebTexture-property-assume_type"></a>
 [String](https://docs.godotengine.org/en/4.6/classes/class_string.html) **assume_type** = ""
@@ -2608,26 +2698,26 @@ The list of trophies returned by the API request.
 
 **Inherits:** [EzchaResponse](#EzchaResponse)
 
-A response from the API that returns if a trophy grant has been queued.
+A response from the API that returns from a trophy grant.
 
 ### Properties
 
 |Type|Name|Default|
 |-|-|-|
 |[bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html)|[queued](#EzchaTrophyQueuedResponse-property-queued)|false|
-|[EzchaTrophy](#EzchaTrophy)|[trophy](#EzchaTrophyQueuedResponse-property-trophy)|null|
+|[EzchaTrophyObtained](#EzchaTrophyObtained)|[trophy](#EzchaTrophyQueuedResponse-property-trophy)|null|
 
 ### Property Descriptions
 
 <a name="EzchaTrophyQueuedResponse-property-queued"></a>
 [bool](https://docs.godotengine.org/en/4.6/classes/class_bool.html) **queued** = false
 
-Returns true if the grant has been queued.
+Returns true if the grant was successful.
 
 <a name="EzchaTrophyQueuedResponse-property-trophy"></a>
-[EzchaTrophy](#EzchaTrophy) **trophy** = null
+[EzchaTrophyObtained](#EzchaTrophyObtained) **trophy** = null
 
-The data of the trophy queued to be granted.
+The data of the granted trophy.
 
 <a name="EzchaUserListResponse"></a>
 ## EzchaUserListResponse

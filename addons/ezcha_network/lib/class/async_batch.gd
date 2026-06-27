@@ -19,6 +19,8 @@ var _pending: Array[Callable] = []
 var _total_count: int = 0
 var _completed_count: int = 0
 
+# Interface
+
 ## Add a coroutine to the batch.
 func add(coroutine: Callable, args: Array[Variant] = []) -> EzchaAsyncBatch:
 	if (_state != _State.PREPARING):
@@ -70,6 +72,8 @@ func watch() -> Array[Variant]:
 	for idx: int in _pending.size():
 		_execute.call_deferred(idx, _pending.pop_front())
 	return (await _completed)
+
+# Internal helpers
 
 func _execute(index: int, coroutine: Callable) -> void:
 	_results[index] = await coroutine.call()
