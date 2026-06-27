@@ -1,10 +1,11 @@
 # Version 2.6.0
 
-- Builds can now be uploaded directly to the site from the editor
-	- The plugin now adds a new "Ezcha Network" export target
-	- The selected save location is discarded, all work is done in a temp directory
+This version primarily adds a new "Ezcha Network" export target to the editor and brings several other smaller improvements. When selected, the plugin will automatically build your game for the web, bundle the files together, upload it, and wait for it all to process.
+
+- Added a new "Ezcha Network" export target
 	- When used it will automatically build, bundle and upload the game
-	- Allows the embed configuration to be set from the export preset
+	- The selected save location is discarded, all work is done in a temp directory
+	- Allows the embed configuration to be updated from the export preset
 - Added the `EzchaUploader` class
 	- Handles file upload streams over HTTPS
 	- Uses multipart/form-data encoding
