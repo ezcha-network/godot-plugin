@@ -2,6 +2,7 @@
 extends "res://addons/ezcha_network/dock/menu.gd"
 
 func _opened() -> void:
+	super()
 	$Contents/InfoGrid/IdValue.text = plugin._game.id
 	$Contents/InfoGrid/NameValue.text = plugin._game.name
 	$Contents/InfoGrid/VersionValue.text = plugin._game.version

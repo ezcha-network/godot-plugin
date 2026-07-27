@@ -1,11 +1,6 @@
 extends EzchaDto
 class_name EzchaNewsPost
 
-func _get_type_map() -> Dictionary:
-	return {
-		"author": EzchaUser
-	}
-
 ## The news post's unique identifier.
 var id: String = ""
 

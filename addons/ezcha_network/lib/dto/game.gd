@@ -1,11 +1,6 @@
 extends EzchaDto
 class_name EzchaGame
 
-func _get_type_map() -> Dictionary:
-	return {
-		"developer": EzchaUser
-	}
-
 ## The game's unique identifier.
 var id: String = ""
 
@@ -23,6 +18,13 @@ var version: String = ""
 
 ## If true the game can only be accessed by users who have elite membership.
 var elite_exclusive: bool = false
+
+## The pricing model for the game.
+## free, elite_exclusive, select_price_suggested, select_price_minimum, fixed_price
+var pricing_model: String = ""
+
+## The price of the game in USD cents.
+var price: int = 0
 
 ## The developer for the game.
 var developer: EzchaUser = null
@@ -49,3 +51,18 @@ var original_released_timestamp: String = ""
 ## Data can vary if requested at different times.
 func equals(other: EzchaGame) -> bool:
 	return (id == other.id)
+
+## Requests the trophies belonging to this game.
+## A session with sufficient permissions can be provided to include unlisted trophies, but is not required.
+func get_trophies(session_token: String = "") -> EzchaTrophyListResponse:
+	return EzchaSingleton._get_instance().games.get_trophies(id, session_token)
+
+## Requests the leaderboards belonging to this game.
+## A session with sufficient permissions can be provided to include unlisted leaderboards, but is not required.
+func get_leaderboards(session_token: String = "") -> EzchaLeaderboardListResponse:
+	return EzchaSingleton._get_instance().games.get_leaderboards(id, session_token)
+
+## Requests the products belonging to this game.
+## A session with sufficient permissions can be provided to include unlisted products, but is not required.
+func get_products(session_token: String = "") -> EzchaProductListResponse:
+	return EzchaSingleton._get_instance().games.get_products(id, session_token)

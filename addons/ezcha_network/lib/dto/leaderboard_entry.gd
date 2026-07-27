@@ -1,12 +1,6 @@
 extends EzchaDto
 class_name EzchaLeaderboardEntry
 
-func _get_type_map() -> Dictionary:
-	return {
-		"leaderboard": EzchaLeaderboard,
-		"user": EzchaUser
-	}
-
 ## The entry's current score.
 var score: float = 0.0
 

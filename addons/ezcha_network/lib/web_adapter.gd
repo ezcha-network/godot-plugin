@@ -11,6 +11,9 @@ signal captcha_prompt_completed(success: bool, response: String)
 ## Emitted once the rewarded ad prompt is completed.
 signal ad_prompt_completed(success: bool, rewarded: bool)
 
+## Emitted once the product purchase prompt is completed.
+signal purchase_prompt_completed(success: bool, purchase_id: String)
+
 const _RESPONSE_WAIT_TIME: float = 0.2
 
 var _in_prompt: bool = false
@@ -125,7 +128,7 @@ func captcha_prompt() -> String:
 ##
 ## (Async) Returns the true if an advertisment was displayed.
 func interstitial_ad_prompt() -> bool:
-	if (_in_prompt): false
+	if (_in_prompt): return false
 	_in_prompt = true
 	_audio_was_muted = AudioServer.is_bus_mute(0)
 	if (!_audio_was_muted): AudioServer.set_bus_mute(0, true)
@@ -139,7 +142,7 @@ func interstitial_ad_prompt() -> bool:
 ##
 ## (Async) Returns the true if the player should be rewarded.
 func rewarded_ad_prompt() -> bool:
-	if (_in_prompt): false
+	if (_in_prompt): return false
 	_in_prompt = true
 	_audio_was_muted = AudioServer.is_bus_mute(0)
 	if (!_audio_was_muted): AudioServer.set_bus_mute(0, true)
@@ -148,3 +151,16 @@ func rewarded_ad_prompt() -> bool:
 	data.kind = "rewarded"
 	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
 	return (await ad_prompt_completed)[1]
+
+## Shows the user the purchase prompt for the specified product.
+## Verification/consumption of the product should be completed afterwards.
+##
+## (Async) Returns the purchase ID if the player completed the purchase, otherwise an empty string.
+func purchase_product_prompt(product_id: String) -> String:
+	if (_in_prompt): return ""
+	_in_prompt = true
+	var data: Variant = JavaScriptBridge.create_object("Object")
+	data.type = "purchase_product_prompt"
+	data.product_id = product_id
+	_window_ref.top.postMessage(data, _ezcha._HOSTNAME)
+	return (await purchase_prompt_completed)[1]

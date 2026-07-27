@@ -44,7 +44,7 @@ func get_list(page: int = 1, category: String = "", order: String = "") -> Ezcha
 		.add_query_parameter("order", order)\
 		.fetch()
 
-## Lists the trophies a user has obtained for the game specified
+## Lists the trophies a user has obtained for the specified game.
 func get_trophies(user_id: String, game_id: String) -> EzchaTrophyObtainedListResponse:
 	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\
@@ -54,7 +54,7 @@ func get_trophies(user_id: String, game_id: String) -> EzchaTrophyObtainedListRe
 		.add_query_parameter("game_id", game_id)\
 		.fetch()
 
-## Check if two users are friends
+## Check if two users are friends.
 func check_friends(user_id_a: String, user_id_b: String) -> EzchaFriendsResponse:
 	return EzchaRequestBuilder.new()\
 		.set_method(HTTPClient.METHOD_GET)\

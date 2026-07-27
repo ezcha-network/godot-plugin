@@ -88,11 +88,15 @@ func _build() -> bool:
 	if (session.is_empty()): return true
 	EzchaOpts._set_setting(EzchaOpts._Setting.TEST_SESSION, session)
 	ProjectSettings.save()
-	_post_build.call_deferred()
+	_watch_build.call_deferred()
 	return true
 
-func _post_build() -> void:
-	EzchaOpts._clear_setting.call_deferred(EzchaOpts._Setting.TEST_SESSION)
+func _watch_build() -> void:
+	# Wait until test build has ended
+	while (EditorInterface.is_playing_scene()):
+		await get_tree().process_frame
+	# Clean test session
+	EzchaOpts._clear_setting(EzchaOpts._Setting.TEST_SESSION)
 	ProjectSettings.save()
 
 # Internal helpers

@@ -180,6 +180,7 @@ func _on_request_completed(_result: int, response_code: int, headers: PackedStri
 	if (_response_object.is_successful()): return _all_done()
 	if (!EzchaOpts._should_print_request_errors()): return _all_done()
 	if (json != null && json.has("message")):
+		_response_object._error_msg = json["message"]
 		printerr(
 			EzchaOpts._PRINT_PREFIX + "API error.\nEndpoint: %s\nStatus code: %s\nMessage: %s" % [
 				_endpoint,

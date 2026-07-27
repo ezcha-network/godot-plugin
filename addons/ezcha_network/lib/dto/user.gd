@@ -43,3 +43,11 @@ var avatar_url: String = ""
 ## Data can vary if requested at different times.
 func equals(other: EzchaUser) -> bool:
 	return (id == other.id)
+
+## Lists the trophies this user has obtained for the specified game.
+func get_trophies(game_id: String) -> EzchaTrophyObtainedListResponse:
+	return EzchaSingleton._get_instance().users.get_trophies(id, game_id)
+
+## Check if this user is friends with another specific user.
+func check_friends(user_id: String) -> EzchaFriendsResponse:
+	return EzchaSingleton._get_instance().users.check_friends(id, user_id)

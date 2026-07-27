@@ -53,11 +53,11 @@ var _session_token: String = ""
 
 # Lifecycle
 
-func _init(singleton: EzchaSingleton) -> void:
-	_ezcha = singleton
+func _init(ezcha: EzchaSingleton) -> void:
+	_ezcha = ezcha
 	# Set default web adapter
 	if (OS.get_name() != "Web"): return
-	_adapter = EzchaWebAdapter.new(singleton)
+	_adapter = EzchaWebAdapter.new(ezcha)
 
 # Interface
 

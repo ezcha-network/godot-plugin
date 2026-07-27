@@ -29,3 +29,8 @@ var created_timestamp: String = ""
 ## Data can vary if requested at different times.
 func equals(other: EzchaLeaderboard) -> bool:
 	return (id == other.id)
+
+## Returns a paginated list of entries for this leaderboard.
+## A session token is only required when attempting to access an unlisted leaderboard.
+func get_entries(page: int = 1, items_per_page: int = -1, session_token: String = "") -> EzchaLeaderboardEntryListResponse:
+	return EzchaSingleton._get_instance().leaderboards.get_entries(id, page, items_per_page, session_token)

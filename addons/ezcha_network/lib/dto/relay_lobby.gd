@@ -1,12 +1,6 @@
 extends EzchaDto
 class_name EzchaRelayLobby
 
-func _get_type_map() -> Dictionary:
-	return {
-		"host": EzchaUser,
-		"server": EzchaRelayServer
-	}
-
 ## The UUID of the lobby.
 var id: String = ""
 

@@ -13,6 +13,7 @@ extends "res://addons/ezcha_network/dock/menu.gd"
 ]
 
 func _opened() -> void:
+	super()
 	$Contents/Project/GameIdEdit.text = ezcha.get_game_id()
 	$Contents/Project/SigningKeyEdit.text = ezcha.get_signing_key()
 	$Contents/Project/ApiKeyEdit.text = ezcha.get_api_key()

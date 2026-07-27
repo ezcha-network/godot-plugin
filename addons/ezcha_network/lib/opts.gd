@@ -22,8 +22,11 @@ const _SETTINGS_MAP: Array[Dictionary] = [
 	{ "name": "ezcha_network/config/debug/test_session", "value": "", "init": false }
 ]
 const _DEPRECATED_SETTINGS: Array[String] = [
-	"ezcha_network/config/debug/session_override"
+	"ezcha_network/config/debug/session_override",
+	"ezcha_network/config/debug/test_session"
 ]
+
+const _FEATURE_IGNORE_TEST_SESSION = "ezcha_ignore_test_session"
 
 const _DEV_CONFIG_PATH: String = "res://.ezcha_dev"
 
@@ -64,6 +67,7 @@ static func _should_print_request_errors() -> bool:
 	return _get_setting(_Setting.PRINT_REQUEST_ERRORS)
 
 static func _get_test_session_temp() -> String:
+	if (OS.has_feature(_FEATURE_IGNORE_TEST_SESSION)): return ""
 	if (!Engine.is_editor_hint() && !OS.is_debug_build()): return ""
 	return _get_setting(_Setting.TEST_SESSION)
 

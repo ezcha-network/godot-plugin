@@ -28,6 +28,7 @@ var _query_parameters: Dictionary[String, Variant] = {}
 var _files: Array[_UploadFile] = []
 var _timeout: float = 120.0
 var _response_object: EzchaResponse = null
+var _frame_start: int = 0
 
 # Interface
 
@@ -144,34 +145,30 @@ func _run() -> void:
 		return _fail("TLS handshake failed.")
 	
 	# Send request header
-	if (tls.put_data(request_head.to_utf8_buffer()) != OK):
+	if (await _stream_bytes(tls, tree, request_head.to_utf8_buffer()) != OK):
 		return _fail("Failed to send the request header.")
 	
 	# Stream each file part
 	progress.emit(0.0)
 	var bytes_sent: int = 0
-	var frame_start: int = Time.get_ticks_msec()
+	_frame_start = Time.get_ticks_msec()
 	for entry: _UploadFile in _files:
-		if (tls.put_data(entry._header) != OK):
+		if (await _stream_bytes(tls, tree, entry._header) != OK):
 			return _fail("Failed to send a part header.")
 		var file: FileAccess = FileAccess.open(entry._path, FileAccess.READ)
 		if (file == null): return _fail("Failed to reopen the file at \"%s\"." % [entry._path])
 		while (file.get_position() < entry._size):
 			var chunk: PackedByteArray = file.get_buffer(_CHUNK_SIZE)
-			if (tls.put_data(chunk) != OK):
+			if (await _stream_bytes(tls, tree, chunk) != OK):
 				file.close()
 				return _fail("Connection lost during upload.")
-			tls.poll()
 			bytes_sent += chunk.size()
 			progress.emit(float(bytes_sent) / float(total_file_bytes))
-			if (Time.get_ticks_msec() - frame_start >= _FRAME_BUDGET_MS):
-				await tree.process_frame
-				frame_start = Time.get_ticks_msec()
 		file.close()
-		if (tls.put_data("\r\n".to_utf8_buffer()) != OK):
+		if (await _stream_bytes(tls, tree, "\r\n".to_utf8_buffer()) != OK):
 			return _fail("Failed to finalize a part.")
 	
-	if (tls.put_data(closing) != OK): return _fail("Failed to finalize the upload.")
+	if (await _stream_bytes(tls, tree, closing) != OK): return _fail("Failed to finalize the upload.")
 	progress.emit(1.0)
 	
 	# Read the response
@@ -206,6 +203,25 @@ func _run() -> void:
 	
 	_handle_response(response)
 
+func _stream_bytes(tls: StreamPeerTLS, tree: SceneTree, data: PackedByteArray) -> Error:
+	var offset: int = 0
+	var total: int = data.size()
+	var idle_deadline: int = Time.get_ticks_msec() + int(_timeout * 1000.0)
+	while (offset < total):
+		if (tls.get_status() != StreamPeerTLS.STATUS_CONNECTED): return FAILED
+		var window: int = mini(_CHUNK_SIZE, total - offset)
+		var result: Array = tls.put_partial_data(data.slice(offset, offset + window))
+		if (result[0] != OK): return result[0]
+		var sent: int = result[1]
+		offset += sent
+		tls.poll()
+		if (sent > 0): idle_deadline = Time.get_ticks_msec() + int(_timeout * 1000.0)
+		if (sent == 0 || Time.get_ticks_msec() - _frame_start >= _FRAME_BUDGET_MS):
+			if (Time.get_ticks_msec() > idle_deadline): return ERR_TIMEOUT
+			await tree.process_frame
+			_frame_start = Time.get_ticks_msec()
+	return OK
+
 func _build_query() -> String:
 	if (_query_parameters.is_empty()): return ""
 	var parts: PackedStringArray = PackedStringArray()
@@ -231,19 +247,56 @@ func _content_length(headers: String) -> int:
 		return line.split(":", false, 1)[1].strip_edges().to_int()
 	return -1
 
+func _is_chunked(headers: String) -> bool:
+	for line: String in headers.split("\r\n", false):
+		var lowered: String = line.to_lower()
+		if (!lowered.begins_with("transfer-encoding:")): continue
+		return (lowered.find("chunked") != -1)
+	return false
+
+func _dechunk(data: PackedByteArray) -> PackedByteArray:
+	var out: PackedByteArray = PackedByteArray()
+	var offset: int = 0
+	var total: int = data.size()
+	while (offset < total):
+		var line_end: int = _find_crlf(data, offset)
+		if (line_end == -1): break
+		var size_line: String = data.slice(offset, line_end).get_string_from_utf8()
+		var extension: int = size_line.find(";")
+		if (extension != -1): size_line = size_line.substr(0, extension)
+		var size: int = size_line.strip_edges().hex_to_int()
+		offset = line_end + 2
+		if (size <= 0): break
+		out.append_array(data.slice(offset, offset + size))
+		offset += size + 2
+	return out
+
+func _find_crlf(data: PackedByteArray, start: int) -> int:
+	for idx: int in range(start, data.size() - 1):
+		if (data[idx] == 13 && data[idx + 1] == 10): return idx
+	return -1
+
 func _handle_response(response: PackedByteArray) -> void:
-	# Parse response data
-	var text: String = response.get_string_from_utf8()
+	# Parse the status line
 	var response_code: int = 0
-	var first_line_end: int = text.find("\r\n")
-	if (first_line_end != -1):
-		var parts: PackedStringArray = text.substr(0, first_line_end).split(" ", false)
-		if (parts.size() >= 2): response_code = parts[1].to_int()
+	var header_end: int = _find_header_end(response)
+	var headers: String = response.slice(0, header_end - 4).get_string_from_utf8() if (header_end != -1) else response.get_string_from_utf8()
+	var first_line_end: int = headers.find("\r\n")
+	var status_line: String = headers.substr(0, first_line_end) if (first_line_end != -1) else headers
+	var status_parts: PackedStringArray = status_line.split(" ", false)
+	if (status_parts.size() >= 2): response_code = status_parts[1].to_int()
 	_response_object._status_code = response_code
 	
+	# Extract response
+	var body_bytes: PackedByteArray = response.slice(header_end) if (header_end != -1) else PackedByteArray()
+	if (_is_chunked(headers)):
+		body_bytes = _dechunk(body_bytes)
+	else:
+		var length: int = _content_length(headers)
+		if (length >= 0 && body_bytes.size() > length): body_bytes = body_bytes.slice(0, length)
+	var body: String = body_bytes.get_string_from_utf8()
+	
 	# Determine if JSON response
-	var header_split: int = text.find("\r\n\r\n")
-	var body: String = text.substr(header_split + 4) if (header_split != -1) else text
 	var likely_json: bool = (body.find("{") != -1 && body.rfind("}") != -1)
 	
 	# Parse response

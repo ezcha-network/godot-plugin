@@ -35,7 +35,7 @@ signal visibility_changed(new_visibility: Visibility)
 signal host_migrated(old_host_id: int, new_host_id: int)
 
 ## Emitted when an error occurs during relay operations.
-signal error(code: int, message: String)
+signal error(code: ErrorCode, message: String)
 
 ## Emitted when kicked from the lobby.
 signal kicked(message: String)
@@ -70,7 +70,7 @@ enum _OptionFlag {
 	HOST_PEER_ID = 0x20
 }
 
-enum ErrorType {
+enum ErrorCode {
 	CLIENT_EXCEPTION = -1,
 	INVALID_REQUEST = 100,
 	NO_PERMISSION = 101,
@@ -104,6 +104,8 @@ enum Operation {
 	CREATE_LOBBY = 3,
 	JOIN_LOBBY = 4
 }
+
+const _PRINT_PREFIX: String = "[EzchaRelay] "
 
 const _SPAWNER_GROUP: StringName = &"_ezcha_multiplayer_spawner"
 
@@ -153,8 +155,8 @@ func resolve_lobby(join_code: String) -> void:
 	var resolve_res: EzchaRelayLobbyResponse = await _ezcha.relay.resolve_lobby(_ezcha.get_game_id(), join_code).async()
 	if (!resolve_res.is_successful()):
 		_handle_connection_failed()
-		error.emit(
-			ErrorType.LOBBY_NOT_FOUND,
+		_emit_error(
+			ErrorCode.LOBBY_NOT_FOUND,
 			"Lobby not found." if (resolve_res.get_status() == 404) \
 			else "Failed to resolve lobby."
 		)
@@ -174,8 +176,7 @@ func join_lobby(lobby: EzchaRelayLobby) -> void:
 ## Do not call this function with `await`.
 func create_lobby(server: EzchaRelayServer, name: String, players: int, game_mode: int = 0, visibility: Visibility = Visibility.PUBLIC, host_migration: bool = false) -> void:
 	if (!_ezcha.client.is_authenticated()):
-		printerr("EzchaRelay: User must be authenticated to host lobbies.")
-		error.emit(ErrorType.CLIENT_EXCEPTION, "Authentication required.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Authentication required.")
 		return
 	if (!_prepare_connection()): return
 	if (!await _open_connection(server.address)): return
@@ -186,10 +187,10 @@ func create_lobby(server: EzchaRelayServer, name: String, players: int, game_mod
 func kick(peer_id: int, message: String = "") -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot kick, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot kick, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot kick, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot kick, no permission.")
 		return
 	
 	# Build and send request
@@ -207,10 +208,10 @@ func kick(peer_id: int, message: String = "") -> void:
 func ban(peer_id: int, message: String = "") -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot ban, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot ban, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot ban, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot ban, no permission.")
 		return
 	
 	# Build and send request
@@ -271,10 +272,10 @@ func get_operation() -> Operation:
 func set_lobby_name(new_name: String) -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot update name, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot update name, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot update name, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot update name, no permission.")
 		return
 	
 	# Build and send request
@@ -292,10 +293,10 @@ func set_lobby_name(new_name: String) -> void:
 func set_game_mode(new_mode: int) -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot update game mode, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot update game mode, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot update game mode, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot update game mode, no permission.")
 		return
 	
 	# Build and send request
@@ -311,10 +312,10 @@ func set_game_mode(new_mode: int) -> void:
 func set_player_limit(new_limit: int) -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot update player limit, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot update player limit, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot update player limit, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot update player limit, no permission.")
 		return
 	
 	# Build and send request
@@ -330,10 +331,10 @@ func set_player_limit(new_limit: int) -> void:
 func set_visibility(new_visibility: Visibility) -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot update visibility, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot update visibility, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot update visibility, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot update visibility, no permission.")
 		return
 	
 	# Build and send request
@@ -349,10 +350,10 @@ func set_visibility(new_visibility: Visibility) -> void:
 func migrate_host(peer_id: int) -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot migrate hosts, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot migrate hosts, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot migrate hosts, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot migrate hosts, no permission.")
 		return
 	
 	# Build and send request
@@ -368,10 +369,10 @@ func migrate_host(peer_id: int) -> void:
 func close_lobby(message: String = "") -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot close lobby, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot close lobby, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot close lobby, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot close lobby, no permission.")
 		return
 	
 	# Build and send request
@@ -399,6 +400,10 @@ func can_modify_lobby() -> bool:
 	return (is_host() || (_ezcha.client.is_authenticated() && _ezcha.client.moderation_tools))
 
 # Miscellaneous helpers
+
+func _emit_error(code: ErrorCode, message: String) -> void:
+	printerr(_PRINT_PREFIX + "%s (%d)" % [message, code])
+	error.emit(code, message)
 
 func _to_local_id_unmasked(server_id: int) -> int:
 	return server_id + _GODOT_ID_OFFSET
@@ -473,7 +478,7 @@ func _handle_disconnect() -> void:
 
 func _prepare_connection() -> bool:
 	if (_operation != Operation.NONE || _ws != null):
-		error.emit(ErrorType.CLIENT_EXCEPTION, "Already connecting/connected.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Already connecting/connected.")
 		return false
 	_operation = Operation.CONNECT
 	_operation_result = null
@@ -487,7 +492,7 @@ func _open_connection(address: String) -> bool:
 	var err = _ws.connect_to_url("wss://%s/ws" % [address])
 	if (err != OK):
 		_handle_connection_failed()
-		error.emit(ErrorType.CLIENT_EXCEPTION, "Server connection failed. (0)")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Failed to reach the server.")
 		return false
 	
 	# Wait for connection
@@ -498,7 +503,7 @@ func _open_connection(address: String) -> bool:
 	# Check state/connection
 	if (_ws == null || _ws.get_ready_state() != WebSocketPeer.STATE_OPEN):
 		_handle_disconnect()
-		error.emit(ErrorType.CLIENT_EXCEPTION, "Server connection failed. (1)")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Server connection failed.")
 		return false
 	
 	# Send handshake
@@ -620,7 +625,7 @@ func _handle_handshake(data: PackedByteArray) -> void:
 	# Simulate authentication for guest sessions
 	if (_ezcha.client.is_authenticated()): return
 	if (data.size() < 2):
-		printerr("EzchaRelay: Invalid handshake data.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Invalid handshake data.")
 		return
 	
 	# Parse guest profile
@@ -629,7 +634,7 @@ func _handle_handshake(data: PackedByteArray) -> void:
 	var json_str: String = data.slice(2, 2 + json_len).get_string_from_utf8()
 	var user_data: Variant = JSON.parse_string(json_str)
 	if (user_data == null || !(user_data is Dictionary)):
-		printerr("EzchaRelay: Failed to parse guest user data.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Failed to parse guest user data")
 		return
 	
 	var guest_user: EzchaUser = EzchaUser.new()
@@ -639,7 +644,7 @@ func _handle_handshake(data: PackedByteArray) -> void:
 
 func _handle_assign_id(data: PackedByteArray) -> void:
 	if (data.size() < 19):
-		printerr("EzchaRelay: Invalid assign ID data.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Invalid assign ID data.")
 		return
 	
 	_unique_id = data.decode_u16(0)
@@ -650,7 +655,7 @@ func _handle_assign_id(data: PackedByteArray) -> void:
 
 func _handle_lobby_options(data: PackedByteArray) -> void:
 	if (data.size() < 7):
-		printerr("EzchaRelay: Invalid lobby settings data.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Invalid lobby settings data.")
 		return
 	
 	var name_len: int = data.decode_u8(0)
@@ -723,7 +728,7 @@ func _handle_host_migration(new_server_id: int) -> void:
 
 func _handle_add_peer(data: PackedByteArray) -> void:
 	if (data.size() < 4):
-		printerr("EzchaRelay: Invalid peer connected data.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Invalid peer connected data.")
 		return
 	
 	# Parse peer ID
@@ -741,7 +746,7 @@ func _handle_add_peer(data: PackedByteArray) -> void:
 	# Parse JSON
 	var user_data: Variant = JSON.parse_string(json_str)
 	if (user_data == null || !(user_data is Dictionary)):
-		printerr("EzchaRelay: Failed to parse user data JSON for peer ", local_id)
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Failed to parse user data JSON for peer %d" % [local_id])
 		return
 	
 	# Unpack and map user data
@@ -764,7 +769,7 @@ func _handle_remove_peer(data: PackedByteArray) -> void:
 
 func _handle_error(data: PackedByteArray) -> void:
 	if (data.size() < 3):
-		printerr("EzchaRelay: Invalid error data.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Invalid error data.")
 		return
 	
 	var error_code: int = data.decode_u16(0)
@@ -774,8 +779,8 @@ func _handle_error(data: PackedByteArray) -> void:
 	if (message_len > 0 && message_len + 3 <= data.size()):
 		message = data.slice(3, message_len + 3).get_string_from_utf8()
 	
-	error.emit(error_code, message)
-	if (error_code == ErrorType.KICKED):
+	_emit_error(error_code, message)
+	if (error_code == ErrorCode.KICKED):
 		kicked.emit(message)
 		_handle_disconnect()
 		return
@@ -787,27 +792,27 @@ func _handle_game_packet(data: PackedByteArray) -> void:
 	# Extract engine packet wrapped in relay packet
 	var full_size: int = data.size()
 	if (full_size <= _INCOMING_HEADER_SIZE):
-		printerr("EzchaRelay: Game packet is below minimum size. (received: %d bytes)" % [full_size])
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Game packet is below minimum size. (received: %d bytes)" % [full_size])
 		return
 	
 	# Parse from_peer
 	var real_id: int = data.decode_u16(0)
 	var local_id = _to_local_id(real_id)
 	if (!_peers.has(local_id)):
-		printerr("EzchaRelay: Game packet received from missing peer.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Game packet received from missing peer.")
 		return
 	
 	# Parse payload size
 	var payload_size: int = data.decode_u16(2)
 	var provided_size: int = full_size - _INCOMING_HEADER_SIZE + _GODOT_HEADER_SIZE
 	if (provided_size < payload_size):
-		printerr("EzchaRelay: Incomplete game packet. (%d/%d bytes)" % [provided_size, payload_size])
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Incomplete game packet. (%d/%d bytes)" % [provided_size, payload_size])
 		return
 	
 	# RPC metadata
 	var transfer_mode: int = data.decode_u8(4)
 	if (transfer_mode > _MAX_TRANSFER_MODE):
-		printerr("EzchaRelay: Invalid transfer mode from incoming game packet.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Invalid transfer mode from incoming game packet.")
 		return
 	var transfer_channel: int = data.decode_u8(5)
 	
@@ -893,10 +898,10 @@ func _notification(what: int) -> void:
 func _set_refuse_new_connections(value: bool) -> void:
 	# Check state
 	if (!in_lobby()):
-		printerr("EzchaRelay: Cannot update options, not in lobby.")
+		_emit_error(ErrorCode.CLIENT_EXCEPTION, "Cannot update refuse connections, not connected to a lobby.")
 		return
 	if (!can_modify_lobby()):
-		printerr("EzchaRelay: Cannot update options, no permission.")
+		_emit_error(ErrorCode.NO_PERMISSION, "Cannot update refuse connections, no permission.")
 		return
 	
 	_refuse_connections = value

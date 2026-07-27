@@ -5,6 +5,7 @@ extends "res://addons/ezcha_network/dock/menu.gd"
 @onready var copy_btn: Button = $Contents/Actions/Copy
 
 func _opened() -> void:
+	super()
 	if (!plugin._leaderboards_cached):
 		plugin._leaderboards_cached = true
 		refresh_leaderboards()

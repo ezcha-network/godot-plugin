@@ -8,6 +8,7 @@ extends "res://addons/ezcha_network/dock/menu.gd"
 @onready var copy_btn: Button = $Contents/Actions/Copy
 
 func _opened() -> void:
+	super()
 	if (!plugin._trophies_cached):
 		plugin._trophies_cached = true
 		refresh_trophies()

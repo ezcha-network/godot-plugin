@@ -71,3 +71,14 @@ func get_leaderboards(game_id: String, session_token: String = "") -> EzchaLeade
 		.set_response_object(EzchaLeaderboardListResponse.new())\
 		.add_query_parameter("game_id", game_id)\
 		.fetch()
+
+## Requests the products belonging to a game.
+## A session with sufficient permissions can be provided to include unlisted products, but is not required.
+func get_products(game_id: String, session_token: String = "") -> EzchaProductListResponse:
+	return EzchaRequestBuilder.new()\
+		.set_method(HTTPClient.METHOD_GET)\
+		.set_endpoint("/v1/games/products")\
+		.set_authentication(session_token)\
+		.set_response_object(EzchaProductListResponse.new())\
+		.add_query_parameter("game_id", game_id)\
+		.fetch()

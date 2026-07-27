@@ -13,8 +13,7 @@ const _EXPORT_TARGETS_FRIENDLY: PackedStringArray = ["Beta", "Live"]
 const _FEATURE_EXCLUDE_API_KEY: String = "ezcha_exclude_api_key"
 const _FEATURE_EXCLUDE_SIGNING_KEY: String = "ezcha_exclude_signing_key"
 
-const _WEB_OPTIONS: Array[String] = [
-	"custom_template/debug",
+const _WEB_OPTIONS: PackedStringArray = [
 	"custom_template/release",
 	"variant/extensions_support",
 	"variant/thread_support",
@@ -82,7 +81,8 @@ func _get_preset_features(_preset: EditorExportPreset) -> PackedStringArray:
 func _has_valid_project_configuration(_preset: EditorExportPreset) -> bool:
 	return true
 
-func _has_valid_export_configuration(_preset: EditorExportPreset, _debug: bool) -> bool:
+func _has_valid_export_configuration(preset: EditorExportPreset, _debug: bool) -> bool:
+	set_config_missing_templates(false)
 	var errors: PackedStringArray = []
 	var ezcha: EzchaSingleton = EzchaSingleton._get_instance()
 	if (ezcha == null):
@@ -93,7 +93,10 @@ func _has_valid_export_configuration(_preset: EditorExportPreset, _debug: bool) 
 			errors.append("Game ID is not set.")
 	if (EzchaOpts._get_build_key().is_empty()):
 		errors.append("Build key is not configured.")
-	set_config_missing_templates(false)
+	var required_template: String = _required_web_template(preset)
+	if (!_web_template_installed(required_template)):
+		errors.append("You must install the \"%s\" export template." % [required_template])
+		set_config_missing_templates(true)
 	set_config_error("\n".join(errors))
 	return errors.is_empty()
 
@@ -119,9 +122,6 @@ func _get_export_options() -> Array[Dictionary]:
 		),
 		_make_option(&"ezcha_network/shared_array_buffer", TYPE_BOOL, false),
 		_make_option(
-			&"custom_template/debug", TYPE_STRING, "", PROPERTY_HINT_GLOBAL_FILE, "*.zip"
-		),
-		_make_option(
 			&"custom_template/release", TYPE_STRING, "", PROPERTY_HINT_GLOBAL_FILE, "*.zip"
 		),
 		_make_option(&"variant/extensions_support", TYPE_BOOL, false),
@@ -140,7 +140,7 @@ func _get_export_options() -> Array[Dictionary]:
 		_make_option(&"threads/godot_pool_size", TYPE_INT, 4)
 	]
 
-func _export_project(preset: EditorExportPreset, debug: bool, _path: String, _flags: int) -> Error:
+func _export_project(preset: EditorExportPreset, _debug: bool, _path: String, _flags: int) -> Error:
 	if (_running):
 		printerr(EzchaOpts._PRINT_PREFIX + "An export is already in progress.")
 		return ERR_BUSY
@@ -159,6 +159,12 @@ func _export_project(preset: EditorExportPreset, debug: bool, _path: String, _fl
 		printerr(EzchaOpts._PRINT_PREFIX + "Build key is not configured.")
 		return ERR_UNCONFIGURED
 	
+	# Check that the required template is installed
+	var required_template: String = _required_web_template(preset)
+	if (!_web_template_installed(required_template)):
+		printerr(EzchaOpts._PRINT_PREFIX + "You must install the \"%s\" web export template." % [required_template])
+		return ERR_UNCONFIGURED
+	
 	# Gather everything the build needs
 	var target_idx: int = preset.get_or_env(&"ezcha_network/target", "ezcha_target")
 	var web_options: Dictionary[String, Variant] = {}
@@ -172,7 +178,7 @@ func _export_project(preset: EditorExportPreset, debug: bool, _path: String, _fl
 		"embed_height": clampi(int(preset.get(&"ezcha_network/height")), 128, 1280),
 		"fullscreen_enabled": preset.get(&"ezcha_network/fullscreen_enabled"),
 		"shared_array_buffer": preset.get(&"ezcha_network/shared_array_buffer"),
-		"debug": debug,
+		"debug": false,
 		"game_id": game_id,
 		"build_key": build_key,
 		"target": _EXPORT_TARGETS[target_idx],
@@ -210,6 +216,23 @@ func _make_option(option_name: StringName, type: int, default_value: Variant, hi
 		"hint_string": hint_string,
 		"default_value": default_value
 	}
+
+func _web_template_installed(template: String) -> bool:
+	if (template.is_empty()): return true
+	var version: Dictionary = Engine.get_version_info()
+	var version_string: String = "%s.%s.%s.%s" % [
+		version["major"], version["minor"], version["patch"], version["status"]
+	]
+	var data_dir: String = EditorInterface.get_editor_paths().get_data_dir()
+	var templates_dir: String = data_dir.path_join("export_templates").path_join(version_string)
+	return FileAccess.file_exists(templates_dir.path_join(template))
+
+func _required_web_template(preset: EditorExportPreset) -> String:
+	if (!String(preset.get(&"custom_template/release")).strip_edges().is_empty()): return ""
+	var name: String = "web"
+	if (bool(preset.get(&"variant/extensions_support"))): name += "_dlink"
+	if (!bool(preset.get(&"variant/thread_support"))): name += "_nothreads"
+	return name + "_release.zip"
 
 func _inject_temp_preset(presets_path: String, build_data: Dictionary[String, Variant], index_path: String) -> Error:
 	var config: ConfigFile = ConfigFile.new()
@@ -416,7 +439,10 @@ func _perform_build(build_data: Dictionary[String, Variant]) -> Dictionary[Strin
 	var response: _UploadResponse = _upload(build_data, zip_path)
 	await response.async()
 	_remove_directory_recursive(temp_dir)
-	if (!response.is_successful()): return _fail(FAILED)
+	if (!response.is_successful()):
+		if (!EzchaOpts._should_print_request_errors()):
+			printerr(EzchaOpts._PRINT_PREFIX + "Upload failed. Make sure the build key is valid.")
+		return _fail(FAILED)
 	print(
 		EzchaOpts._PRINT_PREFIX + "Finished uploading in %d second(s)." % [
 			Time.get_unix_time_from_system() - upload_start

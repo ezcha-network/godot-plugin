@@ -1,3 +1,38 @@
+# Version 2.7.0
+
+- Added support for the new products API and interoperability
+	- New `EzchaProductsAPI` wrapper
+	- New `EzchaProduct` DTO
+- `EzchaWebAdapter` improvements
+	- Added a `purchase_product_prompt()` function
+- `EzchaUploader` improvements
+	- Unified data streaming logic
+	- Made more reliable across different machines (hopefully)
+- `EzchaRelayMultiplayerPeer` improvements
+	- **BREAKING!** Renamed `ErrorType` to `ErrorCode`
+	- Improved client-side error handling
+	- Errors are now automatically printed to the output
+- `EzchaGame` improvements
+	- Added `pricing_model` and `price` fields
+	- Added `get_trophies()`, `get_leaderboards()` and `get_products()` functions
+- `EzchaUser` improvements
+	- Added `get_trophies()` and `check_friends()` functions
+- `EzchaLeaderboard` improvements
+	- Added a `get_entries()` function
+- Added an "ezcha_ignore_test_session" feature flag
+	- Ignores the set test session allowing the instance to act as a guest
+	- Useful for testing relay lobbies
+- Overhauled `EzchaUtil.unpack_data()` helper function
+	- Now dynamically determines types using built-in functionality
+	- Supports a wider variety of type configurations
+	- Removes the need for `_get_type_map()` and `_get_array_type_map()`
+- Fixed the error message in `EzchaResponse` not being set.
+- The "Ezcha Network" export platform now checks that the required web template is installed
+- Fixed a bug that broke the "Ezcha" dock in Godot 4.7.1
+- Fixed a bug with the `EzchaWebAdapter` ad prompt functions
+
+---
+
 # Version 2.6.0
 
 This version primarily adds a new "Ezcha Network" export target to the editor and brings several other smaller improvements. When selected, the plugin will automatically build your game for the web, bundle the files together, upload it, and wait for it all to process.

@@ -29,6 +29,9 @@ var leaderboards: EzchaLeaderboardsAPI = EzchaLeaderboardsAPI.new(self)
 ## A wrapper for the news section of the API.
 var news: EzchaNewsAPI = EzchaNewsAPI.new(self)
 
+## A wrapper for the products section of the API.
+var products: EzchaProductsAPI = EzchaProductsAPI.new(self)
+
 ## A wrapper for the relay section of the API.
 var relay: EzchaRelayAPI = EzchaRelayAPI.new(self)
 
@@ -43,8 +46,8 @@ var users: EzchaUsersAPI = EzchaUsersAPI.new(self)
 
 # Lifecycle
 
-func _enter_tree() -> void:
-	if (_instance == null): _instance = self
+func _init() -> void:
+	_instance = self
 
 func _exit_tree() -> void:
 	if (_instance == self): _instance = null

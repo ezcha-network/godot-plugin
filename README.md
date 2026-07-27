@@ -77,6 +77,9 @@ See for yourself how easy it is to integrate Ezcha Network into your games!
 
 ## Feature Flags
 
+- `ezcha_ignore_test_session`
+	- Ignores the test session during authentication.
+	- Useful for testing Ezcha Relay lobbies by joining as guests.
 - `ezcha_exclude_api_key`
 	- Removes the API key from the export.
 - `ezcha_exclude_signing_key`
