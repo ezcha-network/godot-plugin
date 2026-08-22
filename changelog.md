@@ -1,3 +1,15 @@
+# Version 2.7.1
+
+- `EzchaRequestBuilder` bug fixes
+	- Reverted the default timeout back to `0.0` from `10.0`
+		- This was causing some unexpected behavior, will look into at a later time
+- `EzchaClient`, `EzchaServerPlayer`, and `EzchaSessionValidationResponse` improvements
+	- Added a `tipped_amount` field to all three classes
+		- Measured in USD cents
+		- This is the total amount the user has tipped the developer for the specific game
+
+---
+
 # Version 2.7.0
 
 - Added support for the new products API and interoperability

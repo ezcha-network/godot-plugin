@@ -14,7 +14,7 @@ var _signing_key: String = ""
 var _parse_response: bool = true
 var _http_req: HTTPRequest = null
 var _response_object: EzchaResponse = null
-var _timeout: float = 10.0
+var _timeout: float = 0.0
 
 # Interface
 

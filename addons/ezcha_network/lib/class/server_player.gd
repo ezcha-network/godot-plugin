@@ -31,6 +31,10 @@ var trophies_obtained: Array[EzchaTrophyObtained] = []
 ## The leaderboard entries that the currently authenticated user has for this game.
 var leaderboard_entries: Array[EzchaLeaderboardEntry] = []
 
+## The total amount that the currently authenticated user has tipped for this game.
+## This is measured in USD cents.
+var tipped_amount: int = 0
+
 ## If true the user should have access to any moderation tools.
 var moderation_tools: bool = false
 
@@ -65,6 +69,7 @@ func authenticate(session_token: String) -> bool:
 	for trophy in trophies_obtained:
 		_obtained_trophy_ids.append(trophy.id)
 	leaderboard_entries = response.leaderboard_entries
+	tipped_amount = response.tipped_amount
 	moderation_tools = response.moderation_tools
 	authentication_completed.emit(true)
 	return true

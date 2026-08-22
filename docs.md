@@ -95,6 +95,7 @@ This should be accessed through the "Ezcha" singleton.
 |[EzchaUser](#EzchaUser)|[user](#EzchaClient-property-user)|null|
 |[Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)]|[trophies_obtained](#EzchaClient-property-trophies_obtained)|[]|
 |[Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)]|[leaderboard_entries](#EzchaClient-property-leaderboard_entries)|[]|
+|[int](https://docs.godotengine.org/en/4.7/classes/class_int.html)|[tipped_amount](#EzchaClient-property-tipped_amount)|0|
 |[bool](https://docs.godotengine.org/en/4.7/classes/class_bool.html)|[moderation_tools](#EzchaClient-property-moderation_tools)|false|
 
 ### Methods
@@ -172,6 +173,11 @@ The trophies that the currently authenticated user has obtained from this game.
 [Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)] **leaderboard_entries** = []
 
 The leaderboard entries that the currently authenticated user has for this game.
+
+<a name="EzchaClient-property-tipped_amount"></a>
+[int](https://docs.godotengine.org/en/4.7/classes/class_int.html) **tipped_amount** = 0
+
+The total amount that the currently authenticated user has tipped for this game. This is measured in USD cents.
 
 <a name="EzchaClient-property-moderation_tools"></a>
 [bool](https://docs.godotengine.org/en/4.7/classes/class_bool.html) **moderation_tools** = false
@@ -1441,6 +1447,7 @@ You shouldn't use this client-side or when making a singleplayer/relay based gam
 |[EzchaUser](#EzchaUser)|[user](#EzchaServerPlayer-property-user)|null|
 |[Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaTrophyObtained](#EzchaTrophyObtained)]|[trophies_obtained](#EzchaServerPlayer-property-trophies_obtained)|[]|
 |[Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)]|[leaderboard_entries](#EzchaServerPlayer-property-leaderboard_entries)|[]|
+|[int](https://docs.godotengine.org/en/4.7/classes/class_int.html)|[tipped_amount](#EzchaServerPlayer-property-tipped_amount)|0|
 |[bool](https://docs.godotengine.org/en/4.7/classes/class_bool.html)|[moderation_tools](#EzchaServerPlayer-property-moderation_tools)|false|
 
 ### Methods
@@ -1496,6 +1503,11 @@ The trophies that the user has obtained from this game.
 [Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)] **leaderboard_entries** = []
 
 The leaderboard entries that the currently authenticated user has for this game.
+
+<a name="EzchaServerPlayer-property-tipped_amount"></a>
+[int](https://docs.godotengine.org/en/4.7/classes/class_int.html) **tipped_amount** = 0
+
+The total amount that the currently authenticated user has tipped for this game. This is measured in USD cents.
 
 <a name="EzchaServerPlayer-property-moderation_tools"></a>
 [bool](https://docs.godotengine.org/en/4.7/classes/class_bool.html) **moderation_tools** = false
@@ -2903,6 +2915,7 @@ A response from the API containing the information related to a validated sessio
 |[Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaLeaderboardEntry](#EzchaLeaderboardEntry)]|[leaderboard_entries](#EzchaSessionValidationResponse-property-leaderboard_entries)|[]|
 |[Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaProductPurchase](#EzchaProductPurchase)]|[products_purchased](#EzchaSessionValidationResponse-property-products_purchased)|[]|
 |[Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaProductPurchase](#EzchaProductPurchase)]|[products_unconsumed](#EzchaSessionValidationResponse-property-products_unconsumed)|[]|
+|[int](https://docs.godotengine.org/en/4.7/classes/class_int.html)|[tipped_amount](#EzchaSessionValidationResponse-property-tipped_amount)|0|
 |[bool](https://docs.godotengine.org/en/4.7/classes/class_bool.html)|[moderation_tools](#EzchaSessionValidationResponse-property-moderation_tools)|false|
 
 ### Property Descriptions
@@ -2925,12 +2938,17 @@ The leaderboard entries the user has for this game.
 <a name="EzchaSessionValidationResponse-property-products_purchased"></a>
 [Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaProductPurchase](#EzchaProductPurchase)] **products_purchased** = []
 
-The permanent/non-consumable product purchases this user has made.
+The permanent/non-consumable product purchases the user has made.
 
 <a name="EzchaSessionValidationResponse-property-products_unconsumed"></a>
 [Array](https://docs.godotengine.org/en/4.7/classes/class_array.html)[[EzchaProductPurchase](#EzchaProductPurchase)] **products_unconsumed** = []
 
-The product purchases this user has made which are pending consumption.
+The product purchases the user has made which are pending consumption.
+
+<a name="EzchaSessionValidationResponse-property-tipped_amount"></a>
+[int](https://docs.godotengine.org/en/4.7/classes/class_int.html) **tipped_amount** = 0
+
+The total amount the user has tipped for this game. This is measured in USD cents.
 
 <a name="EzchaSessionValidationResponse-property-moderation_tools"></a>
 [bool](https://docs.godotengine.org/en/4.7/classes/class_bool.html) **moderation_tools** = false
