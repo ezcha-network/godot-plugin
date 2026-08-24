@@ -1,3 +1,8 @@
+# Version 2.7.2
+
+- `EzchaClient` bug fix
+	- Removed vestigial `_notify_authenticated` function call
+
 # Version 2.7.1
 
 - `EzchaRequestBuilder` bug fixes

@@ -355,7 +355,6 @@ func _validate_session(token: String) -> bool:
 	moderation_tools = response.moderation_tools
 	if (_adapter != null):
 		_adapter.session_expired.connect(_on_session_expired, CONNECT_ONE_SHOT)
-		_adapter._notify_authenticated(user)
 	authentication_completed.emit(true)
 	return true
 
