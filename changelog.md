@@ -1,3 +1,9 @@
+# Version 2.7.3
+
+- `EzchaUtil` bug fixes & improvements
+	- Fixed nested DTO parsing
+	- Improved typed array handling
+
 # Version 2.7.2
 
 - `EzchaClient` bug fix

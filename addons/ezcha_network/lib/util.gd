@@ -13,7 +13,7 @@ class _UnpackState extends RefCounted:
 	func store_script(script: Script) -> void:
 		var g_name: StringName = script.get_global_name()
 		if (g_name.is_empty()): return
-		if (!class_cache.has(g_name)): return
+		if (class_cache.has(g_name)): return
 		class_cache[g_name] = script
 	
 	func resolve_class(cl_name: StringName) -> Variant:
@@ -96,7 +96,8 @@ static func unpack_data(target: Object, data: Dictionary, state: _UnpackState = 
 						target.set(key, obj_arr)
 					continue
 				# Type check
-				var copy_arr: Array[Variant] = []
+				var copy_arr: Array = current_arr.duplicate(false)
+				copy_arr.clear()
 				for item: Variant in new_arr:
 					if (typeof(item) == base_type): copy_arr.append(item)
 				target.set(key, copy_arr)
@@ -108,7 +109,7 @@ static func unpack_data(target: Object, data: Dictionary, state: _UnpackState = 
 				# Untyped
 				if (!current_dict.is_typed_value()):
 					target.set(key, new_dict.duplicate(true))
-					return
+					continue
 				# Detect DTO
 				var base_type: Variant.Type = current_dict.get_typed_value_builtin()
 				if (base_type == TYPE_OBJECT):
@@ -134,6 +135,9 @@ static func unpack_data(target: Object, data: Dictionary, state: _UnpackState = 
 			TYPE_NIL, TYPE_OBJECT:
 				# Detect DTO
 				if (current_type != TYPE_NIL && current_type != TYPE_OBJECT): continue
+				if (new_value is not Dictionary):
+					target.set(key, null)
+					continue
 				var cl_name: StringName = meta["class_name"]
 				if (cl_name.is_empty()): continue
 				var obj: Variant = state.resolve_class(cl_name)
